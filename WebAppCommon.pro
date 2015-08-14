@@ -28,7 +28,8 @@ SOURCES += webappcommon.cpp \
     controller/abstractcontroller.cpp \
     controller/pagecontroller.cpp \
     controller/controllermanager.cpp \
-    controller_factory/controllerfactory.cpp
+    controller_factory/controllerfactory.cpp \
+    model/beans/session.cpp
 
 HEADERS += webappcommon.h\
         webappcommon_global.h \
@@ -48,7 +49,8 @@ HEADERS += webappcommon.h\
     controller_factory/controllerfactory.h \
     controller/abstractcontroller.h \
     controller/pagecontroller.h \
-    controller/controllermanager.h
+    controller/controllermanager.h \
+    model/beans/session.h
  #core/stringgetparam.h
 
 unix {
