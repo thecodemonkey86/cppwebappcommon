@@ -105,7 +105,7 @@ return alias + QString(".id as ") + alias + QString("__id")+QChar(',')+alias + Q
 }
 Session* Session::getByRecord (const QSqlRecord& record,const QString& alias) {
 Session* bean = new Session ();
-return bean->setExpirationDateInternal(record.value(alias + QString("__expiration_date")))->setIdInternal(record.value(alias + QString("__id")));
+return bean->setExpirationDateInternal(record.value(alias + QString("__expiration_date")))->setIdInternal(record.value(alias + QString("__id")).toString());
 }
 BeanQuery<Session>* Session::createQuery () {
 return new BeanQuery<Session> (sqlCon->buildQuery()) ;
