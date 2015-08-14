@@ -8,26 +8,26 @@
 #include "beanquery.h"
 class Session: public BaseBean{
 public: static const char* TABLENAME;
-protected: QVariant _previousId;
-protected: QVariant id;
+protected: QString _previousId;
+protected: QString id;
 protected: QVariant expirationDate;
 protected: bool loaded;
 protected: bool expirationDateModified;
 public: Session () ;
 public: QString getTableName () ;
-public: QVariant getId () const ;
+public: QString getId () const ;
 public: QVariant getExpirationDate () ;
 public: Session* setExpirationDate (const QVariant& expirationDate) ;
 protected: Session* setExpirationDateInternal (const QVariant& expirationDate) ;
-public: Session* setId (const QVariant& id) ;
-protected: Session* setIdInternal (const QVariant& id) ;
+public: Session* setId (const QString& id) ;
+protected: Session* setIdInternal (const QString& id) ;
 protected: QString getInsertFields () ;
 protected: QString getInsertValuePlaceholders () ;
 protected: QList<QVariant>* getInsertParams () ;
 protected: QString getUpdateFields (QList<QVariant>* params) ;
 protected: QString getUpdateCondition () ;
 protected: QList<QVariant>* getUpdateConditionParams () ;
-public: static Session* getById (QVariant id) ;
+public: static Session* getById (QString id) ;
 public: static QString getSelectFields (const QString& alias) ;
 public: static Session* getByRecord (const QSqlRecord& record,const QString& alias) ;
 public: static BeanQuery<Session>* createQuery () ;
