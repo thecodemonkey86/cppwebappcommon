@@ -3,7 +3,7 @@
 # Project created by QtCreator 2015-07-25T12:18:49
 #
 #-------------------------------------------------
-
+QT += sql
 QT       -= gui
 
 TARGET = WebAppCommon
