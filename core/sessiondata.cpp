@@ -14,7 +14,7 @@ SessionData::~SessionData()
 
 void SessionData::init(const QString &sessid)
 {
-    this->sessid = sessid;
+    SessionData::sessid = sessid;
 }
 
 void SessionData::set(const QString &name, const QByteArray &value)
