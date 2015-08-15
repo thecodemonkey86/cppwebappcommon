@@ -6,8 +6,8 @@
 #include <QDate>
 #include "nullable.h"
 #include "beanquery.h"
-#include "sessiondata.h"
-class SessionData;
+#include "sessionvalue.h"
+class SessionValue;
 class Session: public BaseBean{
 public: static const char* TABLENAME;
 protected: QString _previousId;
@@ -15,12 +15,12 @@ protected: QString id;
 protected: QVariant expirationDate;
 protected: bool loaded;
 protected: bool expirationDateModified;
-protected: QSet<SessionData>* sessionDatas;
+protected: QSet<SessionValue>* sessionValues;
 public: Session () ;
 public: QString getTableName () ;
 public: QString getId () const ;
 public: QVariant getExpirationDate () ;
-public: QList<SessionData>* getSessionDatas () ;
+public: QList<SessionValue>* getSessionValues () ;
 public: Session* setExpirationDate (const QVariant& expirationDate) ;
 protected: Session* setExpirationDateInternal (const QVariant& expirationDate) ;
 public: Session* setId (const QString& id) ;

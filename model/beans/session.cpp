@@ -5,10 +5,10 @@
 #include <QDate>
 #include "nullable.h"
 #include "beanquery.h"
-#include "sessiondata.h"
+#include "sessionvalue.h"
 Session::Session () {
 loaded = false;
-sessionDatas = new QSet<SessionData>();
+sessionValues = new QSet<SessionValue>();
 }
 QString Session::getTableName () {
 return QString(TABLENAME);
@@ -19,15 +19,15 @@ return id;
 QVariant Session::getExpirationDate () {
 return expirationDate;
 }
-QList<SessionData>* Session::getSessionDatas () {
+QList<SessionValue>* Session::getSessionValues () {
 if (!loaded){
 load();
 }
 
-QList<SessionData>* result = new QList<SessionData> ();
-sessionDatas->reserve(sessionDatas->size());
-typename QSet<SessionData>::const_iterator i = sessionDatas->constBegin();
-while (i != sessionDatas->constEnd()){
+QList<SessionValue>* result = new QList<SessionValue> ();
+sessionValues->reserve(sessionValues->size());
+typename QSet<SessionValue>::const_iterator i = sessionValues->constBegin();
+while (i != sessionValues->constEnd()){
 result->append(*i);
 ++i;
 }
@@ -96,14 +96,14 @@ return params;
 }
 Session* Session::getById (QString id) {
 SqlQuery*q = sqlCon->buildQuery();
-QSqlQuery* res= q->select(Session::getSelectFields(QString("b1"))+QChar(',')+SessionData::getSelectFields(QString("b2")))->from(QString(Session::TABLENAME),QString("b1"))->leftJoin(SessionData::TABLENAME,QString("b2"),QString("b1.id = b2.session_id"))->where(QString("b1.id=?"),id)->execQuery();
+QSqlQuery* res= q->select(Session::getSelectFields(QString("b1"))+QChar(',')+SessionValue::getSelectFields(QString("b2")))->from(QString(Session::TABLENAME),QString("b1"))->leftJoin(SessionValue::TABLENAME,QString("b2"),QString("b1.id = b2.session_id"))->where(QString("b1.id=?"),id)->execQuery();
 if (res->next()){
 Session* b1 = Session::getByRecord(res->record(),QString("b1"));
 b1->loaded = true;
 do {
-SessionData* b2 = SessionData::getByRecord(res->record(),QString("b2"));
-if (!b1->sessionDatas->contains(*b2)){
-b1->sessionDatas->insert(*b2);
+SessionValue* b2 = SessionValue::getByRecord(res->record(),QString("b2"));
+if (!b1->sessionValues->contains(*b2)){
+b1->sessionValues->insert(*b2);
 }
 
 } while(res->next());
@@ -132,10 +132,10 @@ BeanQuery<Session>* Session::createQuery () {
 return new BeanQuery<Session> (sqlCon->buildQuery()) ;
 }
 QString Session::getAllSelectFields (QString artistTableAlias) {
-return Session::getSelectFields(QString(artistTableAlias))+QChar(',')+SessionData::getSelectFields(QString("b2"));
+return Session::getSelectFields(QString(artistTableAlias))+QChar(',')+SessionValue::getSelectFields(QString("b2"));
 }
 void Session::addRelatedTableJoins (BeanQuery<Session>* query) {
-query->leftJoin(SessionData::TABLENAME,QString("b2"),QString("b1.id = b2.session_id"));
+query->leftJoin(SessionValue::TABLENAME,QString("b2"),QString("b1.id = b2.session_id"));
 }
 QList<Session*>* Session::fetchList (QSqlQuery* res) {
 QList<Session*>* beans = new QList<Session*>();
@@ -145,9 +145,9 @@ b1 = Session::getByRecord(res->record(),QString("b1"));
 b1->loaded = true;
 beans->append(b1);
 if (!res->record().value(QString("b2__id")).isNull()){
-SessionData* b2 = SessionData::getByRecord(res->record(),QString("b2"));
-if (!b1->sessionDatas->contains(*b2)){
-b1->sessionDatas->insert(*b2);
+SessionValue* b2 = SessionValue::getByRecord(res->record(),QString("b2"));
+if (!b1->sessionValues->contains(*b2)){
+b1->sessionValues->insert(*b2);
 } else {
 delete b2;
 }
@@ -162,9 +162,9 @@ Session* b1 = NULL;
 if (res->next()){
 b1 = Session::getByRecord(res->record(),QString("b1"));
 if (!res->record().value(QString("b2__id")).isNull()){
-SessionData* b2 = SessionData::getByRecord(res->record(),QString("b2"));
-if (!b1->sessionDatas->contains(*b2)){
-b1->sessionDatas->insert(*b2);
+SessionValue* b2 = SessionValue::getByRecord(res->record(),QString("b2"));
+if (!b1->sessionValues->contains(*b2)){
+b1->sessionValues->insert(*b2);
 } else {
 delete b2;
 }
@@ -178,12 +178,12 @@ return b1;
 void Session::load () {
 loaded = true;
 SqlQuery* q = sqlCon->buildQuery();
-QSqlQuery* res = q->select(SessionData::getSelectFields(QString("b2")))->from(Session::TABLENAME ,QString("b1"))->leftJoin(SessionData::TABLENAME,QString("b2"),QString("b1.id = b2.session_id"))->where(QString("b1.id = ?"),getId())->execQuery();
+QSqlQuery* res = q->select(SessionValue::getSelectFields(QString("b2")))->from(Session::TABLENAME ,QString("b1"))->leftJoin(SessionValue::TABLENAME,QString("b2"),QString("b1.id = b2.session_id"))->where(QString("b1.id = ?"),getId())->execQuery();
 if (res->next()){
 do {
-SessionData* b2 = SessionData::getByRecord(res->record(),QString("b2"));
-if (!this->sessionDatas->contains(*b2)){
-this->sessionDatas->insert(*b2);
+SessionValue* b2 = SessionValue::getByRecord(res->record(),QString("b2"));
+if (!this->sessionValues->contains(*b2)){
+this->sessionValues->insert(*b2);
 }
 
 } while(res->next());
