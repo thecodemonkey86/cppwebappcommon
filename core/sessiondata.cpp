@@ -14,12 +14,12 @@ SessionData::~SessionData()
 
 void SessionData::init(const QString &sessid)
 {
-    this->sessid = sessid;
+    SessionData::sessid = sessid;
 }
 
 void SessionData::set(const QString &name, const QByteArray &value)
 {
-    BeanQuery * query = Session::createQuery()
+    BeanQuery<Session> * query = Session::createQuery()
             ->select()
             ->where("id=?", sessid)
             ->where("expiration_date>now()");
