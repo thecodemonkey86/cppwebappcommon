@@ -199,4 +199,9 @@ Session* b = new Session ();
 b->setInsertNew();
 return b;
 }
+bool Session::exists () {
+SqlQuery* q = sqlCon->buildQuery();
+q->select(QString("count(*)"))->from(QString(Session::TABLENAME))->where(QString("id = ?"),getId());
+return p.fetchInt()>0;
+}
 const char* Session::TABLENAME = "session" ;

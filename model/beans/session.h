@@ -42,6 +42,7 @@ public: static Session* fetchOne (QSqlQuery* res) ;
 public: void load () ;
 public: bool remove () ;
 public: static Session* createNew () ;
+public: bool exists () ;
 bool operator < (const Session& other) const {
 return id < other.id;
 }
