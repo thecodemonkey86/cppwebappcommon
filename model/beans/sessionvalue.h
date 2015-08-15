@@ -47,7 +47,6 @@ public: static QList<SessionValue*>* fetchList (QSqlQuery* res) ;
 public: static SessionValue* fetchOne (QSqlQuery* res) ;
 public: void load () ;
 public: bool remove () ;
-protected: QString getInsertFields () ;
 public: static SessionValue* createNew () ;
 bool operator < (const SessionValue& other) const {
 return sessionId < other.sessionId&&key < other.key;

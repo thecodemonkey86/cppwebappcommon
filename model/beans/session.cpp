@@ -194,9 +194,6 @@ bool Session::remove () {
 SqlQuery* q = sqlCon->buildQuery()->deleteFrom(QString(Session::TABLENAME))->where(QString("id = ?"),getId());
 return q->execute();
 }
-QString Session::getInsertFields () {
-return QString("id,expiration_date");
-}
 Session* Session::createNew () {
 Session* b = new Session ();
 b->setInsertNew();

@@ -203,9 +203,6 @@ bool SessionValue::remove () {
 SqlQuery* q = sqlCon->buildQuery()->deleteFrom(QString(SessionValue::TABLENAME))->where(QString("session_id = ?"),getSessionId())->where(QString("key = ?"),getKey());
 return q->execute();
 }
-QString SessionValue::getInsertFields () {
-return QString("session_id,key,value");
-}
 SessionValue* SessionValue::createNew () {
 SessionValue* b = new SessionValue ();
 b->setInsertNew();
