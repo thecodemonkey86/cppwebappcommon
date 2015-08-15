@@ -38,3 +38,8 @@ void SessionData::set(const QString &name, const QByteArray &value)
     }
 }
 
+bool SessionData::validSession(const QString &ip)
+{
+
+}
+

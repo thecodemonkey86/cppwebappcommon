@@ -8,8 +8,14 @@ ServerData::~ServerData()
 
 ServerData::ServerData(const FCGX_Request &request)
 {
-   requestUrl = QUrl::fromEncoded( QString(FCGX_GetParam("REQUEST_URI", request.envp)).replace(QChar('+'),QString("%20")).toUtf8(),QUrl::TolerantMode);
+   this->requestUrl = QUrl::fromEncoded( QString(FCGX_GetParam("REQUEST_URI", request.envp)).replace(QChar('+'),QString("%20")).toUtf8(),QUrl::TolerantMode);
+   this->ip = QString(FCGX_GetParam("REMOTE_ADDR", request.envp));
 }
+QString ServerData::getIp() const
+{
+    return ip;
+}
+
 QUrl ServerData::getRequestUrl() const
 {
     return requestUrl;

@@ -13,6 +13,7 @@ protected:
 public:
     static void init(const QString&sessid);
     static void set(const  QString&name,const QByteArray&value);
+    static bool validSession(const  QString&ip) ;
 };
 
 #endif // SESSIONDATA_H
