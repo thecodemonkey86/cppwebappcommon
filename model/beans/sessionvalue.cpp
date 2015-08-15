@@ -22,6 +22,9 @@ return key;
 Nullable<QByteArray> SessionValue::getValue () {
 return value;
 }
+QByteArray SessionValue::getMd5Hash () {
+return md5Hash;
+}
 Session* SessionValue::getSession () {
 if (!loaded){
 load();
@@ -41,6 +44,15 @@ return this;
 SessionValue* SessionValue::setValueNull () {
 this->valueModified = true;
 this->value.setNull();
+return this;
+}
+SessionValue* SessionValue::setMd5Hash (const QByteArray& md5Hash) {
+this->md5HashModified=true;
+this->md5Hash=md5Hash;
+return this;
+}
+SessionValue* SessionValue::setMd5HashInternal (const QByteArray& md5Hash) {
+this->md5Hash=md5Hash;
 return this;
 }
 SessionValue* SessionValue::setSessionId (const QString& sessionId) {
@@ -70,16 +82,17 @@ this->key=key;
 return this;
 }
 QString SessionValue::getInsertFields () {
-return QString("session_id,key,value");
+return QString("session_id,key,value,md5_hash");
 }
 QString SessionValue::getInsertValuePlaceholders () {
-return QString("?,?,?");
+return QString("?,?,?,?");
 }
 QList<QVariant>* SessionValue::getInsertParams () {
 QList<QVariant>* params=new QList<QVariant>();
 params->append(sessionId);
 params->append(key);
 params->append(value.isNull()? QVariant() : value.val());
+params->append(md5Hash);
 return params;
 }
 QString SessionValue::getUpdateFields (QList<QVariant>* params) {
@@ -94,6 +107,11 @@ query += QString(",key=?");
 if (valueModified){
 params->append(value.isNull()? QVariant() : value.val());
 query += QString(",value=?");
+}
+
+if (md5HashModified){
+params->append(md5Hash);
+query += QString(",md5_hash=?");
 }
 
 return query.mid(1);
@@ -137,15 +155,15 @@ throw new SqlException(sqlCon);
 }
 QString SessionValue::getSelectFields (const QString& alias) {
 if (alias.isEmpty()){
-return QString("session_id as session_value__session_id,key as session_value__key,value as session_value__value") ;
+return QString("session_id as session_value__session_id,key as session_value__key,value as session_value__value,md5_hash as session_value__md5_hash") ;
 } else {
-return alias + QString(".session_id as ") + alias + QString("__session_id")+QChar(',')+alias + QString(".key as ") + alias + QString("__key")+QChar(',')+alias + QString(".value as ") + alias + QString("__value") ;
+return alias + QString(".session_id as ") + alias + QString("__session_id")+QChar(',')+alias + QString(".key as ") + alias + QString("__key")+QChar(',')+alias + QString(".value as ") + alias + QString("__value")+QChar(',')+alias + QString(".md5_hash as ") + alias + QString("__md5_hash") ;
 }
 
 }
 SessionValue* SessionValue::getByRecord (const QSqlRecord& record,const QString& alias) {
 SessionValue* bean = new SessionValue ();
-return bean->setValueInternal(record.value(alias + QString("__value")).toByteArray())->setSessionIdInternal(record.value(alias + QString("__session_id")).toString())->setKeyInternal(record.value(alias + QString("__key")).toString());
+return bean->setValueInternal(record.value(alias + QString("__value")).toByteArray())->setMd5HashInternal(record.value(alias + QString("__md5_hash")).toByteArray())->setSessionIdInternal(record.value(alias + QString("__session_id")).toString())->setKeyInternal(record.value(alias + QString("__key")).toString());
 }
 BeanQuery<SessionValue>* SessionValue::createQuery () {
 return new BeanQuery<SessionValue> (sqlCon->buildQuery()) ;
