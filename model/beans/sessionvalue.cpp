@@ -226,9 +226,9 @@ SessionValue* b = new SessionValue ();
 b->setInsertNew();
 return b;
 }
-bool SessionValue::exists () {
+bool SessionValue::exists (QString sessionId,QString key) {
 SqlQuery* q = sqlCon->buildQuery();
-q->select(QString("count(*)"))->from(QString(SessionValue::TABLENAME))->where(QString("session_id = ?"),getSessionId())->where(QString("key = ?"),getKey());
+q->select(QString("count(*)"))->from(QString(SessionValue::TABLENAME))->where(QString("session_id = ?"),sessionId)->where(QString("key = ?"),key);
 return q->fetchInt()>0;
 }
 const char* SessionValue::TABLENAME = "session_value" ;
