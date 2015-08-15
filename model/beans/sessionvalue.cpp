@@ -229,6 +229,6 @@ return b;
 bool SessionValue::exists () {
 SqlQuery* q = sqlCon->buildQuery();
 q->select(QString("count(*)"))->from(QString(SessionValue::TABLENAME))->where(QString("session_id = ?"),getSessionId())->where(QString("key = ?"),getKey());
-return p.fetchInt()>0;
+return q.fetchInt()>0;
 }
 const char* SessionValue::TABLENAME = "session_value" ;
