@@ -199,7 +199,7 @@ return QString("id,expiration_date");
 }
 Session* Session::createNew () {
 Session* b = new Session ();
-Session->setInsertNew();
+b->setInsertNew();
 return b;
 }
 const char* Session::TABLENAME = "session" ;

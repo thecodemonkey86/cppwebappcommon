@@ -208,7 +208,7 @@ return QString("session_id,key,value");
 }
 SessionValue* SessionValue::createNew () {
 SessionValue* b = new SessionValue ();
-SessionValue->setInsertNew();
+b->setInsertNew();
 return b;
 }
 const char* SessionValue::TABLENAME = "session_value" ;
