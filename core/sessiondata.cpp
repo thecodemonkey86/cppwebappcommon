@@ -26,7 +26,8 @@ void SessionData::init(const QString &sessid,const QString &ip)
     if (existing != NULL) {
         SessionData::session = existing;
     } else {
-       // Session::createNew()->setId(Util::randString(64))->set
+        SessionData::session = Session::createNew()->setId(Util::randString(64))->setMd5Hash(QCryptographicHash::hash(ip.toUtf8(),QCryptographicHash::Md5))->setExpirationDate();
+        SessionData::session->save();
     }
 }
 
