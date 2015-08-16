@@ -102,7 +102,7 @@ void RequestData::parseGetParams()
     } else {
         getParams->clear();
     }
-    QString requestString = ServerData::getInstance()->getRequestUrl().query();
+    QString requestString = ServerData::getRequestUrl().query();
     parseParams(requestString,getParams);
 
 
@@ -150,8 +150,16 @@ void RequestData::parsePostParams(const FCGX_Request & request)
 
 void RequestData::parseCookies(const FCGX_Request & request)
 {
-QString cookiesStr(FCGX_GetParam("HTTP_COOKIE", request.envp));
-qDebug()<<cookiesStr;
+    RequestData::cookies = new QMap<QString,QString>();
+QStringList cookieStrLst = QString(FCGX_GetParam("HTTP_COOKIE", request.envp)).split(QChar(';'));
+foreach (QString s, cookieStrLst) {
+    QStringList parts = s.split(QChar('='));
+    if (parts.length()==2) {
+        RequestData::cookies->insert(parts.at(0).trimmed(),parts.at(1).trimmed());
+    } else {
+        throw new QtException("invalid cookie");
+    }
+}
 }
 QString RequestData::getString(const QString & name)
 {

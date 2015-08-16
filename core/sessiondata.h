@@ -9,10 +9,11 @@ class SessionData
 {
 protected:
     static Session*session;
+    static const char * sessCookieName;
     SessionData();
     virtual ~SessionData();
 public:
-    static void init(const QString &sessid,const QString &ip);
+    static void init();
     static void set(const  QString&name,const QByteArray&value);
 };
 
