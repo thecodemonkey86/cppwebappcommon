@@ -3,17 +3,17 @@
 
 #include <QString>
 #include <QByteArray>
+#include "model/beans/session.h"
 
 class SessionData
 {
 protected:
-    static QString sessid;
+    static Session*session;
     SessionData();
     virtual ~SessionData();
 public:
-    static void init(const QString&sessid);
+    static void init(const QString &sessid,const QString &ip);
     static void set(const  QString&name,const QByteArray&value);
-    static bool validSession(const  QString&ip) ;
 };
 
 #endif // SESSIONDATA_H
