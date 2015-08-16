@@ -156,7 +156,7 @@ QString Session::getAllSelectFields (QString artistTableAlias) {
 return Session::getSelectFields(QString(artistTableAlias))+QChar(',')+SessionValue::getSelectFields(QString("b2"));
 }
 void Session::addRelatedTableJoins (BeanQuery<Session>* query) {
-query->leftJoin(SessionValue::TABLENAME,QString("b2"),QString("b1.id = b2.session_id") AND QString("b1.md5_hash = b2.md5_hash"));
+query->leftJoin(SessionValue::TABLENAME,QString("b2"),QString("b1.id = b2.session_id AND b1.md5_hash = b2.md5_hash"));
 }
 QList<Session*>* Session::fetchList (QSqlQuery* res) {
 QList<Session*>* beans = new QList<Session*>();
