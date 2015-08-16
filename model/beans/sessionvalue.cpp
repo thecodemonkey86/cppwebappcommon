@@ -136,7 +136,7 @@ return params;
 }
 SessionValue* SessionValue::getById (QString sessionId,QByteArray md5Hash,QString key) {
 SqlQuery*q = sqlCon->buildQuery();
-QSqlQuery* res= q->select(SessionValue::getSelectFields(QString("b1"))+QChar(',')+Session::getSelectFields(QString("b2")))->from(QString(SessionValue::TABLENAME),QString("b1"))->leftJoin(Session::TABLENAME,QString("b2"),QString("b1.session_id = b2.id") AND QString("b1.md5_hash = b2.md5_hash"))->where(QString("b1.session_id=?"),sessionId)->where(QString("b1.md5_hash=?"),md5Hash)->where(QString("b1.key=?"),key)->execQuery();
+QSqlQuery* res= q->select(SessionValue::getSelectFields(QString("b1"))+QChar(',')+Session::getSelectFields(QString("b2")))->from(QString(SessionValue::TABLENAME),QString("b1"))->leftJoin(Session::TABLENAME,QString("b2"),QString("b1.session_id = b2.id AND b1.md5_hash = b2.md5_hash"))->where(QString("b1.session_id=?"),sessionId)->where(QString("b1.md5_hash=?"),md5Hash)->where(QString("b1.key=?"),key)->execQuery();
 if (res->next()){
 SessionValue* b1 = SessionValue::getByRecord(res->record(),QString("b1"));
 b1->loaded = true;

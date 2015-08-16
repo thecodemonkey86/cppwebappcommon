@@ -117,7 +117,7 @@ return params;
 }
 Session* Session::getById (QString id,QByteArray md5Hash) {
 SqlQuery*q = sqlCon->buildQuery();
-QSqlQuery* res= q->select(Session::getSelectFields(QString("b1"))+QChar(',')+SessionValue::getSelectFields(QString("b2")))->from(QString(Session::TABLENAME),QString("b1"))->leftJoin(SessionValue::TABLENAME,QString("b2"),QString("b1.id = b2.session_id") AND QString("b1.md5_hash = b2.md5_hash"))->where(QString("b1.id=?"),id)->where(QString("b1.md5_hash=?"),md5Hash)->execQuery();
+QSqlQuery* res= q->select(Session::getSelectFields(QString("b1"))+QChar(',')+SessionValue::getSelectFields(QString("b2")))->from(QString(Session::TABLENAME),QString("b1"))->leftJoin(SessionValue::TABLENAME,QString("b2"),QString("b1.id = b2.session_id AND b1.md5_hash = b2.md5_hash"))->where(QString("b1.id=?"),id)->where(QString("b1.md5_hash=?"),md5Hash)->execQuery();
 if (res->next()){
 Session* b1 = Session::getByRecord(res->record(),QString("b1"));
 b1->loaded = true;
