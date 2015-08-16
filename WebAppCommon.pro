@@ -29,8 +29,6 @@ SOURCES += webappcommon.cpp \
     controller/pagecontroller.cpp \
     controller/controllermanager.cpp \
     controller_factory/controllerfactory.cpp \
-    model/beans/session.cpp \
-    model/beans/sessionvalue.cpp \
     core/sessiondata.cpp \
     core/httpheader.cpp
 
@@ -53,8 +51,6 @@ HEADERS += webappcommon.h\
     controller/abstractcontroller.h \
     controller/pagecontroller.h \
     controller/controllermanager.h \
-    model/beans/session.h \
-    model/beans/sessionvalue.h \
     core/sessiondata.h \
     core/httpheader.h
  #core/stringgetparam.h
