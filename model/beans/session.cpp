@@ -19,7 +19,7 @@ return id;
 QByteArray Session::getMd5Hash () const {
 return md5Hash;
 }
-QVariant Session::getExpirationDate () {
+QDateTime Session::getExpirationDate () {
 return expirationDate;
 }
 QList<SessionValue>* Session::getSessionValues () {
@@ -36,12 +36,12 @@ result->append(*i);
 }
 return result;
 }
-Session* Session::setExpirationDate (const QVariant& expirationDate) {
+Session* Session::setExpirationDate (const QDateTime& expirationDate) {
 this->expirationDateModified=true;
 this->expirationDate=expirationDate;
 return this;
 }
-Session* Session::setExpirationDateInternal (const QVariant& expirationDate) {
+Session* Session::setExpirationDateInternal (const QDateTime& expirationDate) {
 this->expirationDate=expirationDate;
 return this;
 }
@@ -147,7 +147,7 @@ return alias + QString(".id as ") + alias + QString("__id")+QChar(',')+alias + Q
 }
 Session* Session::getByRecord (const QSqlRecord& record,const QString& alias) {
 Session* bean = new Session ();
-return bean->setExpirationDateInternal(record.value(alias + QString("__expiration_date")))->setIdInternal(record.value(alias + QString("__id")).toString())->setMd5HashInternal(record.value(alias + QString("__md5_hash")).toByteArray());
+return bean->setExpirationDateInternal(record.value(alias + QString("__expiration_date")).toDateTime())->setIdInternal(record.value(alias + QString("__id")).toString())->setMd5HashInternal(record.value(alias + QString("__md5_hash")).toByteArray());
 }
 BeanQuery<Session>* Session::createQuery () {
 return new BeanQuery<Session> (sqlCon->buildQuery()) ;
