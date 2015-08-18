@@ -32,7 +32,10 @@ SOURCES += webappcommon.cpp \
     core/sessiondata.cpp \
     core/httpheader.cpp \
     model/beans/session.cpp \
-    model/beans/sessionvalue.cpp
+    model/beans/sessionvalue.cpp \
+    controller/form.cpp \
+    controller/formget.cpp \
+    controller/formpost.cpp
 
 HEADERS += webappcommon.h\
         webappcommon_global.h \
@@ -56,7 +59,10 @@ HEADERS += webappcommon.h\
     core/sessiondata.h \
     core/httpheader.h \
     model/beans/session.h \
-    model/beans/sessionvalue.h
+    model/beans/sessionvalue.h \
+    controller/form.h \
+    controller/formget.h \
+    controller/formpost.h
  #core/stringgetparam.h
 
 unix {

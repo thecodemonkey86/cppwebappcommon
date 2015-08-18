@@ -151,7 +151,9 @@ void RequestData::parsePostParams(const FCGX_Request & request)
 void RequestData::parseCookies(const FCGX_Request & request)
 {
     RequestData::cookies = new QMap<QString,QString>();
-QStringList cookieStrLst = QString(FCGX_GetParam("HTTP_COOKIE", request.envp)).split(QChar(';'));
+    QString cookieStr(FCGX_GetParam("HTTP_COOKIE", request.envp));
+if (cookieStr.trimmed().length()>0) {
+QStringList cookieStrLst =cookieStr.split(QChar(';'));
 foreach (QString s, cookieStrLst) {
     QStringList parts = s.split(QChar('='));
     if (parts.length()==2) {
@@ -159,6 +161,7 @@ foreach (QString s, cookieStrLst) {
     } else {
         throw new QtException("invalid cookie");
     }
+}
 }
 }
 QString RequestData::getString(const QString & name)
@@ -190,6 +193,15 @@ QString RequestData::postString(const QString &name)
 int RequestData::getInt(const QString & name)
 {
     QString value(getString(name));
+    bool ok = false;
+    int i = value.toInt(&ok);
+    if (!ok) throw new QtException("Parameter is not a number");
+    return i;
+}
+
+int RequestData::postInt(const QString & name)
+{
+    QString value(postString(name));
     bool ok = false;
     int i = value.toInt(&ok);
     if (!ok) throw new QtException("Parameter is not a number");

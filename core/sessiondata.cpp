@@ -25,8 +25,8 @@ void SessionData::init()
         BeanQuery<Session> * query = Session::createQuery()
                 ->select()
                 ->where("id=?", RequestData::cookieString(sessCookieName))
-                ->andWhere("md5_hash=?",QCryptographicHash::hash(ServerData:: getIp().toUtf8(),QCryptographicHash::Md5))
-                ->andWhere("expiration_date>now()");
+                ->andWhere("b1.md5_hash=?",QCryptographicHash::hash(ServerData:: getIp().toUtf8(),QCryptographicHash::Md5))
+                ->andWhere("b1.expiration_date>now()");
 
         Session * existing = query->queryOne();
         if (existing != NULL) {
@@ -38,26 +38,50 @@ void SessionData::init()
     SessionData::session = Session::createNew()
             ->setId(Util::randString(64))
             ->setMd5Hash(QCryptographicHash::hash(ServerData::getIp().toUtf8(),QCryptographicHash::Md5))
-            ->setExpirationDate(QDateTime::currentDateTime());
+            ->setExpirationDate(QDateTime::currentDateTime().addDays(1));
     SessionData::session->save();
     HttpHeader::setCookie(sessCookieName,session->getId());
 }
 
-/*void SessionData::set(const QString &name, const QByteArray &value)
+void SessionData::set(const QString &name, const QByteArray &value)
 {
 
-    if (existing != NULL) {
-        QList<SessionValue>* values= existing->getSessionValues();
-        foreach (SessionValue v, *values) {
-            if (v.getKey() == name) {
-                v.setValue(value);
-                v.save();
-                return;
-            }
+    QList<SessionValue>* values= session->getSessionValues();
+    foreach (SessionValue v, *values) {
+        if (v.getKey() == name) {
+            v.setValue(value);
+            v.save();
+            return;
         }
-        SessionValue::createNew()->setSessionId(sessid)->setKey(name)->setValue(value)->save();
     }
-}*/
+    SessionValue::createNew()->setSessionId(session->getId())
+            ->setMd5Hash(session->getMd5Hash())
+            ->setKey(name)
+            ->setValue(value)
+            ->save();
+}
+
+bool SessionData::existsValue(const QString &name)
+{
+    QList<SessionValue>* values= session->getSessionValues();
+    foreach (SessionValue v, *values) {
+         if (v.getKey() == name) {
+             return true;
+         }
+    }
+    return false;
+}
+
+QString SessionData::stringValue(const QString &name)
+{
+    QList<SessionValue>* values= session->getSessionValues();
+    foreach (SessionValue v, *values) {
+         if (v.getKey() == name) {
+             return QString::fromUtf8(v.getValue().val());
+         }
+    }
+    throw new QtException("no such value");
+}
 
 
 Session* SessionData::session = NULL;
