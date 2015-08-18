@@ -6,7 +6,7 @@
 #include <QDate>
 #include "nullable.h"
 #include "beanquery.h"
-#include "session.h"
+#include "model/beans/session.h"
 class Session;
 class SessionValue: public BaseBean{
 public: static const char* TABLENAME;

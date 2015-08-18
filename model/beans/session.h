@@ -6,7 +6,9 @@
 #include <QDate>
 #include "nullable.h"
 #include "beanquery.h"
-#include "sessionvalue.h"
+#include "model/beans/cartentry.h"
+#include "model/beans/sessionvalue.h"
+class CartEntry;
 class SessionValue;
 class Session: public BaseBean{
 public: static const char* TABLENAME;
@@ -17,12 +19,14 @@ protected: QByteArray md5Hash;
 protected: QDateTime expirationDate;
 protected: bool loaded;
 protected: bool expirationDateModified;
+protected: QSet<CartEntry>* cartEntries;
 protected: QSet<SessionValue>* sessionValues;
 public: Session () ;
 public: QString getTableName () ;
 public: QString getId () const ;
 public: QByteArray getMd5Hash () const ;
 public: QDateTime getExpirationDate () ;
+public: QList<CartEntry>* getCartEntries () ;
 public: QList<SessionValue>* getSessionValues () ;
 public: Session* setExpirationDate (const QDateTime& expirationDate) ;
 protected: Session* setExpirationDateInternal (const QDateTime& expirationDate) ;

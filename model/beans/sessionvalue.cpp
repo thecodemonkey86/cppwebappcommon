@@ -5,7 +5,7 @@
 #include <QDate>
 #include "nullable.h"
 #include "beanquery.h"
-#include "session.h"
+#include "model/beans/session.h"
 SessionValue::SessionValue () {
 loaded = false;
 session = NULL;

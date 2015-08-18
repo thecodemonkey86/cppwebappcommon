@@ -5,9 +5,11 @@
 #include <QDate>
 #include "nullable.h"
 #include "beanquery.h"
-#include "sessionvalue.h"
+#include "model/beans/cartentry.h"
+#include "model/beans/sessionvalue.h"
 Session::Session () {
 loaded = false;
+cartEntries = new QSet<CartEntry>();
 sessionValues = new QSet<SessionValue>();
 }
 QString Session::getTableName () {
@@ -21,6 +23,20 @@ return md5Hash;
 }
 QDateTime Session::getExpirationDate () {
 return expirationDate;
+}
+QList<CartEntry>* Session::getCartEntries () {
+if (!loaded){
+load();
+}
+
+QList<CartEntry>* result = new QList<CartEntry> ();
+cartEntries->reserve(cartEntries->size());
+typename QSet<CartEntry>::const_iterator i = cartEntries->constBegin();
+while (i != cartEntries->constEnd()){
+result->append(*i);
+++i;
+}
+return result;
 }
 QList<SessionValue>* Session::getSessionValues () {
 if (!loaded){
@@ -117,14 +133,19 @@ return params;
 }
 Session* Session::getById (QString id,QByteArray md5Hash) {
 SqlQuery*q = sqlCon->buildQuery();
-QSqlQuery* res= q->select(Session::getSelectFields(QString("b1"))+QChar(',')+SessionValue::getSelectFields(QString("b2")))->from(QString(Session::TABLENAME),QString("b1"))->leftJoin(SessionValue::TABLENAME,QString("b2"),QString("b1.id = b2.session_id AND b1.md5_hash = b2.md5_hash"))->where(QString("b1.id=?"),id)->where(QString("b1.md5_hash=?"),md5Hash)->execQuery();
+QSqlQuery* res= q->select(Session::getSelectFields(QString("b1"))+QChar(',')+CartEntry::getSelectFields(QString("b2"))+QChar(',')+SessionValue::getSelectFields(QString("b3")))->from(QString(Session::TABLENAME),QString("b1"))->leftJoin(CartEntry::TABLENAME,QString("b2"),QString("b1.id = b2.session_id AND b1.md5_hash = b2.md5_hash"))->leftJoin(SessionValue::TABLENAME,QString("b3"),QString("b1.id = b3.session_id AND b1.md5_hash = b3.md5_hash"))->where(QString("b1.id=?"),id)->where(QString("b1.md5_hash=?"),md5Hash)->execQuery();
 if (res->next()){
 Session* b1 = Session::getByRecord(res->record(),QString("b1"));
 b1->loaded = true;
 do {
-SessionValue* b2 = SessionValue::getByRecord(res->record(),QString("b2"));
-if (!b1->sessionValues->contains(*b2)){
-b1->sessionValues->insert(*b2);
+CartEntry* b2 = CartEntry::getByRecord(res->record(),QString("b2"));
+if (!b1->cartEntries->contains(*b2)){
+b1->cartEntries->insert(*b2);
+}
+
+SessionValue* b3 = SessionValue::getByRecord(res->record(),QString("b3"));
+if (!b1->sessionValues->contains(*b3)){
+b1->sessionValues->insert(*b3);
 }
 
 } while(res->next());
@@ -153,10 +174,10 @@ BeanQuery<Session>* Session::createQuery () {
 return new BeanQuery<Session> (sqlCon->buildQuery()) ;
 }
 QString Session::getAllSelectFields (QString artistTableAlias) {
-return Session::getSelectFields(QString(artistTableAlias))+QChar(',')+SessionValue::getSelectFields(QString("b2"));
+return Session::getSelectFields(QString(artistTableAlias))+QChar(',')+CartEntry::getSelectFields(QString("b2"))+QChar(',')+SessionValue::getSelectFields(QString("b3"));
 }
 void Session::addRelatedTableJoins (BeanQuery<Session>* query) {
-query->leftJoin(SessionValue::TABLENAME,QString("b2"),QString("b1.id = b2.session_id AND b1.md5_hash = b2.md5_hash"));
+query->leftJoin(CartEntry::TABLENAME,QString("b2"),QString("b1.id = b2.session_id AND b1.md5_hash = b2.md5_hash"))->leftJoin(SessionValue::TABLENAME,QString("b3"),QString("b1.id = b3.session_id AND b1.md5_hash = b3.md5_hash"));
 }
 QList<Session*>* Session::fetchList (QSqlQuery* res) {
 QList<Session*>* beans = new QList<Session*>();
@@ -166,11 +187,21 @@ b1 = Session::getByRecord(res->record(),QString("b1"));
 b1->loaded = true;
 beans->append(b1);
 if (!res->record().value(QString("b2__id")).isNull()){
-SessionValue* b2 = SessionValue::getByRecord(res->record(),QString("b2"));
-if (!b1->sessionValues->contains(*b2)){
-b1->sessionValues->insert(*b2);
+CartEntry* b2 = CartEntry::getByRecord(res->record(),QString("b2"));
+if (!b1->cartEntries->contains(*b2)){
+b1->cartEntries->insert(*b2);
 } else {
 delete b2;
+}
+
+}
+
+if (!res->record().value(QString("b3__id")).isNull()){
+SessionValue* b3 = SessionValue::getByRecord(res->record(),QString("b3"));
+if (!b1->sessionValues->contains(*b3)){
+b1->sessionValues->insert(*b3);
+} else {
+delete b3;
 }
 
 }
@@ -183,11 +214,21 @@ Session* b1 = NULL;
 if (res->next()){
 b1 = Session::getByRecord(res->record(),QString("b1"));
 if (!res->record().value(QString("b2__id")).isNull()){
-SessionValue* b2 = SessionValue::getByRecord(res->record(),QString("b2"));
-if (!b1->sessionValues->contains(*b2)){
-b1->sessionValues->insert(*b2);
+CartEntry* b2 = CartEntry::getByRecord(res->record(),QString("b2"));
+if (!b1->cartEntries->contains(*b2)){
+b1->cartEntries->insert(*b2);
 } else {
 delete b2;
+}
+
+}
+
+if (!res->record().value(QString("b3__id")).isNull()){
+SessionValue* b3 = SessionValue::getByRecord(res->record(),QString("b3"));
+if (!b1->sessionValues->contains(*b3)){
+b1->sessionValues->insert(*b3);
+} else {
+delete b3;
 }
 
 }
@@ -199,12 +240,17 @@ return b1;
 void Session::load () {
 loaded = true;
 SqlQuery* q = sqlCon->buildQuery();
-QSqlQuery* res = q->select(SessionValue::getSelectFields(QString("b2")))->from(Session::TABLENAME ,QString("b1"))->leftJoin(SessionValue::TABLENAME,QString("b2"),QString("b1.id = b2.session_id AND b1.md5_hash = b2.md5_hash"))->where(QString("b1.id = ?"),getId())->where(QString("b1.md5_hash = ?"),getMd5Hash())->execQuery();
+QSqlQuery* res = q->select(CartEntry::getSelectFields(QString("b2"))+QChar(',')+SessionValue::getSelectFields(QString("b3")))->from(Session::TABLENAME ,QString("b1"))->leftJoin(CartEntry::TABLENAME,QString("b2"),QString("b1.id = b2.session_id AND b1.md5_hash = b2.md5_hash"))->leftJoin(SessionValue::TABLENAME,QString("b3"),QString("b1.id = b3.session_id AND b1.md5_hash = b3.md5_hash"))->where(QString("b1.id = ?"),getId())->where(QString("b1.md5_hash = ?"),getMd5Hash())->execQuery();
 if (res->next()){
 do {
-SessionValue* b2 = SessionValue::getByRecord(res->record(),QString("b2"));
-if (!this->sessionValues->contains(*b2)){
-this->sessionValues->insert(*b2);
+CartEntry* b2 = CartEntry::getByRecord(res->record(),QString("b2"));
+if (!this->cartEntries->contains(*b2)){
+this->cartEntries->insert(*b2);
+}
+
+SessionValue* b3 = SessionValue::getByRecord(res->record(),QString("b3"));
+if (!this->sessionValues->contains(*b3)){
+this->sessionValues->insert(*b3);
 }
 
 } while(res->next());
