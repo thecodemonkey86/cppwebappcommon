@@ -29,10 +29,7 @@ SOURCES += webappcommon.cpp \
     controller/pagecontroller.cpp \
     controller/controllermanager.cpp \
     controller_factory/controllerfactory.cpp \
-    core/sessiondata.cpp \
     core/httpheader.cpp \
-    model/beans/session.cpp \
-    model/beans/sessionvalue.cpp \
     controller/form.cpp \
     controller/formget.cpp \
     controller/formpost.cpp
@@ -56,10 +53,7 @@ HEADERS += webappcommon.h\
     controller/abstractcontroller.h \
     controller/pagecontroller.h \
     controller/controllermanager.h \
-    core/sessiondata.h \
     core/httpheader.h \
-    model/beans/session.h \
-    model/beans/sessionvalue.h \
     controller/form.h \
     controller/formget.h \
     controller/formpost.h
