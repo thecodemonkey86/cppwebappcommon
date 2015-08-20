@@ -23,7 +23,8 @@ public:
     static QString getString(const QString&name);
     static QString postString(const QString&name);
     static int getInt(const QString&name);
-     static int postInt(const QString&name);
+    static int postInt(const QString&name);
+    static double postDouble(const QString&name);
     static ArrayRequestParam * getArray(const QString&name);
     static bool isGetParamSet(const QString&name);
     static bool isPostParamSet(const QString&name);

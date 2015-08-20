@@ -5,6 +5,11 @@ FormPost::FormPost(const QString&submitFieldName) : Form(submitFieldName)
 
 }
 
+FormPost::FormPost() : Form("submit")
+{
+
+}
+
 QString FormPost::stringValue(const QString &name)
 {
     return RequestData::postString(name);

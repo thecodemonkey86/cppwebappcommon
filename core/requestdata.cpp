@@ -208,6 +208,15 @@ int RequestData::postInt(const QString & name)
     return i;
 }
 
+double RequestData::postDouble(const QString &name)
+{
+    QString value(postString(name));
+    bool ok = false;
+    double d = value.replace(QChar(','),QChar('.')).toDouble(&ok);
+    if (!ok) throw new QtException("Parameter is not a number");
+    return d;
+}
+
 ArrayRequestParam *RequestData::getArray(const QString &name)
 {
     if (getParams->contains(name)) {

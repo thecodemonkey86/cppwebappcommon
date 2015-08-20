@@ -34,7 +34,8 @@ SOURCES += webappcommon.cpp \
     controller/formget.cpp \
     controller/formpost.cpp \
     controller/multiactioncontroller.cpp \
-    controller/action/action.cpp
+    controller/action/action.cpp \
+    core/postdata.cpp
 
 HEADERS += webappcommon.h\
         webappcommon_global.h \
@@ -60,7 +61,8 @@ HEADERS += webappcommon.h\
     controller/formget.h \
     controller/formpost.h \
     controller/multiactioncontroller.h \
-    controller/action/action.h
+    controller/action/action.h \
+    core/postdata.h
  #core/stringgetparam.h
 
 unix {
