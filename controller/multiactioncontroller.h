@@ -6,6 +6,8 @@
 
 #include "controller/pagecontroller.h"
 
+class Action;
+
 class MultiActionController : public PageController
 {
 protected:
@@ -14,7 +16,7 @@ protected:
 public:
     MultiActionController();
     virtual void run();
-
+    virtual QString getName()=0;
     void addAction(QString actionName, Action*action);
 };
 

@@ -217,6 +217,12 @@ double RequestData::postDouble(const QString &name)
     return d;
 }
 
+bool RequestData::postBool(const QString &name)
+{
+    QString value(postString(name));
+    return value == QString("1") || value == QString("true");
+}
+
 ArrayRequestParam *RequestData::getArray(const QString &name)
 {
     if (getParams->contains(name)) {

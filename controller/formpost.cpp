@@ -21,6 +21,11 @@ int FormPost::intValue(const QString &name)
     return RequestData::postInt(name);
 }
 
+float FormPost::doubleValue(const QString &name)
+{
+    return RequestData::postDouble(name);
+}
+
 bool FormPost::isSubmitted()
 {
     return RequestData::isPostParamSet(submitFieldName) && !RequestData::postString(submitFieldName).isEmpty();
