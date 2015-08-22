@@ -14,31 +14,9 @@ HtmlTemplate::~HtmlTemplate()
 
 void HtmlTemplate::render()
 {
-     // qDebug()<<"teeets";
-    output<<(QString("<!DOCTYPE html>"));
-    outBeginTag("head");
-    output<<(QString("<meta charset=\"utf-8\">"));
-    foreach(QString css, includeCss) {
-        output<<("<link ");
-        outAttr("rel", "stylesheet");
-        outAttr("href", css);
-        outAttr("type", "text/css");
-        output<<(">");
-
-    }
-    outEndTag("head");
-    outBeginTag("body");
+    renderHeader();
     bodyTemplate->render();
-    outBeginTag("footer");
-    foreach(QString js,includeJs) {
-       output<<("<script ");
-       outAttr("type", "text/javascript");
-       outAttr("src", js);
-       output<<(">");
-    }
-    outEndTag("footer");
-    outEndTag("body");
-    outEndTag("html");
+    renderFooter();
 }
 
 void HtmlTemplate::outAttr(const QString &attr, const QString &value)
@@ -67,6 +45,38 @@ AbstractTemplate *HtmlTemplate::getBodyTemplate() const
 void HtmlTemplate::setBodyTemplate(AbstractTemplate *bodyTemplate)
 {
     this->bodyTemplate = bodyTemplate;
+}
+
+void HtmlTemplate::renderHeader()
+{
+    // qDebug()<<"teeets";
+   output<<(QString("<!DOCTYPE html>"));
+   outBeginTag("head");
+   output<<(QString("<meta charset=\"utf-8\">"));
+   foreach(QString css, includeCss) {
+       output<<("<link ");
+       outAttr("rel", "stylesheet");
+       outAttr("href", css);
+       outAttr("type", "text/css");
+       output<<(">");
+
+   }
+   outEndTag("head");
+   outBeginTag("body");
+}
+
+void HtmlTemplate::renderFooter()
+{
+    outBeginTag("footer");
+    foreach(QString js,includeJs) {
+       output<<("<script ");
+       outAttr("type", "text/javascript");
+       outAttr("src", js);
+       output<<(">");
+    }
+    outEndTag("footer");
+    outEndTag("body");
+    outEndTag("html");
 }
 
 

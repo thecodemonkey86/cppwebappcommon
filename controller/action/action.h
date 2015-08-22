@@ -12,6 +12,7 @@ protected:
     MultiActionController*parent;
 public:
     Action();
+    virtual ~Action();
     virtual QString getName()=0;
     virtual void run()=0;
     MultiActionController *getParent() const;

@@ -13,7 +13,7 @@ public:
     virtual ~PageController();
 
     virtual void run()=0;
-    virtual void registerTemplate(AbstractTemplate * view);
+//    virtual void registerTemplate(AbstractTemplate * view);
 };
 
 #endif // PAGECONTROLLER_H

@@ -11,15 +11,15 @@ class  ControllerManager : public Singleton<ControllerManager>
     friend class Singleton<ControllerManager>;
 public:
     ControllerManager* registerController(ControllerFactory * factory);
-     ControllerManager* registerView(const QString&key,AbstractView*view);
-     AbstractView* getView(const QString&key);
+//     ControllerManager* registerView(const QString&key,AbstractView*view);
+//     AbstractView* getView(const QString&key);
      virtual ~ControllerManager();
      AbstractController* getController(const QString&name);
      PageController* getPage(const QString&name);
 protected:
     ControllerManager();
     QMap<QString,ControllerFactory*> controllerFactories;
-     QMap<QString,AbstractView*> views;
+//     QMap<QString,AbstractView*> views;
 
 
 };

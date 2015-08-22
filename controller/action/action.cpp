@@ -14,10 +14,15 @@ Action* Action::setParent(MultiActionController *value)
 
 QUrl Action::getUrl()
 {
-    return QUrl::fromUserInput(QString("/?controller=")+parent->getName()+QString("&action=")+getName());
+    return QUrl::fromPercentEncoding((QString("/?controller=")+parent->getName()+QString("&action=")+getName()).toUtf8());
 }
 Action::Action()
 {
-    
+
+}
+
+Action::~Action()
+{
+
 }
 

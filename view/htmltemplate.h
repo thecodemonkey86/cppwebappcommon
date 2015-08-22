@@ -17,6 +17,9 @@ public:
      void setBodyTemplate(AbstractTemplate *value);
 
 protected:
+     void renderHeader();
+     void renderFooter();
+
      AbstractTemplate* bodyTemplate;
      QSet<QString> includeCss;
      QSet<QString> includeJs;

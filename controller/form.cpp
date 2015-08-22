@@ -6,6 +6,11 @@ Form::Form(const QString&submitFieldName)
     this->submitFieldName = submitFieldName;
 }
 
+Form::~Form()
+{
+
+}
+
 bool Form::submit()
 {
     if (isSubmitted()) {

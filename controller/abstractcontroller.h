@@ -10,6 +10,8 @@ public:
     AbstractController();
     ~AbstractController();
     virtual void registerView(AbstractView * view);
+    AbstractView *getView() const;
+
 protected: AbstractView * view;
 
 

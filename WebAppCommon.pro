@@ -27,15 +27,22 @@ SOURCES += webappcommon.cpp \
     util/util.cpp \
     controller/abstractcontroller.cpp \
     controller/pagecontroller.cpp \
-    controller/controllermanager.cpp \
-    controller_factory/controllerfactory.cpp \
+#    controller/controllermanager.cpp \
+#    controller_factory/controllerfactory.cpp \
     core/httpheader.cpp \
     controller/form.cpp \
     controller/formget.cpp \
     controller/formpost.cpp \
     controller/multiactioncontroller.cpp \
     controller/action/action.cpp \
-    core/postdata.cpp
+    core/postdata.cpp \
+    controller/action/formaction.cpp \
+    view/formtemplate.cpp \
+    view/formhtmltemplate.cpp \
+    core/abstractobjectfactory.cpp \
+    controller/controllermanager.cpp \
+#    controller_factory/controllerfactory.cpp \
+    page_config/pageconfig.cpp
 
 HEADERS += webappcommon.h\
         webappcommon_global.h \
@@ -52,17 +59,25 @@ HEADERS += webappcommon.h\
     core/requestparam.h \
     core/arrayrequestparam.h \
     util/util.h \
-    controller_factory/controllerfactory.h \
+#    controller_factory/controllerfactory.h \
     controller/abstractcontroller.h \
     controller/pagecontroller.h \
-    controller/controllermanager.h \
+#    controller/controllermanager.h \
     core/httpheader.h \
     controller/form.h \
     controller/formget.h \
     controller/formpost.h \
     controller/multiactioncontroller.h \
     controller/action/action.h \
-    core/postdata.h
+    core/postdata.h \
+    controller/action/formaction.h \
+    view/formtemplate.h \
+    view/formhtmltemplate.h \
+    core/objectfactory.h \
+    core/abstractobjectfactory.h \
+    controller/controllermanager.h \
+#    controller_factory/controllerfactory.h \
+    page_config/pageconfig.h
  #core/stringgetparam.h
 
 unix {
