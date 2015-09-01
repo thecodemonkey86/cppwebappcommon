@@ -17,7 +17,7 @@ void MultiActionController::run()
 
 }
 
-void MultiActionController::addAction(QString actionName, Action *action)
+void MultiActionController::addAction(QString actionName, AbstractAction *action)
 {
     actions.insert(actionName, action);
 }
@@ -25,7 +25,7 @@ void MultiActionController::addAction(QString actionName, Action *action)
 AbstractPageController *MultiActionController::setServerData(ServerData *value)
 {
     AbstractPageController::setServerData(value);
-    foreach (Action*a, actions.values()) {
+    foreach (AbstractAction*a, actions.values()) {
         a->setServerData(value);
     }
     return this;
@@ -34,7 +34,7 @@ AbstractPageController *MultiActionController::setServerData(ServerData *value)
 AbstractPageController *MultiActionController::setRequestData(RequestData *value)
 {
     AbstractPageController::setRequestData(value);
-    foreach (Action*a, actions.values()) {
+    foreach (AbstractAction*a, actions.values()) {
         a->setRequestData(value);
     }
     return this;

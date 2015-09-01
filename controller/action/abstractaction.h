@@ -6,6 +6,8 @@
 #include "core/requestdata.h"
 #include "core/serverdata.h"
 
+class MultiActionController;
+
 class AbstractAction
 {
 protected:

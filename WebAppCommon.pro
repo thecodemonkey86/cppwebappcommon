@@ -34,7 +34,6 @@ SOURCES += webappcommon.cpp \
     controller/form.cpp \
     controller/formget.cpp \
     controller/formpost.cpp \
-    controller/multiactioncontroller.cpp \
     controller/action/formaction.cpp \
     view/template/formhtmltemplate.cpp \
     core/abstractobjectfactory.cpp \
@@ -47,7 +46,8 @@ SOURCES += webappcommon.cpp \
     view/template/formtemplate.cpp \
     view/template/compiledtemplate.cpp \
     controller/abstractpagecontroller.cpp \
-    controller/action/abstractaction.cpp
+    controller/action/abstractaction.cpp \
+    controller/abstractmultiactioncontroller.cpp
 
 HEADERS += webappcommon.h\
         webappcommon_global.h \
@@ -71,7 +71,6 @@ HEADERS += webappcommon.h\
     controller/form.h \
     controller/formget.h \
     controller/formpost.h \
-    controller/multiactioncontroller.h \
     controller/action/action.h \
     controller/action/formaction.h \
     view/template/formhtmltemplate.h \
@@ -88,7 +87,8 @@ view/template/htmltemplate.h \
 view/template/abstracttemplate.h \
     view/template/compiledtemplate.h \
     controller/action/abstractaction.h \
-    controller/abstractpagecontroller.h
+    controller/abstractpagecontroller.h \
+    controller/abstractmultiactioncontroller.h
  #core/stringgetparam.h
 
 unix {
