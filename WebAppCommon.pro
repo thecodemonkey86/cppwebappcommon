@@ -35,7 +35,6 @@ SOURCES += webappcommon.cpp \
     controller/formget.cpp \
     controller/formpost.cpp \
     controller/multiactioncontroller.cpp \
-    controller/action/action.cpp \
     controller/action/formaction.cpp \
     view/template/formhtmltemplate.cpp \
     core/abstractobjectfactory.cpp \
@@ -47,8 +46,8 @@ SOURCES += webappcommon.cpp \
     view/formview.cpp \
     view/template/formtemplate.cpp \
     view/template/compiledtemplate.cpp \
-    controller/action/abstractaction.cpp \
-    controller/abstractpagecontroller.cpp
+    controller/abstractpagecontroller.cpp \
+    controller/action/abstractaction.cpp
 
 HEADERS += webappcommon.h\
         webappcommon_global.h \

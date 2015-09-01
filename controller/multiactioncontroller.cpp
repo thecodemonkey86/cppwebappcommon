@@ -22,18 +22,18 @@ void MultiActionController::addAction(QString actionName, Action *action)
     actions.insert(actionName, action);
 }
 
-PageController *MultiActionController::setServerData(ServerData *value)
+AbstractPageController *MultiActionController::setServerData(ServerData *value)
 {
-    PageController::setServerData(value);
+    AbstractPageController::setServerData(value);
     foreach (Action*a, actions.values()) {
         a->setServerData(value);
     }
     return this;
 }
 
-PageController *MultiActionController::setRequestData(RequestData *value)
+AbstractPageController *MultiActionController::setRequestData(RequestData *value)
 {
-    PageController::setRequestData(value);
+    AbstractPageController::setRequestData(value);
     foreach (Action*a, actions.values()) {
         a->setRequestData(value);
     }

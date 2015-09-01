@@ -1,23 +1,23 @@
-#include "pagecontroller.h"
+#include "abstractpagecontroller.h"
 
 
-PageController::PageController()
+AbstractPageController::AbstractPageController()
 {
 
 }
 
-PageController::~PageController()
+AbstractPageController::~AbstractPageController()
 {
 
 }
 
-PageController *PageController::setServerData(ServerData *value)
+AbstractPageController *AbstractPageController::setServerData(ServerData *value)
 {
     this->serverData = value;
     return this;
 }
 
-PageController *PageController::setRequestData(RequestData *value)
+AbstractPageController *AbstractPageController::setRequestData(RequestData *value)
 {
     this->requestData = value;
     return this;
@@ -25,7 +25,7 @@ PageController *PageController::setRequestData(RequestData *value)
 
 
 
-void PageController::registerTemplate(AbstractTemplate *view)
+void AbstractPageController::registerTemplate(AbstractTemplate *view)
 {
    HtmlTemplate * html = new HtmlTemplate();
    html->setBodyTemplate(view);
