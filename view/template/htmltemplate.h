@@ -9,6 +9,7 @@ class WEBAPPCOMMONSHARED_EXPORT HtmlTemplate : public AbstractTemplate
 public:
     HtmlTemplate();
     ~HtmlTemplate();
+    virtual void update(MvcMessage* updateMsg);
     virtual void render();
     void outAttr(const QString &attr, const QString &value);
      void outBeginTag(const QString &tag);

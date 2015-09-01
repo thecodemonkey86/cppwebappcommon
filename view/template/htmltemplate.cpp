@@ -12,11 +12,16 @@ HtmlTemplate::~HtmlTemplate()
 
 }
 
-void HtmlTemplate::render()
+void HtmlTemplate::update(MvcMessage* updateMsg)
 {
     renderHeader();
-    bodyTemplate->render();
+    bodyTemplate->update(updateMsg);
     renderFooter();
+}
+
+void HtmlTemplate::render()
+{
+
 }
 
 void HtmlTemplate::outAttr(const QString &attr, const QString &value)

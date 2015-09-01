@@ -3,10 +3,10 @@
 #include <QTextStream>
 #include "webappcommon_global.h"
 #include <QDebug>
-#include "abstractview.h"
+#include "view/abstractview.h"
 #include <QFile>
 #include "qtcout.h"
-
+#include "mvc/mvcmessage.h"
 
 #ifndef output
 #define output (*outStream)
@@ -17,19 +17,11 @@ class WEBAPPCOMMONSHARED_EXPORT AbstractTemplate : public AbstractView
 {
 public:
     AbstractTemplate();
-    ~AbstractTemplate();
-   /* static void init() {
-        f->open(QFile::Truncate| QFile::WriteOnly);
-    }*/
+    virtual ~AbstractTemplate();
+//    static QString&encodeHtml(const QString&);
 
-    virtual void update();
-    virtual void render()=0;
 protected: static QtCout * outStream;
-     //static QFile* f;
-//protected: inline AbstractTemplate* out(const QString&s) {
-//(*outStream)<<s;
-//        return this;
-//    }
+
 
 };
 

@@ -16,6 +16,11 @@ public:
         cout << s.toUtf8().data();
         return *this;
     }
+    const QtCout & operator <<(double d) const {
+       // qDebug()<<s;
+        cout <<d;
+        return *this;
+    }
 };
 
 #endif // QTCOUT_H

@@ -1,5 +1,5 @@
 #include "formaction.h"
-#include "view/formtemplate.h"
+#include "view/formview.h"
 
 FormAction::FormAction(Form* form)
 {
@@ -13,12 +13,15 @@ FormAction::~FormAction()
 
 void FormAction::run()
 {
-    AbstractView * view= parent->getView();
-    FormTemplate* tpl  = dynamic_cast< FormTemplate* >(view);
-    if (form->submit()) {
-        tpl->renderSubmitted();
-    } else {
-        tpl->render();
+    FormView* formView = dynamic_cast<FormView*>(view());
+    bool submitted = form->submit();
+    if (formView != nullptr) {
+        if (submitted) {
+            formView->updateSubmitted(createMvcMsg());
+        } else {
+            formView->update(createMvcMsg());
+        }
     }
+
 }
 

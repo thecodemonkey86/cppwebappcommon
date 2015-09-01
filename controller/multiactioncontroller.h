@@ -18,6 +18,8 @@ public:
     virtual void run();
     virtual QString getName()=0;
     void addAction(QString actionName, Action*action);
+    virtual PageController* setServerData(ServerData *value);
+    virtual PageController* setRequestData(RequestData *value);
 };
 
 #endif // MULTIACTIONCONTROLLER_H

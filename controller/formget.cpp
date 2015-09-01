@@ -7,16 +7,21 @@ FormGet::FormGet(const QString&submitFieldName) : Form(submitFieldName)
 
 QString FormGet::stringValue(const QString&name)
 {
-    return RequestData::getString(name);
+    return requestData->getString(name);
 }
 
 int FormGet::intValue(const QString &name)
 {
-    return RequestData::getInt(name);
+    return requestData->getInt(name);
 }
 
 bool FormGet::isSubmitted()
 {
-    return RequestData::isGetParamSet(submitFieldName) && !RequestData::getString(submitFieldName).isEmpty();
+    return requestData->isGetParamSet(submitFieldName) && !requestData->getString(submitFieldName).isEmpty();
+}
+
+FormGet::~FormGet()
+{
+
 }
 

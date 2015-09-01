@@ -1,5 +1,6 @@
 #include "abstracttemplate.h"
 #include <iostream>
+#include <Qt>
 
 using namespace std;
 
@@ -15,10 +16,15 @@ AbstractTemplate::~AbstractTemplate()
 
 }
 
-void AbstractTemplate::update()
-{
-    this->render();
-}
+//QString &AbstractTemplate::encodeHtml(const QString &)
+//{
+//    Qt::convertFromPlainText
+//}
+
+//void AbstractTemplate::update(MvcMessage*updateMsg)
+//{
+//    this->render();
+//}
 
 // QFile* AbstractTemplate::f=new QFile("D:\\Temp\\test.html");
 

@@ -8,6 +8,7 @@ class FormGet : public Form
 protected: virtual bool isSubmitted();
 public:
     FormGet(const QString&submitFieldName);
+    virtual ~FormGet();
     virtual QString stringValue(const QString&name);
     virtual int intValue(const QString&name);
 

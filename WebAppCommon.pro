@@ -9,11 +9,13 @@ QT       -= gui
 TARGET = WebAppCommon
 TEMPLATE = lib
 
+CONFIG += c++11
+
 DEFINES += WEBAPPCOMMON_LIBRARY
 
 SOURCES += webappcommon.cpp \
-    view/abstracttemplate.cpp \
-    view/htmltemplate.cpp \
+    view/template/abstracttemplate.cpp \
+    view/template/htmltemplate.cpp \
     view/abstractview.cpp \
     qtcout.cpp \
     core/requestdata.cpp \
@@ -26,7 +28,6 @@ SOURCES += webappcommon.cpp \
     core/arrayrequestparam.cpp \
     util/util.cpp \
     controller/abstractcontroller.cpp \
-    controller/pagecontroller.cpp \
 #    controller/controllermanager.cpp \
 #    controller_factory/controllerfactory.cpp \
     core/httpheader.cpp \
@@ -35,14 +36,19 @@ SOURCES += webappcommon.cpp \
     controller/formpost.cpp \
     controller/multiactioncontroller.cpp \
     controller/action/action.cpp \
-    core/postdata.cpp \
     controller/action/formaction.cpp \
-    view/formtemplate.cpp \
-    view/formhtmltemplate.cpp \
+    view/template/formhtmltemplate.cpp \
     core/abstractobjectfactory.cpp \
     controller/controllermanager.cpp \
 #    controller_factory/controllerfactory.cpp \
-    page_config/pageconfig.cpp
+    page_config/pageconfig.cpp \
+    page_config/pagemanager.cpp \
+    mvc/mvcmessage.cpp \
+    view/formview.cpp \
+    view/template/formtemplate.cpp \
+    view/template/compiledtemplate.cpp \
+    controller/action/abstractaction.cpp \
+    controller/pagecontroller.cpp
 
 HEADERS += webappcommon.h\
         webappcommon_global.h \
@@ -61,7 +67,6 @@ HEADERS += webappcommon.h\
     util/util.h \
 #    controller_factory/controllerfactory.h \
     controller/abstractcontroller.h \
-    controller/pagecontroller.h \
 #    controller/controllermanager.h \
     core/httpheader.h \
     controller/form.h \
@@ -69,15 +74,22 @@ HEADERS += webappcommon.h\
     controller/formpost.h \
     controller/multiactioncontroller.h \
     controller/action/action.h \
-    core/postdata.h \
     controller/action/formaction.h \
-    view/formtemplate.h \
-    view/formhtmltemplate.h \
+    view/template/formhtmltemplate.h \
     core/objectfactory.h \
     core/abstractobjectfactory.h \
     controller/controllermanager.h \
 #    controller_factory/controllerfactory.h \
-    page_config/pageconfig.h
+    page_config/pageconfig.h \
+    page_config/pagemanager.h \
+    mvc/mvcmessage.h \
+    view/formview.h \
+    view/template/formtemplate.h \
+view/template/htmltemplate.h \
+view/template/abstracttemplate.h \
+    view/template/compiledtemplate.h \
+    controller/action/abstractaction.h \
+    controller/pagecontroller.h
  #core/stringgetparam.h
 
 unix {

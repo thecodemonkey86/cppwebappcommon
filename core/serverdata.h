@@ -7,16 +7,16 @@
 class ServerData
 {
 public:
+    ServerData(const FCGX_Request & request);
     virtual ~ServerData();
 
-    static QUrl getRequestUrl();
-    static void init(const FCGX_Request & request);
-    static QString getIp();
+    QUrl getRequestUrl();
+    QString getIp();
 
 private:
-    ServerData();
-    static QUrl requestUrl;
-    static QString ip;
+
+    QUrl requestUrl;
+    QString ip;
 };
 
 #endif // SERVERDATA_H

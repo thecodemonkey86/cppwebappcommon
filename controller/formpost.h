@@ -8,6 +8,7 @@ protected: virtual bool isSubmitted();
 public:
     FormPost(const QString&submitFieldName);
     FormPost();
+    virtual ~FormPost();
     virtual QString stringValue(const QString&name);
     virtual int intValue(const QString&name);
     virtual float doubleValue(const QString&name);
