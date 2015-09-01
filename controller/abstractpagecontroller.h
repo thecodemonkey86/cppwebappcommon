@@ -1,5 +1,5 @@
-#ifndef PAGECONTROLLER_H
-#define PAGECONTROLLER_H
+#ifndef ABSTRACTPAGECONTROLLER_H
+#define ABSTRACTPAGECONTROLLER_H
 
 #include "controller/abstractcontroller.h"
 #include "view/template/abstracttemplate.h"
@@ -8,20 +8,20 @@
 #include "core/serverdata.h"
 #include "core/requestdata.h"
 
-class PageController : public AbstractController
+class AbstractPageController : public AbstractController
 {
 protected:
     ServerData * serverData;
      RequestData * requestData;
 public:
-    PageController();
-    virtual ~PageController();
+    AbstractPageController();
+    virtual ~AbstractPageController();
 
     virtual void run()=0;
 
     virtual void registerTemplate(AbstractTemplate * view);
-    virtual PageController* setServerData(ServerData *value);
-    virtual PageController* setRequestData(RequestData *value);
+    virtual AbstractPageController* setServerData(ServerData *value);
+    virtual AbstractPageController* setRequestData(RequestData *value);
 };
 
-#endif // PAGECONTROLLER_H
+#endif // ABSTRACTPAGECONTROLLER_H

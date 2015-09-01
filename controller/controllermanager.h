@@ -1,7 +1,7 @@
 #ifndef CONTROLLERMANAGER_H
 #define CONTROLLERMANAGER_H
 #include "controller_factory/controllerfactory.h"
-#include "controller/pagecontroller.h"
+#include "controller/abstractpagecontroller.h"
 #include <QMap>
 #include "util/singleton.h"
 #include "view/abstractview.h"
@@ -15,7 +15,7 @@ public:
 //     AbstractView* getView(const QString&key);
      virtual ~ControllerManager();
      AbstractController* getController(const QString&name);
-     PageController* getPage(const QString&name);
+     AbstractPageController* getPage(const QString&name);
 protected:
     ControllerManager();
     QMap<QString,ControllerFactory*> controllerFactories;

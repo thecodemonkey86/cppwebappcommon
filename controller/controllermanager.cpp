@@ -40,10 +40,10 @@ AbstractController *ControllerManager::getController(const QString &name)
     throw new QtException(QString("No such controller: ")+name);
 }
 
-PageController *ControllerManager::getPage(const QString &name)
+AbstractPageController *ControllerManager::getPage(const QString &name)
 {
     if (this->controllerFactories.contains(name)) {
-        PageController * p = dynamic_cast<PageController*>(controllerFactories.value(name)->create());
+        AbstractPageController * p = dynamic_cast<AbstractPageController*>(controllerFactories.value(name)->create());
         if (p != NULL) {
             return p;
         }

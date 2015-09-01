@@ -48,7 +48,7 @@ SOURCES += webappcommon.cpp \
     view/template/formtemplate.cpp \
     view/template/compiledtemplate.cpp \
     controller/action/abstractaction.cpp \
-    controller/pagecontroller.cpp
+    controller/abstractpagecontroller.cpp
 
 HEADERS += webappcommon.h\
         webappcommon_global.h \
@@ -89,7 +89,7 @@ view/template/htmltemplate.h \
 view/template/abstracttemplate.h \
     view/template/compiledtemplate.h \
     controller/action/abstractaction.h \
-    controller/pagecontroller.h
+    controller/abstractpagecontroller.h
  #core/stringgetparam.h
 
 unix {
