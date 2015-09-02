@@ -1,10 +1,10 @@
 #ifndef FORMACTION_H
 #define FORMACTION_H
 
-#include "controller/action/action.h"
+#include "controller/action/abstractaction.h"
 #include "controller/form.h"
 
-class FormAction : public Action
+class FormAction : public AbstractAction
 {
 protected:
     Form* form;

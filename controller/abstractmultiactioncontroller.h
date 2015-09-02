@@ -14,7 +14,7 @@ protected:
     QMap<QString, AbstractAction*> actions;
 
 public:
-    MultiActionController();
+    AbstractMultiActionController();
     virtual void run();
     virtual QString getName()=0;
     void addAction(QString actionName, AbstractAction*action);

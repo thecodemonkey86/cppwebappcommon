@@ -1,17 +1,17 @@
 #ifndef ABSTRACTACTION_H
 #define ABSTRACTACTION_H
-#include "controller/multiactioncontroller.h"
+#include "controller/abstractmultiactioncontroller.h"
 #include "view/abstractview.h"
 #include <QUrl>
 #include "core/requestdata.h"
 #include "core/serverdata.h"
 
-class MultiActionController;
+class AbstractMultiActionController;
 
 class AbstractAction
 {
 protected:
-    MultiActionController*parent;
+    AbstractMultiActionController*parent;
     AbstractView* view();
     ServerData * serverData;
      RequestData * requestData;
@@ -20,8 +20,8 @@ public:
     virtual ~AbstractAction();
     virtual QString getName()=0;
     virtual void run()=0;
-    MultiActionController *getParent() const;
-    AbstractAction* setParent(MultiActionController *value);
+    AbstractMultiActionController *getParent() const;
+    AbstractAction* setParent(AbstractMultiActionController *value);
     virtual AbstractAction* setServerData(ServerData *value);
     virtual AbstractAction* setRequestData(RequestData *value);
     QUrl getUrl();

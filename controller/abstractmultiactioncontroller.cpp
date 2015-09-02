@@ -1,13 +1,13 @@
-#include "multiactioncontroller.h"
+#include "abstractmultiactioncontroller.h"
 #include "core/requestdata.h"
 #include "exception/qtexception.h"
 
-MultiActionController::MultiActionController()
+AbstractMultiActionController::AbstractMultiActionController()
 {
 
 }
 
-void MultiActionController::run()
+void AbstractMultiActionController::run()
 {
     if (actions.contains(requestData->getString(QString("action")))) {
         actions.value(requestData->getString(QString("action")))->run();
@@ -17,12 +17,12 @@ void MultiActionController::run()
 
 }
 
-void MultiActionController::addAction(QString actionName, AbstractAction *action)
+void AbstractMultiActionController::addAction(QString actionName, AbstractAction *action)
 {
     actions.insert(actionName, action);
 }
 
-AbstractPageController *MultiActionController::setServerData(ServerData *value)
+AbstractPageController *AbstractMultiActionController::setServerData(ServerData *value)
 {
     AbstractPageController::setServerData(value);
     foreach (AbstractAction*a, actions.values()) {
@@ -31,7 +31,7 @@ AbstractPageController *MultiActionController::setServerData(ServerData *value)
     return this;
 }
 
-AbstractPageController *MultiActionController::setRequestData(RequestData *value)
+AbstractPageController *AbstractMultiActionController::setRequestData(RequestData *value)
 {
     AbstractPageController::setRequestData(value);
     foreach (AbstractAction*a, actions.values()) {

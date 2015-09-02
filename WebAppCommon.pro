@@ -71,7 +71,6 @@ HEADERS += webappcommon.h\
     controller/form.h \
     controller/formget.h \
     controller/formpost.h \
-    controller/action/action.h \
     controller/action/formaction.h \
     view/template/formhtmltemplate.h \
     core/objectfactory.h \
