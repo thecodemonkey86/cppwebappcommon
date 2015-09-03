@@ -1,13 +1,13 @@
-#include "abstractmultiactioncontroller.h"
+#include "multiactioncontroller.h"
 #include "core/requestdata.h"
 #include "exception/qtexception.h"
 
-AbstractMultiActionController::AbstractMultiActionController()
+MultiActionController::MultiActionController()
 {
 
 }
 
-void AbstractMultiActionController::run()
+void MultiActionController::run()
 {
     if (actions.contains(requestData->getString(QString("action")))) {
         actions.value(requestData->getString(QString("action")))->run();
@@ -17,12 +17,12 @@ void AbstractMultiActionController::run()
 
 }
 
-void AbstractMultiActionController::addAction(QString actionName, AbstractAction *action)
+void MultiActionController::addAction(QString actionName, AbstractAction *action)
 {
     actions.insert(actionName, action);
 }
 
-AbstractPageController *AbstractMultiActionController::setServerData(ServerData *value)
+AbstractPageController *MultiActionController::setServerData(ServerData *value)
 {
     AbstractPageController::setServerData(value);
     foreach (AbstractAction*a, actions.values()) {
@@ -31,11 +31,20 @@ AbstractPageController *AbstractMultiActionController::setServerData(ServerData 
     return this;
 }
 
-AbstractPageController *AbstractMultiActionController::setRequestData(RequestData *value)
+AbstractPageController *MultiActionController::setRequestData(RequestData *value)
 {
     AbstractPageController::setRequestData(value);
     foreach (AbstractAction*a, actions.values()) {
         a->setRequestData(value);
+    }
+    return this;
+}
+
+AbstractPageController *MultiActionController::setSessionData(SessionData *value)
+{
+    AbstractPageController::setSessionData(value);
+    foreach (AbstractAction*a, actions.values()) {
+        a->setSessionData(value);
     }
     return this;
 }

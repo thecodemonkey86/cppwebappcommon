@@ -20,7 +20,7 @@ void FormHtmlTemplate::updateSubmitted(MvcMessage*updateMsg)
 
 }
 
-void FormHtmlTemplate::update(MvcMessage *updateMsg)
+void FormHtmlTemplate::update(MvcMessage*updateMsg)
 {
     renderHeader();
     FormTemplate * body = dynamic_cast<FormTemplate *>(bodyTemplate);

@@ -8,7 +8,7 @@ class FormAction : public AbstractAction
 {
 protected:
     Form* form;
-    virtual MvcMessage * createMvcMsg()=0;
+    virtual MvcMessage*  createMvcMsg()=0;
 public:
     FormAction(Form* form);
     virtual ~FormAction();

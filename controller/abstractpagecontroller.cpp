@@ -1,14 +1,33 @@
 #include "abstractpagecontroller.h"
 
 
+
+SessionData *AbstractPageController::getSessionData() const
+{
+    return sessionData;
+}
+
+AbstractPageController* AbstractPageController::setSessionData(SessionData *value)
+{
+    sessionData = value;
+     return this;
+}
 AbstractPageController::AbstractPageController()
 {
-
+    
 }
 
 AbstractPageController::~AbstractPageController()
 {
+    
+}
 
+void AbstractPageController::runController()
+{
+    MvcMessage * msg = run();
+    view->update(msg);
+    if (msg != nullptr)
+        delete msg;
 }
 
 AbstractPageController *AbstractPageController::setServerData(ServerData *value)

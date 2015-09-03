@@ -47,9 +47,11 @@ SOURCES += webappcommon.cpp \
     view/template/compiledtemplate.cpp \
     controller/abstractpagecontroller.cpp \
     controller/action/abstractaction.cpp \
-    controller/abstractmultiactioncontroller.cpp \
     model/beans/session.cpp \
-    model/beans/sessionvalue.cpp
+    model/beans/sessionvalue.cpp \
+    model/sessiondata.cpp \
+    controller/multiactioncontroller.cpp \
+    mvc/pagemvcmessage.cpp
 
 HEADERS += webappcommon.h\
         webappcommon_global.h \
@@ -89,9 +91,11 @@ view/template/abstracttemplate.h \
     view/template/compiledtemplate.h \
     controller/action/abstractaction.h \
     controller/abstractpagecontroller.h \
-    controller/abstractmultiactioncontroller.h \
     model/beans/session.h \
-    model/beans/sessionvalue.h
+    model/beans/sessionvalue.h \
+    model/sessiondata.h \
+    controller/multiactioncontroller.h \
+    mvc/pagemvcmessage.h
  #core/stringgetparam.h
 
 unix {

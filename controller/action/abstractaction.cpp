@@ -1,14 +1,14 @@
 #include "abstractaction.h"
 
 
-AbstractMultiActionController *AbstractAction::getParent() const
+MultiActionController *AbstractAction::getParent() const
 {
     return parent;
 }
 
-AbstractAction * AbstractAction::setParent(AbstractMultiActionController *value)
+AbstractAction * AbstractAction::setParent(MultiActionController *value)
 {
-    parent = value;
+    AbstractAction::parent = value;
     return this;
 }
 
@@ -24,6 +24,11 @@ AbstractAction *AbstractAction::setRequestData(RequestData *value)
     return this;
 }
 
+AbstractAction *AbstractAction::setSessionData(SessionData *value)
+{
+    this->sessionData = value;
+    return this;
+}
 
 
 

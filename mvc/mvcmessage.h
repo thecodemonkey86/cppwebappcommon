@@ -4,6 +4,7 @@
 
 class MvcMessage
 {
+
 public:
     MvcMessage();
     virtual ~ MvcMessage();

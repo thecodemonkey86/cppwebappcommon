@@ -1,5 +1,5 @@
-#ifndef ABSTRACTMULTIACTIONCONTROLLER_H
-#define ABSTRACTMULTIACTIONCONTROLLER_H
+#ifndef MULTIACTIONCONTROLLER_H
+#define MULTIACTIONCONTROLLER_H
 
 #include <QMap>
 #include "controller/action/abstractaction.h"
@@ -8,18 +8,19 @@
 
 class AbstractAction;
 
-class AbstractMultiActionController : public AbstractPageController
+class MultiActionController : public AbstractPageController
 {
 protected:
     QMap<QString, AbstractAction*> actions;
 
 public:
-    AbstractMultiActionController();
+    MultiActionController();
     virtual void run();
     virtual QString getName()=0;
     void addAction(QString actionName, AbstractAction*action);
     virtual AbstractPageController* setServerData(ServerData *value);
     virtual AbstractPageController* setRequestData(RequestData *value);
+    virtual AbstractPageController* setSessionData(SessionData *value);
 };
 
-#endif // ABSTRACTMULTIACTIONCONTROLLER_H
+#endif // MULTIACTIONCONTROLLER_H
