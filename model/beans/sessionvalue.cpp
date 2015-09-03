@@ -11,6 +11,8 @@ loaded = false;
 session = NULL;
 autoIncrement = false;
 }
+SessionValue::~SessionValue () {
+}
 QString SessionValue::getTableName () {
 return QString(TABLENAME);
 }

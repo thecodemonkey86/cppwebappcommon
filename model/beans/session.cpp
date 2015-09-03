@@ -11,6 +11,9 @@ loaded = false;
 sessionValues = new QSet<SessionValue>();
 autoIncrement = false;
 }
+Session::~Session () {
+delete sessionValues;
+}
 QString Session::getTableName () {
 return QString(TABLENAME);
 }

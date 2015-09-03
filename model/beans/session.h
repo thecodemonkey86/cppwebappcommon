@@ -19,6 +19,7 @@ protected: bool loaded;
 protected: bool expirationDateModified;
 protected: QSet<SessionValue>* sessionValues;
 public: Session () ;
+public: ~Session () ;
 public: QString getTableName () ;
 public: QString getId () const ;
 public: QByteArray getMd5Hash () const ;

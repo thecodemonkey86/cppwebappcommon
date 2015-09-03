@@ -21,6 +21,7 @@ protected: bool loaded;
 protected: bool valueModified;
 protected: Session* session;
 public: SessionValue () ;
+public: ~SessionValue () ;
 public: QString getTableName () ;
 public: QString getSessionId () const ;
 public: QByteArray getMd5Hash () const ;
