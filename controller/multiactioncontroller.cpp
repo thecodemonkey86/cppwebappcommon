@@ -7,7 +7,7 @@ MultiActionController::MultiActionController()
 
 }
 
-void MultiActionController::run()
+ MvcMessage* MultiActionController::run()
 {
     if (actions.contains(requestData->getString(QString("action")))) {
         actions.value(requestData->getString(QString("action")))->run();
