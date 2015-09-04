@@ -10,7 +10,9 @@ class PageMvcMessage : public MvcMessage
 {
     AbstractPageController * source;
 public:
-    PageMvcMessage(AbstractPageController * source);
+    PageMvcMessage();
+    PageMvcMessage * setSource(AbstractPageController *value);
+    AbstractPageController *getSource() const;
 };
 
 #endif // PAGEMVCMESSAGE_H

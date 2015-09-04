@@ -68,9 +68,7 @@ HEADERS += webappcommon.h\
     core/requestparam.h \
     core/arrayrequestparam.h \
     util/util.h \
-#    controller_factory/controllerfactory.h \
     controller/abstractcontroller.h \
-#    controller/controllermanager.h \
     core/httpheader.h \
     controller/form.h \
     controller/formget.h \
@@ -80,7 +78,6 @@ HEADERS += webappcommon.h\
     core/objectfactory.h \
     core/abstractobjectfactory.h \
     controller/controllermanager.h \
-#    controller_factory/controllerfactory.h \
     page_config/pageconfig.h \
     page_config/pagemanager.h \
     mvc/mvcmessage.h \
