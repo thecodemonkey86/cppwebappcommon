@@ -20,7 +20,7 @@ return QString(TABLENAME);
 QString Session::getId () const {
 return id;
 }
-QByteArray Session::getMd5Hash () const {
+QByteArray Session::getMd5Hash () {
 return md5Hash;
 }
 QDateTime Session::getExpirationDate () {
@@ -39,6 +39,15 @@ result->append(new SessionValue (*i));
 ++i;
 }
 return result;
+}
+Session* Session::setMd5Hash (const QByteArray& md5Hash) {
+this->md5HashModified=true;
+this->md5Hash=md5Hash;
+return this;
+}
+Session* Session::setMd5HashInternal (const QByteArray& md5Hash) {
+this->md5Hash=md5Hash;
+return this;
 }
 Session* Session::setExpirationDate (const QDateTime& expirationDate) {
 this->expirationDateModified=true;
@@ -62,19 +71,6 @@ Session* Session::setIdInternal (const QString& id) {
 this->id=id;
 return this;
 }
-Session* Session::setMd5Hash (const QByteArray& md5Hash) {
-if (!insert){
-this->idModified = true;
-this->_previousMd5Hash = this->md5Hash;
-}
-
-this->md5Hash=md5Hash;
-return this;
-}
-Session* Session::setMd5HashInternal (const QByteArray& md5Hash) {
-this->md5Hash=md5Hash;
-return this;
-}
 QString Session::getInsertFields () {
 return QString("id,md5_hash,expiration_date");
 }
@@ -93,6 +89,9 @@ QString query;
 if (idModified){
 params->append(id);
 query += QString(",id=?");
+}
+
+if (md5HashModified){
 params->append(md5Hash);
 query += QString(",md5_hash=?");
 }
@@ -105,23 +104,21 @@ query += QString(",expiration_date=?");
 return query.mid(1);
 }
 QString Session::getUpdateCondition () {
-return QString("id=? AND md5_hash=?");
+return QString("id=?");
 }
 QList<QVariant>* Session::getUpdateConditionParams () {
 QList<QVariant>* params=new QList<QVariant>();
 if (!idModified){
 params->append(id);
-params->append(md5Hash);
 } else {
 params->append(_previousId);
-params->append(_previousMd5Hash);
 }
 
 return params;
 }
-Session* Session::getById (QString id,QByteArray md5Hash) {
+Session* Session::getById (QString id) {
 SqlQuery*q = sqlCon->buildQuery();
-QSqlQuery* res= q->select(Session::getSelectFields(QString("b1"))+QChar(',')+SessionValue::getSelectFields(QString("b2")))->from(QString(Session::TABLENAME),QString("b1"))->leftJoin(SessionValue::TABLENAME,QString("b2"),QString("b1.id = b2.session_id AND b1.md5_hash = b2.md5_hash"))->where(QString("b1.id=?"),id)->where(QString("b1.md5_hash=?"),md5Hash)->execQuery();
+QSqlQuery* res= q->select(Session::getSelectFields(QString("b1"))+QChar(',')+SessionValue::getSelectFields(QString("b2")))->from(QString(Session::TABLENAME),QString("b1"))->leftJoin(SessionValue::TABLENAME,QString("b2"),QString("b1.id = b2.session_id"))->where(QString("b1.id=?"),id)->execQuery();
 if (res->next()){
 Session* b1 = Session::getByRecord(res->record(),QString("b1"));
 b1->loaded = true;
@@ -152,7 +149,7 @@ return alias + QString(".id as ") + alias + QString("__id")+QChar(',')+alias + Q
 }
 Session* Session::getByRecord (const QSqlRecord& record,const QString& alias) {
 Session* bean = new Session ();
-return bean->setExpirationDateInternal(record.value(alias + QString("__expiration_date")).toDateTime())->setIdInternal(record.value(alias + QString("__id")).toString())->setMd5HashInternal(record.value(alias + QString("__md5_hash")).toByteArray());
+return bean->setMd5HashInternal(record.value(alias + QString("__md5_hash")).toByteArray())->setExpirationDateInternal(record.value(alias + QString("__expiration_date")).toDateTime())->setIdInternal(record.value(alias + QString("__id")).toString());
 }
 BeanQuery<Session>* Session::createQuery () {
 return new BeanQuery<Session> (sqlCon->buildQuery()) ;
@@ -161,7 +158,7 @@ QString Session::getAllSelectFields (QString artistTableAlias) {
 return Session::getSelectFields(QString(artistTableAlias))+QChar(',')+SessionValue::getSelectFields(QString("b2"));
 }
 void Session::addRelatedTableJoins (BeanQuery<Session>* query) {
-query->leftJoin(SessionValue::TABLENAME,QString("b2"),QString("b1.id = b2.session_id AND b1.md5_hash = b2.md5_hash"));
+query->leftJoin(SessionValue::TABLENAME,QString("b2"),QString("b1.id = b2.session_id"));
 }
 QList<Session*>* Session::fetchList (QSqlQuery* res) {
 QList<Session*>* beans = new QList<Session*>();
@@ -204,7 +201,7 @@ return b1;
 void Session::load () {
 loaded = true;
 SqlQuery* q = sqlCon->buildQuery();
-QSqlQuery* res = q->select(SessionValue::getSelectFields(QString("b2")))->from(Session::TABLENAME ,QString("b1"))->leftJoin(SessionValue::TABLENAME,QString("b2"),QString("b1.id = b2.session_id AND b1.md5_hash = b2.md5_hash"))->where(QString("b1.id = ?"),getId())->where(QString("b1.md5_hash = ?"),getMd5Hash())->execQuery();
+QSqlQuery* res = q->select(SessionValue::getSelectFields(QString("b2")))->from(Session::TABLENAME ,QString("b1"))->leftJoin(SessionValue::TABLENAME,QString("b2"),QString("b1.id = b2.session_id"))->where(QString("b1.id = ?"),getId())->execQuery();
 if (res->next()){
 do {
 SessionValue* b2 = SessionValue::getByRecord(res->record(),QString("b2"));
@@ -217,7 +214,7 @@ this->sessionValues->insert(*b2);
 
 }
 bool Session::remove () {
-SqlQuery* q = sqlCon->buildQuery()->deleteFrom(QString(Session::TABLENAME))->where(QString("id = ?"),getId())->where(QString("md5_hash = ?"),getMd5Hash());
+SqlQuery* q = sqlCon->buildQuery()->deleteFrom(QString(Session::TABLENAME))->where(QString("id = ?"),getId());
 return q->execute();
 }
 Session* Session::createNew () {
@@ -225,9 +222,9 @@ Session* b = new Session ();
 b->setInsertNew();
 return b;
 }
-bool Session::exists (QString id,QByteArray md5Hash) {
+bool Session::exists (QString id) {
 SqlQuery* q = sqlCon->buildQuery();
-q->select(QString("count(*)"))->from(QString(Session::TABLENAME))->where(QString("id = ?"),id)->where(QString("md5_hash = ?"),md5Hash);
+q->select(QString("count(*)"))->from(QString(Session::TABLENAME))->where(QString("id = ?"),id);
 return q->fetchInt()>0;
 }
 const char* Session::TABLENAME = "session" ;
