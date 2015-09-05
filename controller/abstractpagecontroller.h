@@ -19,15 +19,16 @@ protected:
 public:
     AbstractPageController();
     virtual ~AbstractPageController();
+    virtual QString getName()=0;
 
-
-    void runController();
+    virtual void runController();
 
     virtual void registerTemplate(AbstractTemplate * view);
     virtual AbstractPageController* setServerData(ServerData *value);
     virtual AbstractPageController* setRequestData(RequestData *value);
+    virtual AbstractPageController* setSessionData(SessionData *value);
     SessionData *getSessionData() const;
-    AbstractPageController* setSessionData(SessionData *value);
+    QUrl getUrl();
 };
 
 #endif // ABSTRACTPAGECONTROLLER_H

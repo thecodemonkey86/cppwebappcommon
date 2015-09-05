@@ -16,7 +16,9 @@ Session *SessionData::getSession()
 
 SessionData::SessionData(const QString &sessionId, const QString &ipAddress)
 {
-    this->session = Session::getById(sessionId, QCryptographicHash::hash(ipAddress.toUtf8(),QCryptographicHash::Md5));
+    BeanQuery<Session> * query = Session::createQuery()->select()->where("id=?",sessionId)->andWhere("md5_hash=?", QCryptographicHash::hash(ipAddress.toUtf8(),QCryptographicHash::Md5));
+
+    this->session = query->queryOne();
     if (this->session == nullptr) {
         this->session = Session::createNew()
             ->setId(sessionId)
@@ -25,6 +27,8 @@ SessionData::SessionData(const QString &sessionId, const QString &ipAddress)
         this->session->save();
     }
     HttpHeader::setCookie(sessCookieName,session->getId());
+
+    delete query;
 }
 
 SessionData::~SessionData()

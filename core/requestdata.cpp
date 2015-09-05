@@ -11,9 +11,19 @@
 
 RequestData::RequestData(const FCGX_Request & request, const QUrl &url)
 {
+
     parseCookies(request);
     parseGetParams(url);
     parsePostParams(request);
+}
+
+RequestData::~RequestData()
+{
+    qDeleteAll(getParams.begin(),getParams.end());
+    qDeleteAll(postParams.begin(),postParams.end());
+//    delete getParams;
+//    delete postParams;
+//    delete cookies;
 }
 
 /**
@@ -21,7 +31,7 @@ RequestData::RequestData(const FCGX_Request & request, const QUrl &url)
  * @param requestString urldecoded
  * @param params destination
  */
-void RequestData::parseParams(const QString&requestString, QMap<QString, AbstractRequestParam *> *params)
+void RequestData::parseParams(const QString&requestString, QMap<QString, AbstractRequestParam *> &params)
 {
     if ( requestString.isEmpty()) {
         return;
@@ -38,26 +48,26 @@ void RequestData::parseParams(const QString&requestString, QMap<QString, Abstrac
                 if (key.endsWith(QString("[]"))) {
                   name = key.left(key.indexOf('['));
                   ArrayRequestParam*arr = nullptr;
-                  if (params->contains(name)) {
-                      arr = dynamic_cast<ArrayRequestParam*>(params->value(name));
+                  if (params.contains(name)) {
+                      arr = dynamic_cast<ArrayRequestParam*>(params.value(name));
                       if (arr == nullptr) {
                           throw new QtException("Unexpected error");
                       }
                   } else {
                       arr = new ArrayRequestParam(name);
-                      params->insert(name, arr);
+                      params.insert(name, arr);
                   }
                   arr->append(strValue);
                 } else if (key.endsWith(QChar(']'))) {
                   name = key.left(key.indexOf('['));
-                  if (params->contains(name)) {
-                      currentArray = dynamic_cast<StringKeyArrayParam*>(params->value(name));
+                  if (params.contains(name)) {
+                      currentArray = dynamic_cast<StringKeyArrayParam*>(params.value(name));
                       if (currentArray == nullptr) {
                           throw new QtException("Unexpected error");
                       }
                   } else {
                       currentArray = new StringKeyArrayParam(name);
-                      params->insert(name, currentArray);
+                      params.insert(name, currentArray);
                   }
                   int arrayStart = 0;
                   int arrayEnd = 0;
@@ -87,7 +97,7 @@ void RequestData::parseParams(const QString&requestString, QMap<QString, Abstrac
                        }
                   }
                 } else {
-                  params->insert(key, new RequestParam<QString>(key, strValue));
+                  params.insert(key, new RequestParam<QString>(key, strValue));
                 }
 
 
@@ -99,7 +109,7 @@ void RequestData::parseParams(const QString&requestString, QMap<QString, Abstrac
 
 void RequestData::parseGetParams(const QUrl& url)
 {
-        getParams = new QMap<QString,AbstractRequestParam*>();
+//        getParams = new QMap<QString,AbstractRequestParam*>();
     QString requestString = url.query();
     parseParams(requestString,getParams);
 
@@ -109,11 +119,11 @@ void RequestData::parseGetParams(const QUrl& url)
 void RequestData::parsePostParams(const FCGX_Request & request)
 {
     if (QString(FCGX_GetParam("REQUEST_METHOD", request.envp))==QString("POST")) {
-        if (postParams == nullptr) {
-             postParams = new QMap<QString,AbstractRequestParam*>();
-        } else {
-            postParams->clear();
-        }
+//        if (postParams == nullptr) {
+//             postParams = new QMap<QString,AbstractRequestParam*>();
+//        } else {
+//            postParams.clear();
+//        }
         QString contentLengthStr(FCGX_GetParam("CONTENT_LENGTH", request.envp));
         qDebug()<<"Content-Length:"<<contentLengthStr;
         bool ok;
@@ -148,14 +158,14 @@ void RequestData::parsePostParams(const FCGX_Request & request)
 
 void RequestData::parseCookies(const FCGX_Request & request)
 {
-    cookies = new QMap<QString,QString>();
+//    cookies = new QMap<QString,QString>();
     QString cookieStr(FCGX_GetParam("HTTP_COOKIE", request.envp));
 if (cookieStr.trimmed().length()>0) {
 QStringList cookieStrLst =cookieStr.split(QChar(';'));
 foreach (QString s, cookieStrLst) {
     QStringList parts = s.split(QChar('='));
     if (parts.length()==2) {
-        RequestData::cookies->insert(parts.at(0).trimmed(),parts.at(1).trimmed());
+        RequestData::cookies.insert(parts.at(0).trimmed(),parts.at(1).trimmed());
     } else {
         throw new QtException("invalid cookie");
     }
@@ -164,8 +174,8 @@ foreach (QString s, cookieStrLst) {
 }
 QString RequestData::getString(const QString & name)
 {
-    if (getParams->contains(name)) {
-        RequestParam<QString> * p = dynamic_cast< RequestParam<QString>* >(getParams->value(name));
+    if (getParams.contains(name)) {
+        RequestParam<QString> * p = dynamic_cast< RequestParam<QString>* >(getParams.value(name));
         if (p == nullptr) {
             throw new QtException("Parameter is not a simple value");
         }
@@ -177,8 +187,8 @@ QString RequestData::getString(const QString & name)
 
 QString RequestData::postString(const QString &name)
 {
-    if (postParams->contains(name)) {
-        RequestParam<QString> * p = dynamic_cast< RequestParam<QString>* >(postParams->value(name));
+    if (postParams.contains(name)) {
+        RequestParam<QString> * p = dynamic_cast< RequestParam<QString>* >(postParams.value(name));
         if (p == nullptr) {
             throw new QtException("Parameter is not a simple value");
         }
@@ -223,8 +233,8 @@ bool RequestData::postBool(const QString &name)
 
 ArrayRequestParam *RequestData::getArray(const QString &name)
 {
-    if (getParams->contains(name)) {
-        ArrayRequestParam * p = dynamic_cast< ArrayRequestParam* >(getParams->value(name));
+    if (getParams.contains(name)) {
+        ArrayRequestParam * p = dynamic_cast< ArrayRequestParam* >(getParams.value(name));
         if (p == nullptr) {
             throw new QtException("Parameter is not an array");
         }
@@ -236,18 +246,18 @@ ArrayRequestParam *RequestData::getArray(const QString &name)
 
 bool RequestData::isGetParamSet(const QString &name)
 {
-    return getParams != nullptr && getParams->contains(name);
+    return getParams.contains(name);
 }
 
 bool RequestData::isPostParamSet(const QString &name)
 {
-    return postParams != nullptr && postParams->contains(name);
+    return postParams.contains(name);
 }
 
 QString RequestData::cookieString(const QString &name)
 {
-    if(cookies->contains(name)) {
-        return cookies->value(name);
+    if(cookies.contains(name)) {
+        return cookies.value(name);
     }
     throw new QtException("Cookie is not set");
 }
@@ -259,6 +269,6 @@ QStringList RequestData::cookieAsArray(const QString &name)
 
 bool RequestData::isCookieSet(const QString &name)
 {
-    return cookies->contains(name);
+    return cookies.contains(name);
 }
 

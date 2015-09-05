@@ -28,16 +28,11 @@ SOURCES += webappcommon.cpp \
     core/arrayrequestparam.cpp \
     util/util.cpp \
     controller/abstractcontroller.cpp \
-#    controller/controllermanager.cpp \
 #    controller_factory/controllerfactory.cpp \
     core/httpheader.cpp \
-    controller/form.cpp \
-    controller/formget.cpp \
-    controller/formpost.cpp \
-    controller/action/formaction.cpp \
     view/template/formhtmltemplate.cpp \
     core/abstractobjectfactory.cpp \
-    controller/controllermanager.cpp \
+#    controller/controllermanager.cpp \
 #    controller_factory/controllerfactory.cpp \
     page_config/pageconfig.cpp \
     page_config/pagemanager.cpp \
@@ -51,7 +46,11 @@ SOURCES += webappcommon.cpp \
     model/beans/sessionvalue.cpp \
     model/sessiondata.cpp \
     controller/multiactioncontroller.cpp \
-    mvc/pagemvcmessage.cpp
+    mvc/pagemvcmessage.cpp \
+    controller/postformcontroller.cpp \
+    controller/action/postformaction.cpp \
+    controller/form/formpost.cpp \
+    controller/form/form.cpp
 
 HEADERS += webappcommon.h\
         webappcommon_global.h \
@@ -70,14 +69,10 @@ HEADERS += webappcommon.h\
     util/util.h \
     controller/abstractcontroller.h \
     core/httpheader.h \
-    controller/form.h \
-    controller/formget.h \
-    controller/formpost.h \
-    controller/action/formaction.h \
     view/template/formhtmltemplate.h \
     core/objectfactory.h \
     core/abstractobjectfactory.h \
-    controller/controllermanager.h \
+#    controller/controllermanager.h \
     page_config/pageconfig.h \
     page_config/pagemanager.h \
     mvc/mvcmessage.h \
@@ -92,7 +87,11 @@ view/template/abstracttemplate.h \
     model/beans/sessionvalue.h \
     model/sessiondata.h \
     controller/multiactioncontroller.h \
-    mvc/pagemvcmessage.h
+    mvc/pagemvcmessage.h \
+    controller/postformcontroller.h \
+    controller/action/postformaction.h \
+    controller/form/formpost.h \
+    controller/form/form.h
  #core/stringgetparam.h
 
 unix {

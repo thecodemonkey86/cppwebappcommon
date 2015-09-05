@@ -1,10 +1,22 @@
 #include "controllermanager.h"
 #include "exception/qtexception.h"
+#include "model/beans/session.h"
+#include <QPair>
 
 ControllerManager* ControllerManager::registerController(ControllerFactory * factory)
 {
-    this->controllerFactories.insert(factory->controllerName(), factory);
+    this->controllerFactories.insert( factory->controllerName(), factory);
     return this;
+}
+
+ControllerManager *ControllerManager::getInstance(Session *session)
+{
+    if (!instancesPerSession.contains(session->getId())) {
+        ControllerManager * instance = new ControllerManager();
+        instancesPerSession.insert(session->getId(),instance);
+        return instance;
+    }
+    return instancesPerSession.value(session->getId());
 }
 
 //ControllerManager *ControllerManager::registerView(const QString &key, AbstractView *view)
@@ -29,7 +41,7 @@ ControllerManager::ControllerManager()
 
 ControllerManager::~ControllerManager()
 {
-
+    qDeleteAll(controllerFactories.begin(),controllerFactories.end());
 }
 
 AbstractController *ControllerManager::getController(const QString &name)
@@ -52,3 +64,4 @@ AbstractPageController *ControllerManager::getPage(const QString &name)
 }
 
 
+QMap<QString, ControllerManager*> ControllerManager::instancesPerSession;

@@ -10,16 +10,17 @@ MultiActionController::MultiActionController()
  MvcMessage* MultiActionController::run()
 {
     if (actions.contains(requestData->getString(QString("action")))) {
-        actions.value(requestData->getString(QString("action")))->run();
+       return  actions.value(requestData->getString(QString("action")))->run();
     } else {
         throw new QtException("No such action");
     }
 
 }
 
-void MultiActionController::addAction(QString actionName, AbstractAction *action)
+void MultiActionController::addAction( AbstractAction *action)
 {
-    actions.insert(actionName, action);
+    action->setParent(this);
+    actions.insert(action->getName(), action);
 }
 
 AbstractPageController *MultiActionController::setServerData(ServerData *value)

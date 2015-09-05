@@ -1,4 +1,4 @@
-#include "view/template/formhtmltemplate.h"
+/*#include "view/template/formhtmltemplate.h"
 #include "view/formview.h"
 #include "view/template/formtemplate.h"
 #include "exception/qtexception.h"
@@ -30,3 +30,4 @@ void FormHtmlTemplate::update(MvcMessage*updateMsg)
     renderFooter();
 }
 
+*/

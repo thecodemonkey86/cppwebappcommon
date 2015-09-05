@@ -12,16 +12,16 @@ class RequestData
 {
 private:
 
-    QMap<QString, AbstractRequestParam*>* getParams;
-    QMap<QString, AbstractRequestParam*>* postParams;
-    QMap<QString, QString>* cookies;
-    void parseParams(const QString&requestString, QMap<QString, AbstractRequestParam*>* params);
+    QMap<QString, AbstractRequestParam*> getParams;
+    QMap<QString, AbstractRequestParam*> postParams;
+    QMap<QString, QString> cookies;
+    void parseParams(const QString&requestString, QMap<QString, AbstractRequestParam*>& params);
     void parseGetParams(const QUrl& url);
     void parsePostParams(const FCGX_Request & request);
     void parseCookies(const FCGX_Request & request);
 public:
  RequestData(const FCGX_Request & request, const QUrl &url);
-
+    ~RequestData();
     QString getString(const QString&name);
     QString postString(const QString&name);
     int getInt(const QString&name);

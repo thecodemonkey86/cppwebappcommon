@@ -1,4 +1,4 @@
-#ifndef FORMHTMLTEMPLATE_H
+/*#ifndef FORMHTMLTEMPLATE_H
 #define FORMHTMLTEMPLATE_H
 
 #include "htmltemplate.h"
@@ -13,3 +13,4 @@ public:
 };
 
 #endif // FORMHTMLTEMPLATE_H
+*/

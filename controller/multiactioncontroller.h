@@ -16,8 +16,8 @@ protected:
 public:
     MultiActionController();
 
-    virtual QString getName()=0;
-    void addAction(QString actionName, AbstractAction*action);
+
+    void addAction(AbstractAction *action);
     virtual AbstractPageController* setServerData(ServerData *value);
     virtual AbstractPageController* setRequestData(RequestData *value);
     virtual AbstractPageController* setSessionData(SessionData *value);

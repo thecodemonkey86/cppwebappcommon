@@ -1,4 +1,4 @@
-#ifndef FORMTEMPLATE_H
+/*#ifndef FORMTEMPLATE_H
 #define FORMTEMPLATE_H
 #include "view/formview.h"
 
@@ -9,3 +9,4 @@ public:
 };
 
 #endif // FORMTEMPLATE_H
+*/

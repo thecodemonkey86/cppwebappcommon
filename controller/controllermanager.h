@@ -6,19 +6,28 @@
 #include "util/singleton.h"
 #include "view/abstractview.h"
 
-class  ControllerManager : public Singleton<ControllerManager>
+class  ControllerManager
 {
-    friend class Singleton<ControllerManager>;
+
+
+
+protected:
+
+    static QMap<QString, ControllerManager*> instancesPerSession;
+
+    Session*session;
 public:
-    ControllerManager* registerController(ControllerFactory * factory);
+    ControllerManager* registerController(ControllerFactory*  factory);
 //     ControllerManager* registerView(const QString&key,AbstractView*view);
 //     AbstractView* getView(const QString&key);
+
+    static ControllerManager*getInstance(Session* session);
      virtual ~ControllerManager();
      AbstractController* getController(const QString&name);
      AbstractPageController* getPage(const QString&name);
 protected:
     ControllerManager();
-    QMap<QString,ControllerFactory*> controllerFactories;
+    QMap< QString,ControllerFactory*> controllerFactories;
 //     QMap<QString,AbstractView*> views;
 
 

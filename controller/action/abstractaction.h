@@ -21,12 +21,12 @@ public:
     AbstractAction();
     virtual ~AbstractAction();
     virtual QString getName()=0;
-    virtual void run()=0;
+    virtual MvcMessage* run()=0;
     MultiActionController *getParent() const;
     AbstractAction* setParent(MultiActionController *value);
-    virtual AbstractAction* setServerData(ServerData *value);
+    AbstractAction* setServerData(ServerData *value);
     virtual AbstractAction* setRequestData(RequestData *value);
-    virtual AbstractAction* setSessionData(SessionData *value);
+    AbstractAction* setSessionData(SessionData *value);
     QUrl getUrl();
 };
 

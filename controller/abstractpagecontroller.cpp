@@ -10,7 +10,12 @@ SessionData *AbstractPageController::getSessionData() const
 AbstractPageController* AbstractPageController::setSessionData(SessionData *value)
 {
     sessionData = value;
-     return this;
+    return this;
+}
+
+QUrl AbstractPageController::getUrl()
+{
+    return QUrl("/?controller="+getName());
 }
 AbstractPageController::AbstractPageController()
 {
@@ -25,9 +30,11 @@ AbstractPageController::~AbstractPageController()
 void AbstractPageController::runController()
 {
     MvcMessage * msg = run();
-    view->update(msg);
-    if (msg != nullptr)
+    if (msg  != nullptr) {
+        msg->setSessionData(sessionData);
+        view->update(msg);
         delete msg;
+    }
 }
 
 AbstractPageController *AbstractPageController::setServerData(ServerData *value)

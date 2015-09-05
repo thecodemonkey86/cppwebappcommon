@@ -6,8 +6,7 @@ class FormPost : public Form
 {
 protected: virtual bool isSubmitted();
 public:
-    FormPost(const QString&submitFieldName);
-    FormPost();
+    FormPost(const QString&submitFieldName=QString("submit"));
     virtual ~FormPost();
     virtual QString stringValue(const QString&name);
     virtual int intValue(const QString&name);
