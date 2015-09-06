@@ -21,7 +21,7 @@ SessionData::SessionData(const QString &sessionId, const QString &ipAddress)
     this->session = query->queryOne();
     if (this->session == nullptr) {
         this->session = Session::createNew()
-            ->setId(sessionId)
+            ->setId(Util::randString(64))
             ->setMd5Hash(QCryptographicHash::hash(ipAddress.toUtf8(),QCryptographicHash::Md5))
             ->setExpirationDate(QDateTime::currentDateTime().addDays(1));
         this->session->save();
