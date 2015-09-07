@@ -162,11 +162,19 @@ query->leftJoin(SessionValue::TABLENAME,QString("b2"),QString("b1.id = b2.sessio
 }
 QList<Session*>* Session::fetchList (QSqlQuery* res) {
 QList<Session*>* beans = new QList<Session*>();
-
+QSet<uint> beansSet;
 while (res->next()){
-    Session* b1 = Session::getByRecord(res->record(),QString("b1"));
+Session* b1 = Session::getByRecord(res->record(),QString("b1"));
 b1->loaded = true;
+uint b1Hash = qHash(*b1);//
+if (!beansSet.contains(b1Hash)){
 beans->append(b1);
+beansSet.insert(b1Hash);
+} else {
+delete b1;
+continue;
+}
+
 if (!res->record().value(QString("b2__session_id")).isNull()){
 SessionValue* b2 = SessionValue::getByRecord(res->record(),QString("b2"));
 if (!b1->sessionValues->contains(*b2)){
@@ -181,7 +189,8 @@ delete b2;
 return beans;
 }
 Session* Session::fetchOne (QSqlQuery* res) {
-Session* b1 = NULL;
+Session* b1 = nullptr;
+QSet<uint> beansSet;
 if (res->next()){
 b1 = Session::getByRecord(res->record(),QString("b1"));
 if (!res->record().value(QString("b2__session_id")).isNull()){
