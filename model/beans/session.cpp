@@ -162,9 +162,9 @@ query->leftJoin(SessionValue::TABLENAME,QString("b2"),QString("b1.id = b2.sessio
 }
 QList<Session*>* Session::fetchList (QSqlQuery* res) {
 QList<Session*>* beans = new QList<Session*>();
-Session* b1 = NULL;
+
 while (res->next()){
-b1 = Session::getByRecord(res->record(),QString("b1"));
+    Session* b1 = Session::getByRecord(res->record(),QString("b1"));
 b1->loaded = true;
 beans->append(b1);
 if (!res->record().value(QString("b2__session_id")).isNull()){
