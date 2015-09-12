@@ -9,19 +9,19 @@ class WEBAPPCOMMONSHARED_EXPORT HtmlTemplate : public AbstractTemplate
 public:
     HtmlTemplate();
     ~HtmlTemplate();
-    virtual void update(MvcMessage* updateMsg);
+    virtual void update(unique_ptr<MvcMessage> updateMsg);
     virtual void render();
     void outAttr(const QString &attr, const QString &value);
      void outBeginTag(const QString &tag);
      void outEndTag(const QString &tag);
-     AbstractTemplate *getBodyTemplate() const;
-     void setBodyTemplate(AbstractTemplate *value);
+//     shared_ptr<AbstractTemplate> getBodyTemplate() const;
+     void setBodyTemplate(unique_ptr<AbstractTemplate> bodyTemplate);
 
 protected:
      void renderHeader();
      void renderFooter();
 
-     AbstractTemplate* bodyTemplate;
+     unique_ptr<AbstractTemplate> bodyTemplate;
      QSet<QString> includeCss;
      QSet<QString> includeJs;
 };

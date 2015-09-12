@@ -10,12 +10,12 @@ AbstractController::~AbstractController()
 
 }
 
-void AbstractController::registerView(AbstractView *view)
+void AbstractController::registerView(const shared_ptr<AbstractView>&view)
 {
     this->view = view;
 }
 
-AbstractView *AbstractController::getView() const
+shared_ptr<AbstractView> AbstractController::getView() const
 {
     return view;
 }

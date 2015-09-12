@@ -36,7 +36,7 @@ QUrl AbstractAction::getUrl()
 {
     return QUrl::fromPercentEncoding((QString("/?controller=")+parent->getName()+QString("&action=")+getName()).toUtf8());
 }
-AbstractView *AbstractAction::view()
+shared_ptr<AbstractView >AbstractAction::view()
 {
     return parent->getView();
 }

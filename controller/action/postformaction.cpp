@@ -6,7 +6,7 @@ PostFormAction::PostFormAction(const QString&submitFieldName) : FormPost(submitF
 }
 
 
-MvcMessage *PostFormAction::run()
+unique_ptr<MvcMessage> PostFormAction::run()
 {
 
     bool submitted = isSubmitted();

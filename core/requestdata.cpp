@@ -51,7 +51,7 @@ void RequestData::parseParams(const QString&requestString, QMap<QString, Abstrac
                   if (params.contains(name)) {
                       arr = dynamic_cast<ArrayRequestParam*>(params.value(name));
                       if (arr == nullptr) {
-                          throw new QtException("Unexpected error");
+                          throw QtException("Unexpected error");
                       }
                   } else {
                       arr = new ArrayRequestParam(name);
@@ -63,7 +63,7 @@ void RequestData::parseParams(const QString&requestString, QMap<QString, Abstrac
                   if (params.contains(name)) {
                       currentArray = dynamic_cast<StringKeyArrayParam*>(params.value(name));
                       if (currentArray == nullptr) {
-                          throw new QtException("Unexpected error");
+                          throw QtException("Unexpected error");
                       }
                   } else {
                       currentArray = new StringKeyArrayParam(name);
@@ -82,7 +82,7 @@ void RequestData::parseParams(const QString&requestString, QMap<QString, Abstrac
                               if (currentArray->contains(arrayIndex)) {
                                   currentArray = dynamic_cast<StringKeyArrayParam*>(currentArray->value(arrayIndex));
                                   if (currentArray == nullptr) {
-                                      throw new QtException("Unexpected error");
+                                      throw QtException("Unexpected error");
                                   }
                               } else {
                                   StringKeyArrayParam*dimension=new StringKeyArrayParam(name);
@@ -129,7 +129,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
         bool ok;
         int64_t contentLength = contentLengthStr.toULongLong(&ok);
         if (!ok) {
-            throw new QtException("Invalid content length");
+            throw QtException("Invalid content length");
         } else {
             const int bufSize = contentLength+1;
             char * buf= new char[bufSize];
@@ -167,7 +167,7 @@ foreach (QString s, cookieStrLst) {
     if (parts.length()==2) {
         RequestData::cookies.insert(parts.at(0).trimmed(),parts.at(1).trimmed());
     } else {
-        throw new QtException("invalid cookie");
+        throw QtException("invalid cookie");
     }
 }
 }
@@ -177,11 +177,11 @@ QString RequestData::getString(const QString & name)
     if (getParams.contains(name)) {
         RequestParam<QString> * p = dynamic_cast< RequestParam<QString>* >(getParams.value(name));
         if (p == nullptr) {
-            throw new QtException("Parameter is not a simple value");
+            throw QtException("Parameter is not a simple value");
         }
         return p->getValue();
     } else {
-        throw new QtException("Parameter does not exist");
+        throw QtException("Parameter does not exist");
     }
 }
 
@@ -190,11 +190,11 @@ QString RequestData::postString(const QString &name)
     if (postParams.contains(name)) {
         RequestParam<QString> * p = dynamic_cast< RequestParam<QString>* >(postParams.value(name));
         if (p == nullptr) {
-            throw new QtException("Parameter is not a simple value");
+            throw QtException("Parameter is not a simple value");
         }
         return p->getValue();
     } else {
-        throw new QtException("Parameter does not exist");
+        throw QtException("Parameter does not exist");
     }
 }
 
@@ -203,7 +203,7 @@ int RequestData::getInt(const QString & name)
     QString value(getString(name));
     bool ok = false;
     int i = value.toInt(&ok);
-    if (!ok) throw new QtException("Parameter is not a number");
+    if (!ok) throw QtException("Parameter is not a number");
     return i;
 }
 
@@ -212,7 +212,7 @@ int RequestData::postInt(const QString & name)
     QString value(postString(name));
     bool ok = false;
     int i = value.toInt(&ok);
-    if (!ok) throw new QtException("Parameter is not a number");
+    if (!ok) throw QtException("Parameter is not a number");
     return i;
 }
 
@@ -221,7 +221,7 @@ double RequestData::postDouble(const QString &name)
     QString value(postString(name));
     bool ok = false;
     double d = value.replace(QChar(','),QChar('.')).toDouble(&ok);
-    if (!ok) throw new QtException("Parameter is not a number");
+    if (!ok) throw QtException("Parameter is not a number");
     return d;
 }
 
@@ -236,11 +236,11 @@ ArrayRequestParam *RequestData::getArray(const QString &name)
     if (getParams.contains(name)) {
         ArrayRequestParam * p = dynamic_cast< ArrayRequestParam* >(getParams.value(name));
         if (p == nullptr) {
-            throw new QtException("Parameter is not an array");
+            throw QtException("Parameter is not an array");
         }
         return p;
     } else {
-        throw new QtException("Parameter does not exist");
+        throw QtException("Parameter does not exist");
     }
 }
 
@@ -259,7 +259,7 @@ QString RequestData::cookieString(const QString &name)
     if(cookies.contains(name)) {
         return cookies.value(name);
     }
-    throw new QtException("Cookie is not set");
+    throw QtException("Cookie is not set");
 }
 
 QStringList RequestData::cookieAsArray(const QString &name)

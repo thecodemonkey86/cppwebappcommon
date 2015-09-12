@@ -11,14 +11,15 @@ class PageManager
 {
 
 protected:
-     static QMap<QString, PageManager*> instancesPerSession;
+     static QMap<QString, shared_ptr<PageManager>> instancesPerSession;
 
      Session*session;
-    QMap<QString,PageConfig*> pages;
-    PageManager(Session*session);
+    QMap<QString,shared_ptr<PageConfig>> pages;
+
 public:
-    static PageManager *getInstance(Session *session);
-    static AbstractPageController * getController(const QString &name,Session *session);
+    PageManager(Session*session);
+    static shared_ptr<PageManager>getInstance(Session *session);
+    static unique_ptr<AbstractPageController> getController(const QString &name,Session *session);
     template<class T> static QString getControllerUrl() {
          return QString("/?controller="+T::controllerName());
     }
@@ -27,8 +28,8 @@ public:
     }
 
     virtual ~PageManager();
-    PageManager* add(PageConfig * cfg) ;
-    PageConfig* getCfg(const QString&name);
+    PageManager* add(const shared_ptr<PageConfig> &cfg) ;
+    shared_ptr<PageConfig> getCfg(const QString&name);
 };
 
 #endif // PAGEMANAGER_H

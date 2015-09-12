@@ -14,7 +14,7 @@ void FormHtmlTemplate::updateSubmitted(MvcMessage*updateMsg)
         renderHeader();
         FormTemplate * body = dynamic_cast<FormTemplate *>(bodyTemplate);
         if (body == NULL)
-            throw new QtException("invalid form template");
+            throw QtException("invalid form template");
         body->updateSubmitted(updateMsg);
         renderFooter();
 
@@ -25,7 +25,7 @@ void FormHtmlTemplate::update(MvcMessage*updateMsg)
     renderHeader();
     FormTemplate * body = dynamic_cast<FormTemplate *>(bodyTemplate);
     if (body == NULL)
-        throw new QtException("invalid form template");
+        throw QtException("invalid form template");
     body->update(updateMsg);
     renderFooter();
 }

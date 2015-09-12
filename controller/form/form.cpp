@@ -19,7 +19,7 @@ Form::~Form()
 //bool Form::submit()
 //{
 //    if (requestData == nullptr) {
-//        throw new QtException(QString("Form illegal state: reqdata not set"));
+//        throw QtException(QString("Form illegal state: reqdata not set"));
 //    }
 //    if (isSubmitted()) {
 //        onSubmit();

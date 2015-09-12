@@ -29,11 +29,10 @@ AbstractPageController::~AbstractPageController()
 
 void AbstractPageController::runController()
 {
-    MvcMessage * msg = run();
+    unique_ptr<MvcMessage> msg = run();
     if (msg  != nullptr) {
         msg->setSessionData(sessionData);
-        view->update(msg);
-        delete msg;
+        view->update(move(msg));
     }
 }
 
@@ -51,10 +50,10 @@ AbstractPageController *AbstractPageController::setRequestData(RequestData *valu
 
 
 
-void AbstractPageController::registerTemplate(AbstractTemplate *view)
+void AbstractPageController::registerTemplate(unique_ptr<AbstractTemplate>view)
 {
-   HtmlTemplate * html = new HtmlTemplate();
-   html->setBodyTemplate(view);
-   AbstractController::registerView(html);
+   unique_ptr<HtmlTemplate > html(new HtmlTemplate());
+   html->setBodyTemplate(move(view));
+   AbstractController::registerView(shared_ptr<HtmlTemplate> (move(html)));
 }
 

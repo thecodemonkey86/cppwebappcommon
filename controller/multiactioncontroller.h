@@ -12,7 +12,7 @@ class MultiActionController : public AbstractPageController
 {
 protected:
     QMap<QString, AbstractAction*> actions;
-  virtual MvcMessage* run();
+  virtual unique_ptr<MvcMessage> run();
 public:
     MultiActionController();
 

@@ -26,14 +26,14 @@ QString StringKeyArrayParam::getArrayValue(int dimensionsCount,...)
     for(int i=0;i<dimensionsCount;i++) {
         arr = arr->val(QString(va_arg(ap, const char*)));
         if (arr == NULL) {
-           throw new QtException("Illegal url");
+           throw QtException("Illegal url");
         }
     }
 
     va_end(ap);
     ArrayValue* v=dynamic_cast<ArrayValue*>(arr);
     if (v == NULL) {
-        throw new QtException("Illegal url");
+        throw QtException("Illegal url");
     }
     return v->getValue();
 }
