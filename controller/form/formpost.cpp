@@ -19,7 +19,7 @@ int FormPost::intValue(const QString &name)
     return request->postInt(name);
 }
 
-float FormPost::doubleValue(const QString &name)
+double FormPost::doubleValue(const QString &name)
 {
     return request->postDouble(name);
 }

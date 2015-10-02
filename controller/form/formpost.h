@@ -11,7 +11,7 @@ public:
     virtual ~FormPost();
     virtual QString stringValue(const QString&name);
     virtual int intValue(const QString&name);
-    virtual float doubleValue(const QString&name);
+    virtual double doubleValue(const QString&name);
     virtual QDate dateValue(const QString&name);
 };
 

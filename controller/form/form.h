@@ -17,6 +17,7 @@ public:
     virtual QString stringValue(const QString&name)=0;
     virtual int intValue(const QString&name)=0;
     virtual QDate dateValue(const QString&name)=0;
+    virtual double doubleValue(const QString&name)=0;
     virtual bool isValueEmpty(const QString&name);
     void setRequestData(RequestData *value);
 };
