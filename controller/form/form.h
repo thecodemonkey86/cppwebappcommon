@@ -15,6 +15,7 @@ public:
     virtual ~Form();
     virtual QString stringValue(const QString&name)=0;
     virtual int intValue(const QString&name)=0;
+    virtual QDate dateValue(const QString&name)=0;
     void setRequestData(RequestData *value);
 };
 
