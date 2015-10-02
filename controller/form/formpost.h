@@ -1,6 +1,7 @@
 #ifndef FORMPOST_H
 #define FORMPOST_H
 #include "form.h"
+#include <QDate>
 
 class FormPost : public Form
 {

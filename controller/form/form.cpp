@@ -16,6 +16,11 @@ Form::~Form()
 
 }
 
+bool Form::isValueEmpty(const QString &name)
+{
+    return request->postString(name).isEmpty();
+}
+
 //bool Form::submit()
 //{
 //    if (requestData == nullptr) {

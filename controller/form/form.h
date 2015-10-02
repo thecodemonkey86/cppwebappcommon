@@ -3,6 +3,7 @@
 
 #include <QString>
 #include "core/requestdata.h"
+#include <QDate>
 
 class Form
 {
@@ -16,6 +17,7 @@ public:
     virtual QString stringValue(const QString&name)=0;
     virtual int intValue(const QString&name)=0;
     virtual QDate dateValue(const QString&name)=0;
+    virtual bool isValueEmpty(const QString&name);
     void setRequestData(RequestData *value);
 };
 
