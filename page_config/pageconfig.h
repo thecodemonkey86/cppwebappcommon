@@ -7,15 +7,15 @@
 
 class WEBAPPCOMMONSHARED_EXPORT PageConfig
 {
-protected:
-    AbstractPageController *controllerInstance;
+//protected:
+//    AbstractPageController *controllerInstance;
 public:
     PageConfig();
     virtual ~PageConfig();
-    virtual AbstractPageController * getController()=0;
-    virtual AbstractTemplate * getTemplate()=0;
+    virtual unique_ptr<AbstractPageController> getController()=0;
+    virtual unique_ptr<AbstractTemplate> getTemplate()=0;
     virtual QString controllerName() = 0;
-    virtual HtmlTemplate* htmlTemplate(AbstractTemplate*body);
+    virtual unique_ptr<HtmlTemplate> htmlTemplate(unique_ptr<AbstractTemplate>body);
 };
 
 #endif // PAGECONFIG_H

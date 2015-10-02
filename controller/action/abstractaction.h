@@ -7,13 +7,16 @@
 #include "core/serverdata.h"
 #include "model/sessiondata.h"
 
+#include <memory>
+using namespace std;
+
 class MultiActionController;
 
 class AbstractAction
 {
 protected:
     MultiActionController*parent;
-    AbstractView* view();
+    shared_ptr<AbstractView> view();
     ServerData * serverData;
      RequestData * requestData;
      SessionData * sessionData;
@@ -21,7 +24,7 @@ public:
     AbstractAction();
     virtual ~AbstractAction();
     virtual QString getName()=0;
-    virtual MvcMessage* run()=0;
+    virtual unique_ptr<MvcMessage> run()=0;
     MultiActionController *getParent() const;
     AbstractAction* setParent(MultiActionController *value);
     AbstractAction* setServerData(ServerData *value);

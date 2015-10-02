@@ -105,7 +105,7 @@ QString SessionData::stringValue(const QString &name)
              return QString::fromUtf8(v->getValue().val());
          }
     }
-    throw new QtException("no such value");
+    throw QtException("no such value");
 }
 
 

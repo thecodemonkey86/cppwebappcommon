@@ -6,11 +6,11 @@
 class PostFormAction : public AbstractAction, public FormPost
 {
 protected:
-    virtual MvcMessage* onSubmit()=0;
-    virtual MvcMessage* onNonSubmit()=0;
+    virtual unique_ptr<MvcMessage> onSubmit()=0;
+    virtual unique_ptr<MvcMessage> onNonSubmit()=0;
 public:
     PostFormAction(const QString&submitFieldName=QString("submit"));
-    virtual MvcMessage* run();
+    virtual unique_ptr<MvcMessage> run();
     virtual AbstractAction *setRequestData(RequestData *value);
 };
 

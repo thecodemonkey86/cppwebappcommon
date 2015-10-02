@@ -12,10 +12,10 @@ HtmlTemplate::~HtmlTemplate()
 
 }
 
-void HtmlTemplate::update(MvcMessage* updateMsg)
+void HtmlTemplate::update(unique_ptr<MvcMessage> updateMsg)
 {
     renderHeader();
-    bodyTemplate->update(updateMsg);
+    bodyTemplate->update(move(updateMsg));
     renderFooter();
 }
 
@@ -42,14 +42,14 @@ void HtmlTemplate::outEndTag(const QString &tag)
     output<<tag;
     output<<QChar('>');
 }
-AbstractTemplate *HtmlTemplate::getBodyTemplate() const
-{
-    return this->bodyTemplate;
-}
+//shared_ptr<AbstractTemplate> HtmlTemplate::getBodyTemplate() const
+//{
+//    return this->bodyTemplate;
+//}
 
-void HtmlTemplate::setBodyTemplate(AbstractTemplate *bodyTemplate)
+void HtmlTemplate::setBodyTemplate(unique_ptr<AbstractTemplate> bodyTemplate)
 {
-    this->bodyTemplate = bodyTemplate;
+    this->bodyTemplate = move(bodyTemplate);
 }
 
 void HtmlTemplate::renderHeader()

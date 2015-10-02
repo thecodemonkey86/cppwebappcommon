@@ -7,8 +7,8 @@
 class PostFormController : public AbstractPageController, public FormPost
 {
 protected:
-    virtual MvcMessage* run()=0;
-    virtual MvcMessage* runSubmitted()=0;
+    virtual unique_ptr<MvcMessage> run()=0;
+    virtual unique_ptr<MvcMessage> runSubmitted()=0;
 public:
     PostFormController(const QString&submitFieldName=QString("submit"));
     virtual ~PostFormController();

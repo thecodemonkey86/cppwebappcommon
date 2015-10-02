@@ -7,12 +7,12 @@ MultiActionController::MultiActionController()
 
 }
 
- MvcMessage* MultiActionController::run()
+unique_ptr<MvcMessage> MultiActionController::run()
 {
     if (actions.contains(requestData->getString(QString("action")))) {
        return  actions.value(requestData->getString(QString("action")))->run();
     } else {
-        throw new QtException("No such action");
+        throw QtException("No such action");
     }
 
 }

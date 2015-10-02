@@ -2,7 +2,7 @@
 
 PageConfig::PageConfig()
 {
-    this->controllerInstance = nullptr;
+//    this->controllerInstance = nullptr;
 }
 
 PageConfig::~PageConfig()
@@ -10,10 +10,10 @@ PageConfig::~PageConfig()
 
 }
 
-HtmlTemplate *PageConfig::htmlTemplate(AbstractTemplate *body)
+unique_ptr<HtmlTemplate>PageConfig::htmlTemplate(unique_ptr<AbstractTemplate>body)
 {
     HtmlTemplate * html = new HtmlTemplate();
-    html->setBodyTemplate(body);
-    return html;
+    html->setBodyTemplate(move(body));
+    return unique_ptr<HtmlTemplate>(html);
 }
 

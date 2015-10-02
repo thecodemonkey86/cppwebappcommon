@@ -1,5 +1,5 @@
 #include "mvcmessage.h"
-
+#include <QDebug>
 
 
 
@@ -22,6 +22,6 @@ MvcMessage::MvcMessage()
 
 MvcMessage::~MvcMessage()
 {
-    
+    qDebug()<<"destr mvc";
 }
 
