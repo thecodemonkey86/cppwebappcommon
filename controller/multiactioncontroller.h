@@ -1,7 +1,7 @@
 #ifndef MULTIACTIONCONTROLLER_H
 #define MULTIACTIONCONTROLLER_H
 
-#include <QMap>
+#include <QHash>
 #include "controller/action/abstractaction.h"
 
 #include "controller/abstractpagecontroller.h"
@@ -11,8 +11,8 @@ class AbstractAction;
 class MultiActionController : public AbstractPageController
 {
 protected:
-    QMap<QString, AbstractAction*> actions;
-  virtual unique_ptr<MvcMessage> run();
+    QHash<QString, AbstractAction*> actions;
+  virtual MvcMessage& run();
 public:
     MultiActionController();
 

@@ -2,7 +2,7 @@
 #define PAGEMANAGER_H
 
 #include <QString>
-#include <QMap>
+#include <QHash>
 #include "model/beans/session.h"
 
 #include "page_config/pageconfig.h"
@@ -11,10 +11,10 @@ class PageManager
 {
 
 protected:
-     static QMap<QString, shared_ptr<PageManager>> instancesPerSession;
+     static QHash<QString, shared_ptr<PageManager>> instancesPerSession;
 
      Session*session;
-    QMap<QString,shared_ptr<PageConfig>> pages;
+    QHash<QString,shared_ptr<PageConfig>> pages;
 
 public:
     PageManager(Session*session);

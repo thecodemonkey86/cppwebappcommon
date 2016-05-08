@@ -1,9 +1,9 @@
 #ifndef STRINGKEYARRAYPARAM_H
 #define STRINGKEYARRAYPARAM_H
-#include <QMap>
+#include <QHash>
 #include "abstractstringkeyarrayparam.h"
 
-class StringKeyArrayParam : public QMap<QString,AbstractStringKeyArrayParam*>, public AbstractStringKeyArrayParam
+class StringKeyArrayParam : public QHash<QString,AbstractStringKeyArrayParam*>, public AbstractStringKeyArrayParam
 {
 protected:
     QString name;

@@ -8,37 +8,37 @@
 #include "model/beans/session.h"
 #include "core/httpheader.h"
 
-Session *SessionData::getSession()
-{
-    return session;
-}
+//Session *SessionData::getSession()
+//{
+//    return session;
+//}
 
 
-SessionData::SessionData(const QString &sessionId, const QString &ipAddress)
-{
-    BeanQuery<Session> * query = Session::createQuery()->select()->where("id=?",sessionId)->andWhere("md5_hash=?", QCryptographicHash::hash(ipAddress.toUtf8(),QCryptographicHash::Md5));
+//SessionData::SessionData(const QString &sessionId, const QString &ipAddress)
+//{
+//    BeanQuery<Session> * query = Session::createQuery()->select()->where("id=?",sessionId)->andWhere("md5_hash=?", QCryptographicHash::hash(ipAddress.toUtf8(),QCryptographicHash::Md5));
 
-    this->session = query->queryOne();
-    if (this->session == nullptr) {
-        this->session = Session::createNew()
-            ->setId(Util::randString(64))
-            ->setMd5Hash(QCryptographicHash::hash(ipAddress.toUtf8(),QCryptographicHash::Md5))
-            ->setExpirationDate(QDateTime::currentDateTime().addDays(1));
-        this->session->save();
-    }
-    HttpHeader::setCookie(sessCookieName,session->getId());
+//    this->session = query->queryOne();
+//    if (this->session == nullptr) {
+//        this->session = Session::createNew()
+//            ->setId(Util::randString(64))
+//            ->setMd5Hash(QCryptographicHash::hash(ipAddress.toUtf8(),QCryptographicHash::Md5))
+//            ->setExpirationDate(QDateTime::currentDateTime().addDays(1));
+//        this->session->save();
+//    }
+//    HttpHeader::setCookie(sessCookieName,session->getId());
 
-    delete query;
-}
+//    delete query;
+//}
 
-SessionData::~SessionData()
-{
-    delete this->session;
-}
-const char *SessionData::getSessionCookieName()
-{
-    return sessCookieName;
-}
+//SessionData::~SessionData()
+//{
+//    delete this->session;
+//}
+//const char *SessionData::getSessionCookieName()
+//{
+//    return sessCookieName;
+//}
 
 
 /*void SessionData::init()

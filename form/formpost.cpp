@@ -4,7 +4,7 @@
 
 FormPost::FormPost(const QString&submitFieldName) : Form(submitFieldName)
 {
-
+    request = nullptr;
 }
 
 

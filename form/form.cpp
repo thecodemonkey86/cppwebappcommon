@@ -1,6 +1,16 @@
 #include "form.h"
 #include "exception/qtexception.h"
 
+
+void Form::setSessionData(SessionData *value)
+{
+    sessionData = value;
+}
+
+void Form::setServerData(ServerData *value)
+{
+    serverData = value;
+}
 Form::Form(const QString&submitFieldName)
 {
     this->submitFieldName = submitFieldName;

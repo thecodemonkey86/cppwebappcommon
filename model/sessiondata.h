@@ -3,7 +3,7 @@
 
 #include <QString>
 #include <QByteArray>
-#include <QMap>
+#include <QHash>
 
 class Session;
 
@@ -11,7 +11,7 @@ class SessionData
 {
 protected:
 
-    Session*session;
+//    Session*session;
 
     static const char * sessCookieName;
 
@@ -21,8 +21,8 @@ public:
 //    void set(const  QString&name,const QByteArray&value);
 //    bool existsValue(const  QString&name);
 //    QString stringValue(const  QString&name);
-    Session *getSession();
-    static const char *getSessionCookieName();
+//    Session *getSession();
+//    static const char *getSessionCookieName();
 };
 
 #endif // SESSIONDATA_H

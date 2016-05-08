@@ -16,7 +16,6 @@ DEFINES += WEBAPPCOMMON_LIBRARY
 SOURCES += webappcommon.cpp \
     view/template/abstracttemplate.cpp \
     view/template/htmltemplate.cpp \
-    view/abstractview.cpp \
     qtcout.cpp \
     core/requestdata.cpp \
     core/serverdata.cpp \
@@ -28,29 +27,26 @@ SOURCES += webappcommon.cpp \
     core/arrayrequestparam.cpp \
     util/util.cpp \
     controller/abstractcontroller.cpp \
-#    controller_factory/controllerfactory.cpp \
     core/httpheader.cpp \
     view/template/formhtmltemplate.cpp \
     core/abstractobjectfactory.cpp \
-#    controller/controllermanager.cpp \
-#    controller_factory/controllerfactory.cpp \
     page_config/pageconfig.cpp \
     page_config/pagemanager.cpp \
     mvc/mvcmessage.cpp \
-    view/formview.cpp \
     view/template/formtemplate.cpp \
     view/template/compiledtemplate.cpp \
     controller/abstractpagecontroller.cpp \
     controller/action/abstractaction.cpp \
-    model/beans/session.cpp \
-    model/beans/sessionvalue.cpp \
     model/sessiondata.cpp \
     controller/multiactioncontroller.cpp \
     mvc/pagemvcmessage.cpp \
-    controller/postformcontroller.cpp \
-    controller/action/postformaction.cpp \
-    controller/form/formpost.cpp \
-    controller/form/form.cpp
+    form/formpost.cpp \
+    form/formget.cpp \
+    form/form.cpp \
+    view/formview.cpp \
+    view/abstractview.cpp \
+    controller/formpagecontroller.cpp
+
 
 HEADERS += webappcommon.h\
         webappcommon_global.h \
@@ -72,26 +68,24 @@ HEADERS += webappcommon.h\
     view/template/formhtmltemplate.h \
     core/objectfactory.h \
     core/abstractobjectfactory.h \
-#    controller/controllermanager.h \
     page_config/pageconfig.h \
     page_config/pagemanager.h \
     mvc/mvcmessage.h \
     view/formview.h \
     view/template/formtemplate.h \
-view/template/htmltemplate.h \
-view/template/abstracttemplate.h \
+    view/template/htmltemplate.h \
+    view/template/abstracttemplate.h \
     view/template/compiledtemplate.h \
     controller/action/abstractaction.h \
     controller/abstractpagecontroller.h \
-    model/beans/session.h \
-    model/beans/sessionvalue.h \
     model/sessiondata.h \
     controller/multiactioncontroller.h \
     mvc/pagemvcmessage.h \
-    controller/postformcontroller.h \
-    controller/action/postformaction.h \
-    controller/form/formpost.h \
-    controller/form/form.h
+    form/formpost.h \
+    form/formget.h \
+    form/form.h \
+    controller/formpagecontroller.h
+
  #core/stringgetparam.h
 
 unix {

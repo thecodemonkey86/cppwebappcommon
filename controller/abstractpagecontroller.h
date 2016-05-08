@@ -18,7 +18,7 @@ protected:
     ServerData * serverData;
      RequestData * requestData;
      SessionData * sessionData;
-     virtual unique_ptr<MvcMessage> run()=0;
+     virtual MvcMessage & run()=0;
 public:
     AbstractPageController();
     virtual ~AbstractPageController();

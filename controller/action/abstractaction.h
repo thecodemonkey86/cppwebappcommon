@@ -24,12 +24,12 @@ public:
     AbstractAction();
     virtual ~AbstractAction();
     virtual QString getName()=0;
-    virtual unique_ptr<MvcMessage> run()=0;
+    virtual MvcMessage& run()=0;
     MultiActionController *getParent() const;
     AbstractAction* setParent(MultiActionController *value);
-    AbstractAction* setServerData(ServerData *value);
+    virtual AbstractAction* setServerData(ServerData *value);
     virtual AbstractAction* setRequestData(RequestData *value);
-    AbstractAction* setSessionData(SessionData *value);
+    virtual AbstractAction* setSessionData(SessionData *value);
     QUrl getUrl();
 };
 

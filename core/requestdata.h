@@ -2,7 +2,7 @@
 #define REQUESTDATA_H
 
 #include <QString>
-#include <QMap>
+#include <QHash>
 #include "core/requestparam.h"
 #include "arrayrequestparam.h"
 #include "fcgio.h"
@@ -12,10 +12,10 @@ class RequestData
 {
 private:
 
-    QMap<QString, AbstractRequestParam*> getParams;
-    QMap<QString, AbstractRequestParam*> postParams;
-    QMap<QString, QString> cookies;
-    void parseParams(const QString&requestString, QMap<QString, AbstractRequestParam*>& params);
+    QHash<QString, AbstractRequestParam*> getParams;
+    QHash<QString, AbstractRequestParam*> postParams;
+    QHash<QString, QString> cookies;
+    void parseParams(const QString&requestString, QHash<QString, AbstractRequestParam*>& params);
     void parseGetParams(const QUrl& url);
     void parsePostParams(const FCGX_Request & request);
     void parseCookies(const FCGX_Request & request);
@@ -23,10 +23,11 @@ public:
  RequestData(const FCGX_Request & request, const QUrl &url);
     ~RequestData();
     QString getString(const QString&name);
-    QString postString(const QString&name);
+    QString postString(const QString&name, bool required = false);
     int getInt(const QString&name);
     int postInt(const QString&name);
     double postDouble(const QString&name);
+    double getDouble(const QString&name);
     bool postBool(const QString&name);
     ArrayRequestParam * getArray(const QString&name);
     bool isGetParamSet(const QString&name);

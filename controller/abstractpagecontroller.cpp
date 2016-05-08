@@ -29,11 +29,9 @@ AbstractPageController::~AbstractPageController()
 
 void AbstractPageController::runController()
 {
-    unique_ptr<MvcMessage> msg = run();
-    if (msg  != nullptr) {
-        msg->setSessionData(sessionData);
-        view->update(move(msg));
-    }
+    MvcMessage & msg = run();
+    msg.setSessionData(sessionData);
+    view->update(msg);
 }
 
 AbstractPageController *AbstractPageController::setServerData(ServerData *value)

@@ -31,7 +31,7 @@ RequestData::~RequestData()
  * @param requestString urldecoded
  * @param params destination
  */
-void RequestData::parseParams(const QString&requestString, QMap<QString, AbstractRequestParam *> &params)
+void RequestData::parseParams(const QString&requestString, QHash<QString, AbstractRequestParam *> &params)
 {
     if ( requestString.isEmpty()) {
         return;
@@ -109,7 +109,7 @@ void RequestData::parseParams(const QString&requestString, QMap<QString, Abstrac
 
 void RequestData::parseGetParams(const QUrl& url)
 {
-//        getParams = new QMap<QString,AbstractRequestParam*>();
+//        getParams = new QHash<QString,AbstractRequestParam*>();
     QString requestString = url.query();
     parseParams(requestString,getParams);
 
@@ -120,7 +120,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
 {
     if (QString(FCGX_GetParam("REQUEST_METHOD", request.envp))==QString("POST")) {
 //        if (postParams == nullptr) {
-//             postParams = new QMap<QString,AbstractRequestParam*>();
+//             postParams = new QHash<QString,AbstractRequestParam*>();
 //        } else {
 //            postParams.clear();
 //        }
@@ -158,7 +158,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
 
 void RequestData::parseCookies(const FCGX_Request & request)
 {
-//    cookies = new QMap<QString,QString>();
+//    cookies = new QHash<QString,QString>();
     QString cookieStr(FCGX_GetParam("HTTP_COOKIE", request.envp));
 if (cookieStr.trimmed().length()>0) {
 QStringList cookieStrLst =cookieStr.split(QChar(';'));
@@ -185,7 +185,7 @@ QString RequestData::getString(const QString & name)
     }
 }
 
-QString RequestData::postString(const QString &name)
+QString RequestData::postString(const QString &name, bool required)
 {
     if (postParams.contains(name)) {
         RequestParam<QString> * p = dynamic_cast< RequestParam<QString>* >(postParams.value(name));
@@ -193,8 +193,10 @@ QString RequestData::postString(const QString &name)
             throw QtException("Parameter is not a simple value");
         }
         return p->getValue();
+    } else if (required){
+        throw QtException(QString("Parameter %1 does not exist").arg(name));
     } else {
-        throw QtException("Parameter does not exist");
+        return QString("");
     }
 }
 
@@ -219,6 +221,15 @@ int RequestData::postInt(const QString & name)
 double RequestData::postDouble(const QString &name)
 {
     QString value(postString(name));
+    bool ok = false;
+    double d = value.replace(QChar(','),QChar('.')).toDouble(&ok);
+    if (!ok) throw QtException("Parameter is not a number");
+    return d;
+}
+
+double RequestData::getDouble(const QString &name)
+{
+    QString value(getString(name));
     bool ok = false;
     double d = value.replace(QChar(','),QChar('.')).toDouble(&ok);
     if (!ok) throw QtException("Parameter is not a number");

@@ -12,17 +12,13 @@ HtmlTemplate::~HtmlTemplate()
 
 }
 
-void HtmlTemplate::update(unique_ptr<MvcMessage> updateMsg)
+void HtmlTemplate::update(const MvcMessage& updateMsg)
 {
     renderHeader();
-    bodyTemplate->update(move(updateMsg));
+    bodyTemplate->update(updateMsg);
     renderFooter();
 }
 
-void HtmlTemplate::render()
-{
-
-}
 
 void HtmlTemplate::outAttr(const QString &attr, const QString &value)
 {
@@ -49,7 +45,7 @@ void HtmlTemplate::outEndTag(const QString &tag)
 
 void HtmlTemplate::setBodyTemplate(unique_ptr<AbstractTemplate> bodyTemplate)
 {
-    this->bodyTemplate = move(bodyTemplate);
+    this->bodyTemplate = std::move(bodyTemplate);
 }
 
 void HtmlTemplate::renderHeader()

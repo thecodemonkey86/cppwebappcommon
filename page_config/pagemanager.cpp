@@ -41,6 +41,6 @@ unique_ptr<AbstractPageController> PageManager::getController(const QString &nam
     return getInstance(session)->getCfg(name)->getController();
 }
 
-QMap<QString, shared_ptr<PageManager>> PageManager::instancesPerSession;
+QHash<QString, shared_ptr<PageManager>> PageManager::instancesPerSession;
 
 

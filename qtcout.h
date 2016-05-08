@@ -21,6 +21,11 @@ public:
         cout <<d;
         return *this;
     }
+    const QtCout & operator <<(char c) const {
+       // qDebug()<<s;
+        cout <<c;
+        return *this;
+    }
 };
 
 #endif // QTCOUT_H

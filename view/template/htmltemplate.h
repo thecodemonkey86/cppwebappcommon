@@ -3,14 +3,16 @@
 
 #include "abstracttemplate.h"
 #include <QSet>
+#include <memory>
+
+using namespace std;
 
 class WEBAPPCOMMONSHARED_EXPORT HtmlTemplate : public AbstractTemplate
 {
 public:
     HtmlTemplate();
     ~HtmlTemplate();
-    virtual void update(unique_ptr<MvcMessage> updateMsg);
-    virtual void render();
+    virtual void update(const MvcMessage& updateMsg);
     void outAttr(const QString &attr, const QString &value);
      void outBeginTag(const QString &tag);
      void outEndTag(const QString &tag);
