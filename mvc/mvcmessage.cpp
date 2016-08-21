@@ -22,6 +22,6 @@ MvcMessage::MvcMessage()
 
 MvcMessage::~MvcMessage()
 {
-    qDebug()<<"destr mvc";
+    //qDebug()<<"destr mvc";
 }
 

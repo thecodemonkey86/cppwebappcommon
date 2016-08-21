@@ -10,7 +10,7 @@ public:
     ServerData(const FCGX_Request & request);
     virtual ~ServerData();
 
-    QUrl getRequestUrl();
+    QUrl& getRequestUrl();
     QString getIp();
 
 private:

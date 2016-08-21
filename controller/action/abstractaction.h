@@ -5,7 +5,7 @@
 #include <QUrl>
 #include "core/requestdata.h"
 #include "core/serverdata.h"
-#include "model/sessiondata.h"
+#include "core/sessiondata.h"
 
 #include <memory>
 using namespace std;
@@ -24,7 +24,7 @@ public:
     AbstractAction();
     virtual ~AbstractAction();
     virtual QString getName()=0;
-    virtual MvcMessage& run()=0;
+    virtual unique_ptr<MvcMessage> run()=0;
     MultiActionController *getParent() const;
     AbstractAction* setParent(MultiActionController *value);
     virtual AbstractAction* setServerData(ServerData *value);

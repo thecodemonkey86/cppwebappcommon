@@ -1,8 +1,18 @@
 #include "pageconfig.h"
 
+QStringList PageConfig::getCssFiles() const
+{
+    return cssFiles;
+}
+
+QStringList PageConfig::getJsFiles() const
+{
+    return jsFiles;
+}
+
 PageConfig::PageConfig()
 {
-//    this->controllerInstance = nullptr;
+    //    this->controllerInstance = nullptr;
 }
 
 PageConfig::~PageConfig()
@@ -10,10 +20,20 @@ PageConfig::~PageConfig()
 
 }
 
-unique_ptr<HtmlTemplate>PageConfig::htmlTemplate(unique_ptr<AbstractTemplate>body)
+void PageConfig::addCssFile(const QString &cssFile)
 {
-    HtmlTemplate * html = new HtmlTemplate();
-    html->setBodyTemplate(move(body));
-    return unique_ptr<HtmlTemplate>(html);
+    this->cssFiles.append(cssFile);
 }
+
+void PageConfig::addJsFile(const QString &jsFile)
+{
+    this->jsFiles.append(jsFile);
+}
+
+//unique_ptr<HtmlTemplate>PageConfig::htmlTemplate(unique_ptr<AbstractTemplate>body)
+//{
+//    HtmlTemplate * html = new HtmlTemplate();
+//    html->setBodyTemplate(move(body));
+//    return unique_ptr<HtmlTemplate>(html);
+//}
 

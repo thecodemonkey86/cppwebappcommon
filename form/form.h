@@ -4,7 +4,7 @@
 #include <QString>
 #include "core/requestdata.h"
 #include "core/serverdata.h"
-#include "model/sessiondata.h"
+#include "core/sessiondata.h"
 #include <QDate>
 
 class Form
@@ -15,7 +15,7 @@ protected:
     SessionData * sessionData;
 
     QString submitFieldName;
-    virtual bool isSubmitted()=0;
+
 public:
     Form(const QString&submitFieldName);
     virtual ~Form();
@@ -24,6 +24,7 @@ public:
     virtual QDate dateValue(const QString&name)=0;
     virtual double doubleValue(const QString&name)=0;
     virtual bool isValueEmpty(const QString&name);
+    virtual bool isSubmitted()=0;
     void setRequestData(RequestData *value);
     void setSessionData(SessionData *value);
     void setServerData(ServerData *value);

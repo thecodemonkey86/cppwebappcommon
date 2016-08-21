@@ -17,6 +17,16 @@ QUrl AbstractPageController::getUrl()
 {
     return QUrl("/?controller="+getName());
 }
+
+Sql *AbstractPageController::getSql() const
+{
+    return sql;
+}
+
+void AbstractPageController::setSql(Sql *value)
+{
+    sql = value;
+}
 AbstractPageController::AbstractPageController()
 {
     
@@ -29,9 +39,9 @@ AbstractPageController::~AbstractPageController()
 
 void AbstractPageController::runController()
 {
-    MvcMessage & msg = run();
-    msg.setSessionData(sessionData);
-    view->update(msg);
+    auto msg = run();
+    msg->setSessionData(sessionData);
+    view->update(std::move(msg));
 }
 
 AbstractPageController *AbstractPageController::setServerData(ServerData *value)
@@ -48,10 +58,4 @@ AbstractPageController *AbstractPageController::setRequestData(RequestData *valu
 
 
 
-void AbstractPageController::registerTemplate(unique_ptr<AbstractTemplate>view)
-{
-   unique_ptr<HtmlTemplate > html(new HtmlTemplate());
-   html->setBodyTemplate(move(view));
-   AbstractController::registerView(shared_ptr<HtmlTemplate> (move(html)));
-}
 

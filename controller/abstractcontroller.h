@@ -12,11 +12,10 @@ class WEBAPPCOMMONSHARED_EXPORT AbstractController
 public:
     AbstractController();
     ~AbstractController();
-    virtual void registerView(const shared_ptr<AbstractView>& view);
-    shared_ptr<AbstractView> getView() const;
+    virtual void registerView( unique_ptr<AbstractView> view);
+//    shared_ptr<AbstractView> getView() const;
 
-protected: shared_ptr<AbstractView> view;
-
+protected: unique_ptr<AbstractView> view;
 
 };
 

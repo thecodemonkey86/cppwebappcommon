@@ -1,31 +1,43 @@
 #ifndef HTMLTEMPLATE_H
 #define HTMLTEMPLATE_H
 
-#include "abstracttemplate.h"
+#include "../abstractview.h"
 #include <QSet>
 #include <memory>
+#include "core/httpheader.h"
+#include  "fastcgicout.h"
+#include "util/orderedset.h"
 
 using namespace std;
 
-class WEBAPPCOMMONSHARED_EXPORT HtmlTemplate : public AbstractTemplate
+class WEBAPPCOMMONSHARED_EXPORT HtmlTemplate : public AbstractView
 {
 public:
-    HtmlTemplate();
-    ~HtmlTemplate();
-    virtual void update(const MvcMessage& updateMsg);
-    void outAttr(const QString &attr, const QString &value);
-     void outBeginTag(const QString &tag);
-     void outEndTag(const QString &tag);
-//     shared_ptr<AbstractTemplate> getBodyTemplate() const;
-     void setBodyTemplate(unique_ptr<AbstractTemplate> bodyTemplate);
+    virtual void update(unique_ptr<MvcMessage>) override;
 
+    void outAttr(const QString &attr, const QString &value);
+    inline void outBeginTag(const QString &tag);
+    inline void outBeginTagWithAttrs(const QString &tag);
+    inline void outEndTag(const QString &tag);
+   // virtual void beforeRender();
 protected:
+     protected: static FastCgiCout output;
+
+     virtual void render();
+     virtual void renderBody()=0;
      void renderHeader();
      void renderFooter();
+     virtual void renderInlineJs();
+     virtual void renderInlineCss();
 
-     unique_ptr<AbstractTemplate> bodyTemplate;
-     QSet<QString> includeCss;
-     QSet<QString> includeJs;
+     OrderedSet<QString> includeCss;
+     OrderedSet<QString> includeJs;
+
+     // AbstractTemplate interface
+public:
+     virtual QString getHttpContentType();
+     void addCssFiles(const QStringList&cssFiles);
+     void addJsFiles(const QStringList&jssFiles);
 };
 
 #endif // HTMLTEMPLATE_H

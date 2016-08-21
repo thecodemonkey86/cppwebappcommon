@@ -1,13 +1,14 @@
 #ifndef COMPILEDTEMPLATE_H
 #define COMPILEDTEMPLATE_H
 
-#include "abstracttemplate.h"
+#include "htmltemplate.h"
 
-class CompiledTemplate : public AbstractTemplate
+class CompiledTemplate : public HtmlTemplate
 {
 public:
     CompiledTemplate();
-     virtual void render()=0;
+    virtual ~CompiledTemplate();
+
 };
 
 #endif // COMPILEDTEMPLATE_H

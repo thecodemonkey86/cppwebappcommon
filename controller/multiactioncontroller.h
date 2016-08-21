@@ -12,7 +12,7 @@ class MultiActionController : public AbstractPageController
 {
 protected:
     QHash<QString, AbstractAction*> actions;
-  virtual MvcMessage& run();
+  virtual unique_ptr<MvcMessage> run();
 public:
     MultiActionController();
 

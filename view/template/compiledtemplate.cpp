@@ -5,3 +5,8 @@ CompiledTemplate::CompiledTemplate()
 
 }
 
+CompiledTemplate::~CompiledTemplate()
+{
+
+}
+

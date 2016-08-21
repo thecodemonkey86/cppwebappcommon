@@ -26,10 +26,11 @@ double FormGet::doubleValue(const QString &name)
 
 QDate FormGet::dateValue(const QString &name)
 {
-    if (name.count(QChar('-')) == 2) {
-        return QDate::fromString(request->getString(name),QString("yyyy-MM-dd"));
-    } else if (name.count(QChar('.')) == 2) {
-        return QDate::fromString(request->getString(name),QString("dd.MM.yyyy"));
+    QString d(request->getString(name));
+    if (d.count(QChar('-')) == 2) {
+        return QDate::fromString(d,QString("yyyy-MM-dd"));
+    } else if (d.count(QChar('.')) == 2) {
+        return QDate::fromString(d,QString("dd.MM.yyyy"));
     } else {
         throw QtException("Invalid date format");
     }

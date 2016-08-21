@@ -1,6 +1,6 @@
 #ifndef MVCMESSAGE_H
 #define MVCMESSAGE_H
-#include "model/sessiondata.h"
+#include "core/sessiondata.h"
 
 class MvcMessage
 {
