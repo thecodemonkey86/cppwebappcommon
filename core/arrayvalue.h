@@ -1,9 +1,9 @@
 #ifndef ARRAYVALUE_H
 #define ARRAYVALUE_H
-
+#include "webappcommon_global.h"
 #include "abstractstringkeyarrayparam.h"
 
-class ArrayValue : public AbstractStringKeyArrayParam
+class WEBAPPCOMMONSHARED_EXPORT ArrayValue : public AbstractStringKeyArrayParam
 {
 protected:
     QString value;

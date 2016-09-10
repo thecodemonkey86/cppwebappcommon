@@ -3,8 +3,9 @@
 #include "fcgio.h"
 #include <QString>
 #include <QUrl>
+#include "webappcommon_global.h"
 
-class ServerData
+class WEBAPPCOMMONSHARED_EXPORT ServerData
 {
 public:
     ServerData(const FCGX_Request & request);

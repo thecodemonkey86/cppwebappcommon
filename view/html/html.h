@@ -2,8 +2,8 @@
 #define HTML_H
 #include "htmlselect.h"
 #include "htmlselectoption.h"
-
-class Html
+#include "webappcommon_global.h"
+class WEBAPPCOMMONSHARED_EXPORT Html
 {
 protected :
      Html();

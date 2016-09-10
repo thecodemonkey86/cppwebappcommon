@@ -7,8 +7,8 @@
 #include <QJsonObject>
 #include "requestdata.h"
 #include "serverdata.h"
-
-class SessionData
+#include "webappcommon_global.h"
+class WEBAPPCOMMONSHARED_EXPORT SessionData
 {
 protected:
 

@@ -2,8 +2,8 @@
 #define STRINGKEYARRAYPARAM_H
 #include <QHash>
 #include "abstractstringkeyarrayparam.h"
-
-class StringKeyArrayParam : public QHash<QString,AbstractStringKeyArrayParam*>, public AbstractStringKeyArrayParam
+#include "webappcommon_global.h"
+class WEBAPPCOMMONSHARED_EXPORT StringKeyArrayParam : public QHash<QString,AbstractStringKeyArrayParam*>, public AbstractStringKeyArrayParam
 {
 protected:
     QString name;

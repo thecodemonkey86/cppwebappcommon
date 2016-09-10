@@ -8,7 +8,7 @@
 #include "fcgio.h"
 #include <QUrl>
 
-class RequestData
+class WEBAPPCOMMONSHARED_EXPORT RequestData
 {
 private:
 

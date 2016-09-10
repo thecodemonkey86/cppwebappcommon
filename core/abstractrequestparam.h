@@ -1,9 +1,9 @@
 #ifndef ABSTRACTREQUESTPARAM_H
 #define ABSTRACTREQUESTPARAM_H
-
+#include "webappcommon_global.h"
 #include <QString>
 
-class AbstractRequestParam
+class WEBAPPCOMMONSHARED_EXPORT AbstractRequestParam
 {
 protected:
 

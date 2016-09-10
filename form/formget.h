@@ -2,8 +2,8 @@
 #define FORMGET_H
 #include "form.h"
 #include <QDate>
-
-class FormGet : public Form
+#include "webappcommon_global.h"
+class WEBAPPCOMMONSHARED_EXPORT FormGet : public Form
 {
 protected: virtual bool isSubmitted();
 public:

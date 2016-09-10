@@ -3,8 +3,8 @@
 
 #include <QString>
 #include "abstractrequestparam.h"
-
-class AbstractStringKeyArrayParam : public AbstractRequestParam
+#include "webappcommon_global.h"
+class WEBAPPCOMMONSHARED_EXPORT AbstractStringKeyArrayParam : public AbstractRequestParam
 {
 public:
     AbstractStringKeyArrayParam();

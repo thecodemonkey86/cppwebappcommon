@@ -3,8 +3,8 @@
 
 #include <QString>
 #include "fastcgicout.h"
-
-class HtmlRenderable
+#include "webappcommon_global.h"
+class WEBAPPCOMMONSHARED_EXPORT HtmlRenderable
 {
 protected:
     FastCgiCout out;

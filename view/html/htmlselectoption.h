@@ -4,8 +4,8 @@
 #include "htmlrenderable.h"
 #include "htmltag.h"
 #include "htmltext.h"
-
-class HtmlSelectOption : public HtmlTag
+#include "webappcommon_global.h"
+class WEBAPPCOMMONSHARED_EXPORT  HtmlSelectOption : public HtmlTag
 {
     QString display;
 

@@ -32,12 +32,14 @@ protected:
 
      OrderedSet<QString> includeCss;
      OrderedSet<QString> includeJs;
-
+    QString baseUrl;
      // AbstractTemplate interface
 public:
      virtual QString getHttpContentType();
      void addCssFiles(const QStringList&cssFiles);
      void addJsFiles(const QStringList&jssFiles);
+     QString getBaseUrl() const;
+     void setBaseUrl(const QString &value);
 };
 
 #endif // HTMLTEMPLATE_H

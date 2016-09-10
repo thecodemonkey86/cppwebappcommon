@@ -6,8 +6,8 @@
 #include "core/serverdata.h"
 #include "core/sessiondata.h"
 #include <QDate>
-
-class Form
+#include "webappcommon_global.h"
+class WEBAPPCOMMONSHARED_EXPORT Form
 {
 protected:
     RequestData* request;

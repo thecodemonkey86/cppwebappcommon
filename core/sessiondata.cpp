@@ -6,7 +6,7 @@
 #include "serverdata.h"
 #include "httpheader.h"
 #include <QFile>
-
+#include <QDir>
 
 const char *SessionData::getSessionCookieName()
 {
@@ -30,8 +30,8 @@ SessionData::SessionData(RequestData * requestData, ServerData * serverData)
     this->sessId = requestData->isCookieSet(SessionData::getSessionCookieName())
     ? requestData->cookieString(SessionData::getSessionCookieName())
     : Util::randString(64);
-    this->sessionFileName = QString("/tmp/sess_%1_%2.json").arg(
-                   QString::fromUtf8(QCryptographicHash::hash(serverData->getIp().toUtf8(),QCryptographicHash::Md5).toHex()),this->sessId);
+    this->sessionFileName = QDir(QDir::tempPath()).absoluteFilePath( QString("sess_%1_%2.json").arg(
+                   QString::fromUtf8(QCryptographicHash::hash(serverData->getIp().toUtf8(),QCryptographicHash::Md5).toHex()),this->sessId));
     QFile f(this->sessionFileName);
     if (f.exists()) {
         if (f.open(QIODevice::ReadOnly)) {

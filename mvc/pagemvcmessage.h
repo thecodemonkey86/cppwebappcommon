@@ -3,10 +3,10 @@
 
 #include "mvc/mvcmessage.h"
 #include "controller/abstractpagecontroller.h"
-
+#include "webappcommon_global.h"
 class AbstractPageController;
 
-class PageMvcMessage : public MvcMessage
+class WEBAPPCOMMONSHARED_EXPORT PageMvcMessage : public MvcMessage
 {
     AbstractPageController * source;
 public:

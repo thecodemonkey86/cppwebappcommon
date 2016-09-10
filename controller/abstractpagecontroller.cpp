@@ -40,8 +40,13 @@ AbstractPageController::~AbstractPageController()
 void AbstractPageController::runController()
 {
     auto msg = run();
-    msg->setSessionData(sessionData);
-    view->update(std::move(msg));
+    if (msg != nullptr) {
+        msg->setSessionData(sessionData);
+        view->update(std::move(msg));
+    } else {
+        view->update(nullptr);
+    }
+
 }
 
 AbstractPageController *AbstractPageController::setServerData(ServerData *value)

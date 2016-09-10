@@ -3,8 +3,8 @@
 
 #include "htmlrenderable.h"
 #include "fastcgicout.h"
-
-class HtmlText : public HtmlRenderable
+#include "webappcommon_global.h"
+class WEBAPPCOMMONSHARED_EXPORT HtmlText : public HtmlRenderable
 {
 protected: QString content;
 

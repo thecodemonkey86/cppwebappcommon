@@ -3,8 +3,9 @@
 #include "requestparam.h"
 #include "abstractrequestparam.h"
 #include <QStringList>
+#include "webappcommon_global.h"
 
-class ArrayRequestParam : public QStringList, public AbstractRequestParam
+class WEBAPPCOMMONSHARED_EXPORT ArrayRequestParam : public QStringList, public AbstractRequestParam
 {
 protected:
     QString name;

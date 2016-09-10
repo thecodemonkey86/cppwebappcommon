@@ -5,10 +5,10 @@
 #include "fastcgicout.h"
 #include <QHash>
 #include "htmlrenderable.h"
-
+#include "webappcommon_global.h"
 #include <vector>
 
-class HtmlAutoCloseTag : public HtmlRenderable
+class WEBAPPCOMMONSHARED_EXPORT HtmlAutoCloseTag : public HtmlRenderable
 {
 protected:
     QString tag;

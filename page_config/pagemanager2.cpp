@@ -5,6 +5,16 @@ PageManager2::PageManager2()
 
 }
 
+QString PageManager2::getBaseUrl()
+{
+    return baseUrl;
+}
+
+void PageManager2::setBaseUrl(const QString &value)
+{
+    baseUrl = value;
+}
+
 void PageManager2::runController(const QString&name, RequestData * requestData, SessionData * sessionData, ServerData * serverData, Sql*sqlCon)
 {
     if (this->pages.contains(name)) {
@@ -15,8 +25,6 @@ void PageManager2::runController(const QString&name, RequestData * requestData, 
         ctrl->setServerData(serverData);
         ctrl->setSql(sqlCon);
         auto tmpl = cfg->getTemplate();
-        tmpl->addCssFiles(cfg->getCssFiles());
-        tmpl->addJsFiles(cfg->getJsFiles());
         cout << "Content-Type: " << tmpl->getHttpContentType().toUtf8().data()<<"\r\n\r\n";
         ctrl->registerView(std::move(tmpl));
         ctrl->runController();
@@ -52,3 +60,4 @@ void PageManager2::addPage(const QString &name, const shared_ptr<PageConfig> &co
 //    return this->pages[name];
 //}
 
+QString PageManager2::baseUrl ="/";

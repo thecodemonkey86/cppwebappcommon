@@ -2,11 +2,11 @@
 #define FORMPAGECONTROLLER_H
 #include "abstractpagecontroller.h"
 #include "form/form.h"
-
+#include "webappcommon_global.h"
 #include <memory>
 using namespace std;
 
-class FormPageController : public AbstractPageController
+class WEBAPPCOMMONSHARED_EXPORT FormPageController : public AbstractPageController
 {
 protected:
     unique_ptr<Form> form;

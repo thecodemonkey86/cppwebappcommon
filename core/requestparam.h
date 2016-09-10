@@ -2,9 +2,9 @@
 #define REQUESTPARAM_H
 
 #include "abstractrequestparam.h"
-
+#include "webappcommon_global.h"
 template <class T>
-class RequestParam : public AbstractRequestParam
+class WEBAPPCOMMONSHARED_EXPORT RequestParam : public AbstractRequestParam
 {
 protected:
     QString name;

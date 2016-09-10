@@ -51,6 +51,10 @@ void HtmlTemplate::renderHeader()
    output<<(QString("<!DOCTYPE html>"));
    outBeginTag("html");
    outBeginTag("head");
+   outBeginTagWithAttrs("base");
+   outAttr("href", baseUrl);
+   output<<('>');
+
    outBeginTagWithAttrs("meta");
    outAttr("charset", "utf-8");
    output << '>';
@@ -63,8 +67,10 @@ void HtmlTemplate::renderHeader()
        output << '>';
 
    }
-   outBeginTag("style");
-    renderInlineCss();
+   outBeginTagWithAttrs("style");
+   outAttr("type", "text/css");
+   output << '>';
+   renderInlineCss();
    outEndTag("style");
 
 
@@ -101,6 +107,16 @@ void HtmlTemplate::renderInlineJs()
 void HtmlTemplate::renderInlineCss()
 {
 
+}
+
+QString HtmlTemplate::getBaseUrl() const
+{
+    return baseUrl;
+}
+
+void HtmlTemplate::setBaseUrl(const QString &value)
+{
+    baseUrl = value;
 }
 
 

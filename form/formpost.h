@@ -2,8 +2,8 @@
 #define FORMPOST_H
 #include "form.h"
 #include <QDate>
-
-class FormPost : public Form
+#include "webappcommon_global.h"
+class WEBAPPCOMMONSHARED_EXPORT FormPost : public Form
 {
 protected: virtual bool isSubmitted();
 public:

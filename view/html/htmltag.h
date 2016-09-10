@@ -4,12 +4,12 @@
 #include <QString>
 #include <QHash>
 #include "htmlrenderable.h"
-
+#include "webappcommon_global.h"
 #include <vector>
 #include <memory>
 using namespace std;
 
-class HtmlTag : public HtmlRenderable
+class WEBAPPCOMMONSHARED_EXPORT HtmlTag : public HtmlRenderable
 {
 protected:
     QString tag;

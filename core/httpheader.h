@@ -2,8 +2,8 @@
 #define HTTPHEADER_H
 
 #include <QString>
-
-class HttpHeader
+#include "webappcommon_global.h"
+class WEBAPPCOMMONSHARED_EXPORT HttpHeader
 {
 protected:
     HttpHeader();

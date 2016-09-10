@@ -3,12 +3,12 @@
 
 #include <QHash>
 #include "controller/action/abstractaction.h"
-
+#include "webappcommon_global.h"
 #include "controller/abstractpagecontroller.h"
 
 class AbstractAction;
 
-class MultiActionController : public AbstractPageController
+class WEBAPPCOMMONSHARED_EXPORT MultiActionController : public AbstractPageController
 {
 protected:
     QHash<QString, AbstractAction*> actions;

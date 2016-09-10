@@ -9,9 +9,10 @@
 #include "core/sessiondata.h"
 #include "sqlcon.h"
 #include <memory>
+#include "webappcommon_global.h"
 using namespace std;
 
-class AbstractPageController : public AbstractController
+class WEBAPPCOMMONSHARED_EXPORT AbstractPageController : public AbstractController
 {
 protected:
     ServerData * serverData;

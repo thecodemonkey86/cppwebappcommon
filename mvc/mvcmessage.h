@@ -1,8 +1,8 @@
 #ifndef MVCMESSAGE_H
 #define MVCMESSAGE_H
 #include "core/sessiondata.h"
-
-class MvcMessage
+#include "webappcommon_global.h"
+class WEBAPPCOMMONSHARED_EXPORT MvcMessage
 {
 protected:
     SessionData *sessionData;

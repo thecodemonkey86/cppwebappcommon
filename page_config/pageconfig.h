@@ -9,8 +9,7 @@ using namespace std;
 
 class WEBAPPCOMMONSHARED_EXPORT PageConfig
 {
-protected:
-    QStringList cssFiles,jsFiles;
+
 
 public:
     PageConfig();
@@ -18,10 +17,7 @@ public:
     virtual unique_ptr<AbstractPageController> createController()=0;
     virtual unique_ptr<HtmlTemplate> getTemplate()=0;
     virtual QString controllerName() = 0;
-    void addCssFile(const  QString & cssFile);
-    void addJsFile(const  QString & jsFile);
-    QStringList getCssFiles() const;
-    QStringList getJsFiles() const;
+
 };
 
 #endif // PAGECONFIG_H

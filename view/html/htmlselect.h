@@ -3,8 +3,8 @@
 #include "htmltag.h"
 #include "htmlselectoption.h"
 #include "exception/qtexception.h"
-
-class HtmlSelect : public HtmlTag
+#include "webappcommon_global.h"
+class WEBAPPCOMMONSHARED_EXPORT HtmlSelect : public HtmlTag
 {
 protected:
     vector<HtmlSelectOption> selectOptions;

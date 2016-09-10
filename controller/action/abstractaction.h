@@ -6,13 +6,13 @@
 #include "core/requestdata.h"
 #include "core/serverdata.h"
 #include "core/sessiondata.h"
-
+#include "webappcommon_global.h"
 #include <memory>
 using namespace std;
 
 class MultiActionController;
 
-class AbstractAction
+class WEBAPPCOMMONSHARED_EXPORT AbstractAction
 {
 protected:
     MultiActionController*parent;
