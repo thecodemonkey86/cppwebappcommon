@@ -40,7 +40,7 @@ public:
 
     const inline FastCgiCout & operator <<(const char* c) const {
        // qDebug()<<s;
-        cout.write(c, strnlen(c,INT32_MIN));
+        cout.write(c, strnlen(c,INT32_MAX));
 //        cout << c;
         return *this;
     }
