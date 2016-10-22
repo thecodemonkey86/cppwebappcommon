@@ -17,15 +17,17 @@ protected:
     QString submitFieldName;
 
 public:
-    Form(const QString&submitFieldName);
+    Form(RequestData *request,const QString&submitFieldName);
     virtual ~Form();
-    virtual QString stringValue(const QString&name)=0;
-    virtual int intValue(const QString&name)=0;
-    virtual QDate dateValue(const QString&name)=0;
-    virtual double doubleValue(const QString&name)=0;
-    virtual bool isValueEmpty(const QString&name);
-    virtual bool isSubmitted()=0;
-    void setRequestData(RequestData *value);
+    virtual QString stringValue(const QString&name) const=0;
+    virtual int intValue(const QString&name) const=0;
+    virtual bool boolValue(const QString&name) const=0;
+    virtual QDate dateValue(const QString&name) const=0;
+    virtual double doubleValue(const QString&name) const=0;
+    virtual bool isValueEmpty(const QString&name) const=0;
+    virtual bool isSubmitted() const=0;
+    virtual bool isSet(const QString & name)=0;
+    virtual bool isSetAndNotEmpty(const QString & name);
     void setSessionData(SessionData *value);
     void setServerData(ServerData *value);
 };

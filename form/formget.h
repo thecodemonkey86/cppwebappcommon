@@ -5,14 +5,20 @@
 #include "webappcommon_global.h"
 class WEBAPPCOMMONSHARED_EXPORT FormGet : public Form
 {
-protected: virtual bool isSubmitted();
+
 public:
-    FormGet(const QString&submitFieldName=QString("submit"));
+    FormGet(RequestData * request,const QString&submitFieldName=QString("submit"));
     virtual ~FormGet();
-    virtual QString stringValue(const QString&name);
-    virtual int intValue(const QString&name);
-    virtual double doubleValue(const QString&name);
-    virtual QDate dateValue(const QString&name);
+    virtual QString stringValue(const QString&name) const;
+    virtual int intValue(const QString&name) const;
+    virtual double doubleValue(const QString&name) const;
+    virtual QDate dateValue(const QString&name) const;
+    virtual bool boolValue(const QString &name) const;
+
+    virtual bool isSubmitted() const;
+
+    virtual bool isValueEmpty(const QString &name) const;
+    virtual bool isSet(const QString &name);
 };
 
 #endif // FORMGET_H

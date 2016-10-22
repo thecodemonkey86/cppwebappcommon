@@ -11,25 +11,26 @@ void Form::setServerData(ServerData *value)
 {
     serverData = value;
 }
-Form::Form(const QString&submitFieldName)
+Form::Form(RequestData * request, const QString&submitFieldName)
 {
     this->submitFieldName = submitFieldName;
+    this->request = request;
 }
 
 
-void Form::setRequestData(RequestData *value)
-{
-    request = value;
-}
+
 Form::~Form()
 {
 
 }
 
-bool Form::isValueEmpty(const QString &name)
+bool Form::isSetAndNotEmpty(const QString &name)
 {
-    return request->postString(name).isEmpty();
+    return isSet(name) && !isValueEmpty(name);
 }
+
+
+
 
 //bool Form::submit()
 //{

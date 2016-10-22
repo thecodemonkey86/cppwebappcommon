@@ -42,9 +42,9 @@ void PageManager2::runController(const QString&name, RequestData * requestData, 
     //return this->pages[qHash(name)].getController()->getUrl();
 //}
 
-void PageManager2::addPage(const QString &name, const shared_ptr<PageConfig> &config)
+void PageManager2::addPage( const shared_ptr<PageConfig> &config)
 {
-    this->pages.insert(name,config);
+    this->pages.insert(config->controllerName(),config);
 }
 
 //void PageManager2::addPage(const QString &name, const shared_ptr<PageConfig> &config)

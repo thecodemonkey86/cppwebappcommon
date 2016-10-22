@@ -21,7 +21,7 @@ public:
     static QString getControllerUrl(const QString&name);
     static QString baseUrl;
     void runController(const QString&name, RequestData * requestData, SessionData * sessionData, ServerData * serverData, Sql*sqlCon);
-    void addPage(const QString& name,const shared_ptr<PageConfig> &config);
+    void addPage(const shared_ptr<PageConfig> &config);
     template<class T> static QString getControllerUrl() {
          return QString("%1?controller=%2").arg(baseUrl,T::controllerName());
     }

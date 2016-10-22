@@ -33,7 +33,6 @@ SOURCES += webappcommon.cpp \
     util/util.cpp \
     controller/abstractcontroller.cpp \
     core/httpheader.cpp \
-    core/abstractobjectfactory.cpp \
     page_config/pageconfig.cpp \
     page_config/pagemanager.cpp \
     mvc/mvcmessage.cpp \
@@ -73,8 +72,6 @@ HEADERS += webappcommon.h\
     util/util.h \
     controller/abstractcontroller.h \
     core/httpheader.h \
-    core/objectfactory.h \
-    core/abstractobjectfactory.h \
     page_config/pageconfig.h \
     page_config/pagemanager.h \
     mvc/mvcmessage.h \
@@ -105,19 +102,19 @@ unix {
     target.path = /usr/lib
     INSTALLS += target
 }
-
-
-unix:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-QtCommon-Desktop_Qt_5_7_0_GCC_64bit/release/ -lQtCommon
-else:unix:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-QtCommon-Desktop_Qt_5_7_0_GCC_64bit/debug/ -lQtCommon
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-QtCommon-Desktop_Qt_5_6_0_MinGW_32bit/release/ -lQtCommon
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-QtCommon-Desktop_Qt_5_6_0_MinGW_32bit/debug/ -lQtCommon
 
 INCLUDEPATH += ../QtCommon
 
-unix:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-ORM-Desktop_Qt_5_7_0_GCC_64bit/release/ -lORM
-else:unix:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-ORM-Desktop_Qt_5_7_0_GCC_64bit/debug/ -lORM
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-SqlUtil2-Desktop_Qt_5_6_0_MinGW_32bit/release/ -lSqlUtil2
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-SqlUtil2-Desktop_Qt_5_6_0_MinGW_32bit/debug/ -lSqlUtil2
 
-INCLUDEPATH += $$PWD/../ORM
+INCLUDEPATH += $$PWD/../SqlUtil2
 
-unix:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-SqlUtil2-Desktop_Qt_5_7_0_GCC_64bit/release/ -lSqlUtil2
-else:unix:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-SqlUtil2-Desktop_Qt_5_7_0_GCC_64bit/debug/ -lSqlUtil2
 
-INCLUDEPATH += ../SqlUtil2
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-libfcgi-Desktop_Qt_5_6_0_MinGW_32bit/release/ -llibfcgi
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-libfcgi-Desktop_Qt_5_6_0_MinGW_32bit/debug/ -llibfcgi
+INCLUDEPATH += $$PWD/../libfcgi/include
+
+QMAKE_RPATHDIR += $$PWD

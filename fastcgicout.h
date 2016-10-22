@@ -32,6 +32,11 @@ public:
         cout <<d;
         return *this;
     }
+    const inline FastCgiCout & operator <<(int d) const {
+       // qDebug()<<s;
+        cout <<d;
+        return *this;
+    }
     const inline FastCgiCout & operator <<(char c) const {
        // qDebug()<<s;
         cout <<c;

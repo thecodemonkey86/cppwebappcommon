@@ -2,29 +2,28 @@
 #include <QDate>
 #include "exception/qtexception.h"
 
-FormPost::FormPost(const QString&submitFieldName) : Form(submitFieldName)
+FormPost::FormPost(RequestData * request, const QString&submitFieldName) : Form(request,submitFieldName)
 {
-    request = nullptr;
 }
 
 
-QString FormPost::stringValue(const QString &name)
+QString FormPost::stringValue(const QString &name) const
 {
     return request->postString(name);
 }
 
 
-int FormPost::intValue(const QString &name)
+int FormPost::intValue(const QString &name) const
 {
     return request->postInt(name);
 }
 
-double FormPost::doubleValue(const QString &name)
+double FormPost::doubleValue(const QString &name) const
 {
     return request->postDouble(name);
 }
 
-QDate FormPost::dateValue(const QString &name)
+QDate FormPost::dateValue(const QString &name) const
 {
     if (name.count(QChar('-')) == 2) {
         return QDate::fromString(request->postString(name),QString("yyyy-MM-dd"));
@@ -35,7 +34,12 @@ QDate FormPost::dateValue(const QString &name)
     }
 }
 
-bool FormPost::isSubmitted()
+bool FormPost::boolValue(const QString &name) const
+{
+    return request->getInt(name) == 1;
+}
+
+bool FormPost::isSubmitted() const
 {
     return request->isPostParamSet(submitFieldName) && !request->postString(submitFieldName).isEmpty();
 }
@@ -45,3 +49,14 @@ FormPost::~FormPost()
 
 }
 
+
+
+bool FormPost::isValueEmpty(const QString &name) const
+{
+    return request->postString(name).isEmpty();
+}
+
+bool FormPost::isSet(const QString &name)
+{
+    return request->isPostParamSet(name);
+}
