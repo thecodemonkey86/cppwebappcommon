@@ -7,24 +7,28 @@
 #include <QJsonObject>
 #include "requestdata.h"
 #include "serverdata.h"
+#include "httpheader.h"
 #include "webappcommon_global.h"
 class WEBAPPCOMMONSHARED_EXPORT SessionData
 {
 protected:
 
     QJsonObject data;
-    QString sessionFileName;
     QString sessId;
+    ServerData * serverData;
+//    HttpHeader * httpHeader;
+
     public:
     static const char * sessCookieName;
-
+protected:
+    inline QString getSessionFileName(ServerData * serverData);
 public:
-    SessionData(RequestData * r, ServerData * s);
+    SessionData(RequestData * r, ServerData * s,HttpHeader * httpHeader);
       virtual ~SessionData();
     void saveSession();
     static const char *getSessionCookieName();
     QString getSessId() const;
-    void setSessId(const QString &value);
+//    void setSessId(const QString &value);
 };
 
 #endif // SESSIONDATA_H

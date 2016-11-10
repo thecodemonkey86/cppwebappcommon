@@ -3,6 +3,16 @@
 
 using namespace std;
 
+bool HttpHeader::getRedirectFlag() const
+{
+    return redirectFlag;
+}
+
+void HttpHeader::finish()
+{
+    cout << "\r\n";
+}
+
 HttpHeader::HttpHeader()
 {
 
@@ -10,13 +20,34 @@ HttpHeader::HttpHeader()
 
 void HttpHeader::setCookie(const QString &name, const QString &value)
 {
-    cout<< "Set-Cookie: "<<name.toUtf8().data()<<"="<<value.toUtf8().data()<<"\r\n";
+    FastCgiCout out;
+    out<< "Set-Cookie: "<<name<<"="<<value<<"\r\n";
+}
+
+void HttpHeader::setContentType(const QString &contentType)
+{
+    FastCgiCout out;
+     out<< "Content-Type: "<<contentType<<"\r\n";
 }
 
 void HttpHeader::setReturnCode(int code)
 {
-    cout<<"Status: "<<QString::number(code).toUtf8().data()<<"\r\n\r\n";
+    FastCgiCout out;
+    out<<"Status: "<<QString::number(code)<<"\r\n";
 
+}
+
+void HttpHeader::setReturnCode(int code, const QString &msg)
+{
+    FastCgiCout out;
+    out<<"Status: "<<QString::number(code)<<QChar(' ')<<msg<<"\r\n";
+}
+
+void HttpHeader::redirect(const QUrl &url)
+{
+    FastCgiCout out;
+    this->redirectFlag = true;
+    out<< "Location: "<<url.toString(QUrl::None)<<"\r\n";
 }
 
 const QString HttpHeader::CONTENT_TYPE_TEXT_HTML("text/html; charset=UTF-8");

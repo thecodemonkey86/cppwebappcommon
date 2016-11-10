@@ -15,7 +15,7 @@ void PageManager2::setBaseUrl(const QString &value)
     baseUrl = value;
 }
 
-void PageManager2::runController(const QString&name, RequestData * requestData, SessionData * sessionData, ServerData * serverData, Sql*sqlCon)
+void PageManager2::runController(const QString&name, RequestData * requestData, SessionData * sessionData, ServerData * serverData, HttpHeader *httpHeader, Sql*sqlCon)
 {
     if (this->pages.contains(name)) {
         auto cfg = this->pages[name];
@@ -23,9 +23,9 @@ void PageManager2::runController(const QString&name, RequestData * requestData, 
         ctrl->setSessionData(sessionData);
         ctrl->setRequestData(requestData);
         ctrl->setServerData(serverData);
+        ctrl->setHttpHeader(httpHeader);
         ctrl->setSql(sqlCon);
         auto tmpl = cfg->getTemplate();
-        cout << "Content-Type: " << tmpl->getHttpContentType().toUtf8().data()<<"\r\n\r\n";
         ctrl->registerView(std::move(tmpl));
         ctrl->runController();
     } else {

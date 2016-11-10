@@ -18,34 +18,41 @@ QString SessionData::getSessId() const
     return sessId;
 }
 
-void SessionData::setSessId(const QString &value)
+
+
+//void SessionData::setSessId(const QString &value)
+//{
+//    sessId = value;
+//}
+
+
+
+QString SessionData::getSessionFileName(ServerData * serverData)
 {
-    sessId = value;
+    return QDir(QDir::tempPath()).absoluteFilePath( QString("sess_%1_%2.json").arg(
+                                                        QString::fromUtf8(QCryptographicHash::hash(serverData->getIp().toUtf8(),QCryptographicHash::Md5).toHex()),this->sessId));
 }
 
-
-
-SessionData::SessionData(RequestData * requestData, ServerData * serverData)
+SessionData::SessionData(RequestData * requestData, ServerData * serverData, HttpHeader *httpHeader)
 {
-    this->sessId = requestData->isCookieSet(SessionData::getSessionCookieName())
-    ? requestData->cookieString(SessionData::getSessionCookieName())
-    : Util::randString(64);
-    this->sessionFileName = QDir(QDir::tempPath()).absoluteFilePath( QString("sess_%1_%2.json").arg(
-                   QString::fromUtf8(QCryptographicHash::hash(serverData->getIp().toUtf8(),QCryptographicHash::Md5).toHex()),this->sessId));
-    QFile f(this->sessionFileName);
-    if (f.exists()) {
-        if (f.open(QIODevice::ReadOnly)) {
+    if(requestData->isCookieSet(SessionData::getSessionCookieName())) {
+        this->sessId = requestData->cookieString(SessionData::getSessionCookieName());
+        QFile f( getSessionFileName(serverData));
+        if (f.exists()  && f.open(QIODevice::ReadOnly)) {
             auto jsonDoc=QJsonDocument::fromJson(f.readAll());
             this->data = jsonDoc.object();
-
             f.close();
         } else {
-
+            this->sessId = Util::randString(64);
+            this->data.insert("sessionid",sessId);
         }
     } else {
+        this->sessId = Util::randString(64);
         this->data.insert("sessionid",sessId);
-
     }
+
+    httpHeader->setCookie(this->sessCookieName, this->sessId);
+    this->serverData = serverData;
 }
 
 SessionData::~SessionData()
@@ -55,7 +62,7 @@ SessionData::~SessionData()
 
 void SessionData::saveSession()
 {
-    QFile f(this->sessionFileName);
+    QFile f(getSessionFileName(serverData));
     if (f.open(QIODevice::WriteOnly)) {
 
         QJsonDocument doc;
@@ -63,7 +70,7 @@ void SessionData::saveSession()
         f.write(doc.toJson());
         f.close();
     }
-    HttpHeader::setCookie(this->sessCookieName, this->sessId);
+
 }
 
 const char * SessionData::sessCookieName="PHPSESSID";

@@ -18,6 +18,7 @@ protected:
     ServerData * serverData;
      RequestData * requestData;
      SessionData * sessionData;
+     HttpHeader *  httpHeader;
      Sql * sql;
      virtual unique_ptr<MvcMessage> run()=0;
 public:
@@ -31,6 +32,7 @@ public:
     virtual AbstractPageController* setServerData(ServerData *value);
     virtual AbstractPageController* setRequestData(RequestData *value);
     virtual AbstractPageController* setSessionData(SessionData *value);
+     virtual AbstractPageController* setHttpHeader(HttpHeader *  httpHeader);
     SessionData *getSessionData() const;
     QUrl getUrl();
     Sql *getSql() const;

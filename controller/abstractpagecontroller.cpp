@@ -13,6 +13,12 @@ AbstractPageController* AbstractPageController::setSessionData(SessionData *valu
     return this;
 }
 
+AbstractPageController *AbstractPageController::setHttpHeader(HttpHeader *httpHeader)
+{
+    this->httpHeader = httpHeader;
+    return this;
+}
+
 QUrl AbstractPageController::getUrl()
 {
     return QUrl("/?controller="+getName());
@@ -40,11 +46,15 @@ AbstractPageController::~AbstractPageController()
 void AbstractPageController::runController()
 {
     auto msg = run();
-    if (msg != nullptr) {
-        msg->setSessionData(sessionData);
-        view->update(std::move(msg));
-    } else {
-        view->update(nullptr);
+    httpHeader->setContentType(view->getHttpContentType());
+    httpHeader->finish();
+    if (!httpHeader->getRedirectFlag()) {
+        if (msg != nullptr ) {
+            msg->setSessionData(sessionData);
+            view->update(std::move(msg));
+        } else {
+            view->update(nullptr);
+        }
     }
 
 }
