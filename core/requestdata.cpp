@@ -181,7 +181,7 @@ QString RequestData::getString(const QString & name)
         }
         return p->getValue();
     } else {
-        throw QtException("Parameter does not exist");
+        throw QtException(QStringLiteral("Parameter does not exist: %1").arg(name));
     }
 }
 

@@ -23,7 +23,10 @@ public:
     void runController(const QString&name, RequestData * requestData, SessionData * sessionData, ServerData * serverData, HttpHeader * httpHeader, Sql*sqlCon);
     void addPage(const shared_ptr<PageConfig> &config);
     template<class T> static QString getControllerUrl() {
-         return QString("%1?controller=%2").arg(baseUrl,T::controllerName());
+         return QStringLiteral("%1?controller=%2").arg(baseUrl,T::controllerName());
+    }
+    template<class T> static QString getControllerUrl(const QString&action) {
+         return QStringLiteral("%1?controller=%2&action=%3").arg(baseUrl,T::controllerName(),action);
     }
     static QString getBaseUrl();
     static void setBaseUrl(const QString &value);

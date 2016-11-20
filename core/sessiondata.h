@@ -26,6 +26,8 @@ public:
     SessionData(RequestData * r, ServerData * s,HttpHeader * httpHeader);
       virtual ~SessionData();
     void saveSession();
+    void setValue(const QString&key,const QString&val);
+    QString stringValue(const QString&key);
     static const char *getSessionCookieName();
     QString getSessId() const;
 //    void setSessId(const QString &value);

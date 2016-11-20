@@ -34,7 +34,8 @@ public:
     virtual AbstractPageController* setSessionData(SessionData *value);
      virtual AbstractPageController* setHttpHeader(HttpHeader *  httpHeader);
     SessionData *getSessionData() const;
-    QUrl getUrl();
+//    virtual QUrl getUrl();
+//    virtual QUrl getUrl(const QString&action);
     Sql *getSql() const;
     void setSql(Sql *value);
 };

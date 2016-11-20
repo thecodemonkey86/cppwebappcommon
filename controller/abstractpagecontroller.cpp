@@ -19,10 +19,15 @@ AbstractPageController *AbstractPageController::setHttpHeader(HttpHeader *httpHe
     return this;
 }
 
-QUrl AbstractPageController::getUrl()
-{
-    return QUrl("/?controller="+getName());
-}
+//QUrl AbstractPageController::getUrl()
+//{
+//    return QUrl(QStringLiteral("/?controller=%1").arg(getName()));
+//}
+
+//QUrl AbstractPageController::getUrl(const QString &action)
+//{
+//    return QUrl(QStringLiteral("/?controller=%1&action=%2").arg(getName(),action));
+//}
 
 Sql *AbstractPageController::getSql() const
 {

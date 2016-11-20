@@ -73,6 +73,16 @@ void SessionData::saveSession()
 
 }
 
+void SessionData::setValue(const QString&key, const QString &val)
+{
+    this->data.insert(key, QJsonValue(val));
+}
+
+QString SessionData::stringValue(const QString &key)
+{
+    return this->data.value(key).toString();
+}
+
 const char * SessionData::sessCookieName="PHPSESSID";
 
 
