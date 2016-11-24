@@ -35,6 +35,18 @@ QDate FormGet::dateValue(const QString &name) const
     }
 }
 
+QDateTime FormGet::dateTimeValue(const QString &name) const
+{
+    QString d(request->getString(name));
+    if (d.count(QChar('-')) == 2) {
+        return QDateTime::fromString(d,QString("yyyy-MM-dd HH:mm:ss"));
+    } else if (d.count(QChar('.')) == 2) {
+        return QDateTime::fromString(d,QString("dd.MM.yyyy HH:mm:ss"));
+    } else {
+        throw QtException("Invalid date format");
+    }
+}
+
 bool FormGet::isSubmitted() const
 {
     return request->isPostParamSet(submitFieldName) && !request->getString(submitFieldName).isEmpty();

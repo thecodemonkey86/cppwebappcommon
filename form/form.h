@@ -23,6 +23,7 @@ public:
     virtual int intValue(const QString&name) const=0;
     virtual bool boolValue(const QString&name) const=0;
     virtual QDate dateValue(const QString&name) const=0;
+    virtual QDateTime dateTimeValue(const QString&name) const=0;
     virtual double doubleValue(const QString&name) const=0;
     virtual bool isValueEmpty(const QString&name) const=0;
     virtual bool isSubmitted() const=0;

@@ -13,6 +13,7 @@ public:
     virtual int intValue(const QString&name) const;
     virtual double doubleValue(const QString&name) const;
     virtual QDate dateValue(const QString&name) const;
+    virtual QDateTime dateTimeValue(const QString&name) const;
     virtual bool boolValue(const QString &name) const;
 
     virtual bool isSubmitted() const;
