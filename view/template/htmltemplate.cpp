@@ -48,34 +48,34 @@ void HtmlTemplate::render()
 void HtmlTemplate::renderHeader()
 {
     // qDebug()<<"teeets";
-   output<<(QString("<!DOCTYPE html>"));
-   outBeginTag("html");
-   outBeginTag("head");
-   outBeginTagWithAttrs("base");
-   outAttr("href", baseUrl);
-   output<<('>');
+   output<<"<!DOCTYPE html>";
+   outBeginTag(QStringLiteral("html"));
+   outBeginTag(QStringLiteral("head"));
+   outBeginTagWithAttrs(QStringLiteral("base"));
+   outAttr(QStringLiteral("href"), baseUrl);
+   output << '>';
 
-   outBeginTagWithAttrs("meta");
-   outAttr("charset", "utf-8");
+   outBeginTagWithAttrs(QStringLiteral("meta"));
+   outAttr(QStringLiteral("charset"), QStringLiteral("utf-8"));
    output << '>';
    for(const QString &css: includeCss) {
-       outBeginTagWithAttrs("link");
-       outAttr("rel", "stylesheet");
-       outAttr("href", "/css/"+ css);
-       outAttr("type", "text/css");
-       outAttr("media", "screen");
+       outBeginTagWithAttrs(QStringLiteral("link"));
+       outAttr(QStringLiteral("rel"), QStringLiteral("stylesheet"));
+       outAttr(QStringLiteral("href"), QStringLiteral("/css/")+ css);
+       outAttr(QStringLiteral("type"), QStringLiteral("text/css"));
+       outAttr(QStringLiteral("media"), QStringLiteral("screen"));
        output << '>';
 
    }
-   outBeginTagWithAttrs("style");
-   outAttr("type", "text/css");
+   outBeginTagWithAttrs(QStringLiteral("style"));
+   outAttr(QStringLiteral("type"), QStringLiteral("text/css"));
    output << '>';
    renderInlineCss();
-   outEndTag("style");
+   outEndTag(QStringLiteral("style"));
 
 
-   outEndTag("head");
-   outBeginTag("body");
+   outEndTag(QStringLiteral("head"));
+   outBeginTag(QStringLiteral("body"));
 }
 
 void HtmlTemplate::renderFooter()
