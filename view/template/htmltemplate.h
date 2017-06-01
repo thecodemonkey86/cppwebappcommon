@@ -13,8 +13,6 @@ using namespace std;
 class WEBAPPCOMMONSHARED_EXPORT HtmlTemplate : public AbstractView
 {
 public:
-    virtual void update(unique_ptr<MvcMessage>) override;
-
     void outAttr(const QString &attr, const QString &value);
     inline void outBeginTag(const QString &tag);
     inline void outBeginTagWithAttrs(const QString &tag);
@@ -23,8 +21,6 @@ public:
 protected:
      protected: static FastCgiCout output;
 
-     virtual void render();
-     virtual void renderBody()=0;
      void renderHeader();
      void renderFooter();
      virtual void renderInlineJs();

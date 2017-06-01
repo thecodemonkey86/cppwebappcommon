@@ -2,11 +2,6 @@
 
 
 
-void HtmlTemplate::update(unique_ptr<MvcMessage> updateMsg)
-{
-    render();
-}
-
 
 void HtmlTemplate::outAttr(const QString &attr, const QString &value)
 {
@@ -32,14 +27,6 @@ void HtmlTemplate::outEndTag(const QString &tag)
     output<<QString("</");
     output<<tag;
     output<<QChar('>');
-}
-
-
-void HtmlTemplate::render()
-{
-    renderHeader();
-    renderBody();
-    renderFooter();
 }
 
 
@@ -80,23 +67,23 @@ void HtmlTemplate::renderHeader()
 
 void HtmlTemplate::renderFooter()
 {
-    outBeginTag("footer");
+    outBeginTag(QStringLiteral("footer"));
     outBeginTagWithAttrs("script");
-    outAttr("type", "text/javascript");
+    outAttr(QStringLiteral("type"), QStringLiteral("text/javascript"));
     output<<('>');
      renderInlineJs();
-    outEndTag("script");
+    outEndTag(QStringLiteral("script"));
 
     for(const QString &js: includeJs) {
-       outBeginTagWithAttrs("script");
-       outAttr("type", "text/javascript");
-       outAttr("src", "/js/"+ js);
+       outBeginTagWithAttrs(QStringLiteral("script"));
+       outAttr(QStringLiteral("type"), QStringLiteral("text/javascript"));
+       outAttr(QStringLiteral("src"), QStringLiteral("/js/")+ js);
        output<<('>');
-       outEndTag("script");
+       outEndTag(QStringLiteral("script"));
     }
-    outEndTag("footer");
-    outEndTag("body");
-    outEndTag("html");
+    outEndTag(QStringLiteral("footer"));
+    outEndTag(QStringLiteral("body"));
+    outEndTag(QStringLiteral("html"));
 }
 
 void HtmlTemplate::renderInlineJs()
