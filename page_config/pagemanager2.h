@@ -1,6 +1,7 @@
 #ifndef PAGEMANAGER2_H
 #define PAGEMANAGER2_H
 #include <QString>
+#include <QPair>
 #include <memory>
 #include <vector>
 #include "exception/qtexception.h"
@@ -24,6 +25,13 @@ public:
     void addPage(const shared_ptr<PageConfig> &config);
     template<class T> static QString getControllerUrl() {
          return QStringLiteral("%1?controller=%2").arg(baseUrl,T::controllerName());
+    }
+    template<class T> static QString getControllerUrl(const QVector<QPair<QString,QString>>args) {
+         QString url = QStringLiteral("%1?controller=%2").arg(baseUrl,T::controllerName());
+         for(const QPair<QString,QString> & a : args) {
+            url += QStringLiteral("&%1=%2").arg(a.first, a.second);
+         }
+         return url;
     }
     template<class T> static QString getControllerUrl(const QString&action) {
          return QStringLiteral("%1?controller=%2&action=%3").arg(baseUrl,T::controllerName(),action);
