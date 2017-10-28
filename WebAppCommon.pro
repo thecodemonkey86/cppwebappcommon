@@ -130,8 +130,9 @@ unix {
         CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-SqlUtil2-Desktop_Qt_5_7_0_GCC_64bit/debug/ -lSqlUtil2
 
         INCLUDEPATH += $$PWD/../SqlUtil2
-        CONFIG(release, debug|release): LIBS += -L$$PWD/../build-libfcgi-Desktop_Qt_5_7_0_GCC_64bit/release/ -llibfcgi
-        CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-libfcgi-Desktop_Qt_5_7_0_GCC_64bit/debug/ -llibfcgi
+
+        CONFIG(release, debug|release): LIBS += -lfcgi++ -lfcgi
+        CONFIG(debug, debug|release): LIBS += -lfcgi++ -lfcgi
         INCLUDEPATH += $$PWD/../libfcgi/include
 
 }
