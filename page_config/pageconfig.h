@@ -15,7 +15,7 @@ public:
     PageConfig();
     virtual ~PageConfig();
     virtual unique_ptr<AbstractPageController> createController()=0;
-    virtual unique_ptr<HtmlTemplate> getTemplate()=0;
+    virtual unique_ptr<AbstractView> getView()=0;
     virtual QString controllerName() = 0;
 
 };

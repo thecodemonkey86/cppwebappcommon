@@ -25,7 +25,7 @@ void PageManager2::runController(const QString&name, RequestData * requestData, 
         ctrl->setServerData(serverData);
         ctrl->setHttpHeader(httpHeader);
         ctrl->setSql(sqlCon);
-        auto tmpl = cfg->getTemplate();
+        auto tmpl = cfg->getView();
         ctrl->registerView(std::move(tmpl));
         ctrl->runController();
     } else {
