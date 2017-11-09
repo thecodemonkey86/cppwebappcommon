@@ -29,7 +29,7 @@ void PageManager2::runController(const QString&name, RequestData * requestData, 
         ctrl->registerView(std::move(tmpl));
         ctrl->runController();
     } else {
-        throw QtException("page not found");
+        throw QtException(QStringLiteral("page not found: %1").arg(name));
     }
 
 

@@ -22,4 +22,5 @@ public:
     virtual bool isSet(const QString &name);
 };
 
+
 #endif // FORMPOST_H

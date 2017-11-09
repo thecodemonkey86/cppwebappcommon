@@ -37,6 +37,16 @@ public:
         cout <<d;
         return *this;
     }
+    const inline FastCgiCout & operator <<(long long number) const {
+        // qDebug()<<s;
+        cout <<number;
+        return *this;
+    }
+    const inline FastCgiCout & operator <<(long number) const {
+        // qDebug()<<s;
+        cout <<number;
+        return *this;
+    }
     const inline FastCgiCout & operator <<(char c) const {
        // qDebug()<<s;
         cout <<c;
