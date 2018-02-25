@@ -12,7 +12,7 @@ public:
     virtual ~ServerData();
 
     QUrl& getRequestUrl();
-    QString getIp();
+    QString& getIp();
 
 private:
 

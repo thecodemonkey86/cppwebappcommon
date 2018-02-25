@@ -16,6 +16,10 @@ public:
 
     }
 
+    inline static void write(const QString&s) {
+
+    }
+
     const inline FastCgiCout & operator <<(const QString&s) const {
        // qDebug()<<s;
         auto data = s.toUtf8();

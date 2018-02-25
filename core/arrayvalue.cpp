@@ -18,8 +18,7 @@ QString ArrayValue::toString()
 
 AbstractStringKeyArrayParam *ArrayValue::val(const QString&key)
 {
-    qDebug()<<key;
-    return NULL;
+    return nullptr;
 }
 
 QString ArrayValue::getValue()

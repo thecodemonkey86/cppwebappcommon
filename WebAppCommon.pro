@@ -34,7 +34,6 @@ SOURCES += webappcommon.cpp \
     controller/abstractcontroller.cpp \
     core/httpheader.cpp \
     page_config/pageconfig.cpp \
-    page_config/pagemanager.cpp \
     mvc/mvcmessage.cpp \
     view/template/compiledtemplate.cpp \
     controller/abstractpagecontroller.cpp \
@@ -45,7 +44,6 @@ SOURCES += webappcommon.cpp \
     form/formget.cpp \
     form/form.cpp \
     view/abstractview.cpp \
-    controller/formpagecontroller.cpp \
     page_config/pagemanager2.cpp \
     core/sessiondata.cpp \
     view/template/htmltemplate.cpp \
@@ -74,7 +72,6 @@ HEADERS += webappcommon.h\
     controller/abstractcontroller.h \
     core/httpheader.h \
     page_config/pageconfig.h \
-    page_config/pagemanager.h \
     mvc/mvcmessage.h \
     view/template/htmltemplate.h \
     view/template/compiledtemplate.h \
@@ -85,7 +82,6 @@ HEADERS += webappcommon.h\
     form/formpost.h \
     form/formget.h \
     form/form.h \
-    controller/formpagecontroller.h \
     page_config/pagemanager2.h \
     fastcgicout.h \
     core/sessiondata.h \
@@ -106,10 +102,10 @@ unix {
 }
 
 win32 {
-        CONFIG(release, debug|release): LIBS += -L$$PWD/../build-QtCommon-Desktop_Qt_5_9_0_MinGW_32bit/release/ -lQtCommon
-        CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-QtCommon-Desktop_Qt_5_9_0_MinGW_32bit/debug/ -lQtCommon
+        CONFIG(release, debug|release): LIBS += -L$$PWD/../build-QtCommon2-Desktop_Qt_5_9_0_MinGW_32bit/release/ -lQtCommon2
+        CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-QtCommon2-Desktop_Qt_5_9_0_MinGW_32bit/debug/ -lQtCommon2
 
-        INCLUDEPATH += ../QtCommon
+        INCLUDEPATH += ../QtCommon2
 
         CONFIG(release, debug|release): LIBS += -L$$PWD/../build-SqlUtil2-Desktop_Qt_5_9_0_MinGW_32bit/release/ -lSqlUtil2
         CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-SqlUtil2-Desktop_Qt_5_9_0_MinGW_32bit/debug/ -lSqlUtil2
@@ -121,10 +117,10 @@ win32 {
 }
 
 unix {
-        CONFIG(release, debug|release): LIBS += -L$$PWD/../build-QtCommon-Desktop_Qt_5_7_0_GCC_64bit/release/ -lQtCommon
-        CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-QtCommon-Desktop_Qt_5_7_0_GCC_64bit/debug/ -lQtCommon
+        CONFIG(release, debug|release): LIBS += -L$$PWD/../build-QtCommon2-Desktop_Qt_5_7_0_GCC_64bit/release/ -lQtCommon2
+        CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-QtCommon2-Desktop_Qt_5_7_0_GCC_64bit/debug/ -lQtCommon2
 
-        INCLUDEPATH += ../QtCommon
+        INCLUDEPATH += ../QtCommon2
 
         CONFIG(release, debug|release): LIBS += -L$$PWD/../build-SqlUtil2-Desktop_Qt_5_7_0_GCC_64bit/release/ -lSqlUtil2
         CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-SqlUtil2-Desktop_Qt_5_7_0_GCC_64bit/debug/ -lSqlUtil2

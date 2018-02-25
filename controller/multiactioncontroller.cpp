@@ -10,14 +10,14 @@ MultiActionController::MultiActionController()
 unique_ptr<MvcMessage> MultiActionController::run()
 {
     if (actions.contains(requestData->getString(QString("action")))) {
-       return std::move(actions.value(requestData->getString(QString("action")))->run());
+       return actions.value(requestData->getString(QString("action")))->run();
     } else {
         throw QtException("No such action");
     }
 
 }
 
-void MultiActionController::addAction( AbstractAction *action)
+void MultiActionController::addAction(shared_ptr<AbstractAction> action)
 {
     action->setParent(this);
     actions.insert(action->getName(), action);
@@ -26,7 +26,7 @@ void MultiActionController::addAction( AbstractAction *action)
 AbstractPageController *MultiActionController::setServerData(ServerData *value)
 {
     AbstractPageController::setServerData(value);
-    for (AbstractAction*a: actions.values()) {
+    for (const  shared_ptr<AbstractAction> &a: actions.values()) {
         a->setServerData(value);
     }
     return this;
@@ -35,7 +35,7 @@ AbstractPageController *MultiActionController::setServerData(ServerData *value)
 AbstractPageController *MultiActionController::setRequestData(RequestData *value)
 {
     AbstractPageController::setRequestData(value);
-    for (AbstractAction*a: actions.values()) {
+    for (const  shared_ptr<AbstractAction> &a: actions.values()) {
         a->setRequestData(value);
     }
     return this;
@@ -44,7 +44,7 @@ AbstractPageController *MultiActionController::setRequestData(RequestData *value
 AbstractPageController *MultiActionController::setSessionData(SessionData *value)
 {
     AbstractPageController::setSessionData(value);
-    foreach (AbstractAction*a, actions.values()) {
+    for (const  shared_ptr<AbstractAction> &a : actions.values()) {
         a->setSessionData(value);
     }
     return this;

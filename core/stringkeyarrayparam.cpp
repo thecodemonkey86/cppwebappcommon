@@ -2,6 +2,7 @@
 #include "arrayvalue.h"
 #include <QDebug>
 #include "exception/qtexception.h"
+using namespace QtCommon2;
 
 StringKeyArrayParam::StringKeyArrayParam(const QString &name) : AbstractStringKeyArrayParam()
 {
@@ -10,7 +11,7 @@ StringKeyArrayParam::StringKeyArrayParam(const QString &name) : AbstractStringKe
 
 StringKeyArrayParam::~StringKeyArrayParam()
 {
-
+    qDeleteAll(QHash::begin(), QHash::end());
 }
 
 QString StringKeyArrayParam::toString()
@@ -25,15 +26,28 @@ QString StringKeyArrayParam::getArrayValue(int dimensionsCount,...)
     AbstractStringKeyArrayParam*arr = this;
     for(int i=0;i<dimensionsCount;i++) {
         arr = arr->val(QString(va_arg(ap, const char*)));
-        if (arr == NULL) {
-           throw QtException("Illegal url");
+        if (arr == nullptr) {
+            throw QtException(QStringLiteral("Illegal url"));
         }
     }
 
     va_end(ap);
     ArrayValue* v=dynamic_cast<ArrayValue*>(arr);
-    if (v == NULL) {
-        throw QtException("Illegal url");
+    if (v == nullptr) {
+        throw QtException(QStringLiteral("Illegal url"));
+    }
+    return v->getValue();
+}
+
+QString StringKeyArrayParam::getArrayValue(const QStringList &arrayKeys)
+{
+    AbstractStringKeyArrayParam*arr = this;
+    for(const QString & key : arrayKeys) {
+        arr = arr->val(key);
+    }
+    ArrayValue* v=dynamic_cast<ArrayValue*>(arr);
+    if (v == nullptr) {
+        throw QtException(QStringLiteral("Illegal url"));
     }
     return v->getValue();
 }

@@ -1,6 +1,7 @@
 #include "formpost.h"
 #include <QDate>
 #include "exception/qtexception.h"
+using namespace QtCommon2;
 
 FormPost::FormPost(RequestData * request, const QString&submitFieldName) : Form(request,submitFieldName)
 {

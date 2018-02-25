@@ -6,8 +6,8 @@
 #include <memory>
 #include "core/httpheader.h"
 #include  "fastcgicout.h"
-#include "util/orderedset.h"
-
+#include "util/collection/orderedset.h"
+using namespace QtCommon2;
 using namespace std;
 
 class WEBAPPCOMMONSHARED_EXPORT HtmlTemplate : public AbstractView

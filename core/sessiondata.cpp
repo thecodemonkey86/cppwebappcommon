@@ -8,7 +8,7 @@
 #include <QFile>
 #include <QDir>
 
-const char *SessionData::getSessionCookieName()
+const QString & SessionData::getSessionCookieName()
 {
     return sessCookieName;
 }
@@ -29,7 +29,7 @@ QString SessionData::getSessId() const
 
 QString SessionData::getSessionFileName(ServerData * serverData)
 {
-    return QDir(QDir::tempPath()).absoluteFilePath( QString("sess_%1_%2.json").arg(
+    return QDir(QDir::tempPath()).absoluteFilePath( QStringLiteral("sess_%1_%2.json").arg(
                                                         QString::fromUtf8(QCryptographicHash::hash(serverData->getIp().toUtf8(),QCryptographicHash::Md5).toHex()),this->sessId));
 }
 
@@ -44,11 +44,11 @@ SessionData::SessionData(RequestData * requestData, ServerData * serverData, Htt
             f.close();
         } else {
             this->sessId = Util::randString(64);
-            this->data.insert("sessionid",sessId);
+            this->data.insert(QStringLiteral("sessionid"),sessId);
         }
     } else {
         this->sessId = Util::randString(64);
-        this->data.insert("sessionid",sessId);
+        this->data.insert(QStringLiteral("sessionid"),sessId);
     }
 
     httpHeader->setCookie(this->sessCookieName, this->sessId);
@@ -83,7 +83,7 @@ QString SessionData::stringValue(const QString &key)
     return this->data.value(key).toString();
 }
 
-const char * SessionData::sessCookieName="PHPSESSID";
+QString SessionData::sessCookieName=QStringLiteral("PHPSESSID");
 
 
 

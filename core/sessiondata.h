@@ -19,7 +19,7 @@ protected:
 //    HttpHeader * httpHeader;
 
     public:
-    static const char * sessCookieName;
+    static QString sessCookieName;
 protected:
     inline QString getSessionFileName(ServerData * serverData);
 public:
@@ -28,7 +28,7 @@ public:
     void saveSession();
     void setValue(const QString&key,const QString&val);
     QString stringValue(const QString&key);
-    static const char *getSessionCookieName();
+    static const QString  & getSessionCookieName();
     QString getSessId() const;
 //    void setSessId(const QString &value);
 };

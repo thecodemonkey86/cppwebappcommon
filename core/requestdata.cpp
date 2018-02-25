@@ -9,6 +9,8 @@
 #include "stdint.h"
 #include <QDebug>
 
+using namespace QtCommon2;
+
 RequestData::RequestData(const FCGX_Request & request, const QUrl &url)
 {
 
@@ -38,7 +40,7 @@ void RequestData::parseParams(const QString&requestString, QHash<QString, Abstra
     } else {
         QStringList parts = requestString.split(QChar('&'));
         StringKeyArrayParam* currentArray = nullptr;
-        foreach (QString part, parts) {
+        for(const QString & part : parts) {
             currentArray = nullptr;
             int j;
             if ( (j=part.indexOf(QChar('=')))>-1) {
@@ -51,7 +53,7 @@ void RequestData::parseParams(const QString&requestString, QHash<QString, Abstra
                   if (params.contains(name)) {
                       arr = dynamic_cast<ArrayRequestParam*>(params.value(name));
                       if (arr == nullptr) {
-                          throw QtException("Unexpected error");
+                          throw QtException(QStringLiteral("Unexpected error"));
                       }
                   } else {
                       arr = new ArrayRequestParam(name);
@@ -63,7 +65,7 @@ void RequestData::parseParams(const QString&requestString, QHash<QString, Abstra
                   if (params.contains(name)) {
                       currentArray = dynamic_cast<StringKeyArrayParam*>(params.value(name));
                       if (currentArray == nullptr) {
-                          throw QtException("Unexpected error");
+                          throw QtException(QStringLiteral("Unexpected error"));
                       }
                   } else {
                       currentArray = new StringKeyArrayParam(name);
@@ -82,7 +84,7 @@ void RequestData::parseParams(const QString&requestString, QHash<QString, Abstra
                               if (currentArray->contains(arrayIndex)) {
                                   currentArray = dynamic_cast<StringKeyArrayParam*>(currentArray->value(arrayIndex));
                                   if (currentArray == nullptr) {
-                                      throw QtException("Unexpected error");
+                                      throw QtException(QStringLiteral("Unexpected error"));
                                   }
                               } else {
                                   StringKeyArrayParam*dimension=new StringKeyArrayParam(name);

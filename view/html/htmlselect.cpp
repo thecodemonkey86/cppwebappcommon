@@ -1,6 +1,12 @@
 #include "htmlselect.h"
+using namespace QtCommon2;
 
-HtmlSelect::HtmlSelect() : HtmlTag("select")
+HtmlSelect::HtmlSelect() : HtmlTag(QStringLiteral("select"))
+{
+
+}
+
+HtmlSelect::~HtmlSelect()
 {
 
 }
@@ -30,7 +36,7 @@ HtmlSelect &HtmlSelect::options(const QVector<HtmlSelectOption> &options)
 HtmlSelect &HtmlSelect::options(const QStringList &values, const QStringList &display)
 {
     if (values.size() != display.size()) {
-        throw QtException("illegal argument");
+        throw QtException(QStringLiteral("illegal argument"));
     }
     for(int i=0;i<values.size();i++) {
         selectOptions.push_back(HtmlSelectOption(values[i],display[i]));
