@@ -7,7 +7,7 @@ HtmlTag::HtmlTag(const QString &tag)
 
 void HtmlTag::setAttribute(const QString &name, const QString &value)
 {
-    for(uint i=0;i<this->attributes.size();i++) {
+    for(int i=0;i<this->attributes.size();i++) {
         if (this->attributes[i].first == name) {
             this->attributes[i].second = value;
             return;
@@ -23,29 +23,32 @@ void HtmlTag::addClass(const QString &cls)
 
 void HtmlTag::render() const
 {
-    out << '<'
-        << tag << ' ';
-    for(auto it=attributes.cbegin(); it != attributes.cend();++it) {
-        out << it->first
-            << "=\""
-            << it->second.toHtmlEscaped()
-            << "\" ";
+    FastCgiCout::write('<');
+    FastCgiCout::write(tag);
+    FastCgiCout::write(' ');
+    for(const QPair<QString,QString> & attr : this->attributes) {
+        FastCgiCout::write(attr.first);
+        FastCgiCout::write("=\"");
+        FastCgiCout::write(attr.second.toHtmlEscaped());
+        FastCgiCout::write("\" ");
     }
 
 
     if (classes.size()>0) {
-        out << " class=\"";
-        for(uint i=0;i<classes.size()-1;i++) {
-            out << classes[i].toHtmlEscaped();
-            out << ' ';
+        FastCgiCout::write(" class=\"");
+        for(int i=0;i<classes.size()-1;i++) {
+            FastCgiCout::write(classes[i].toHtmlEscaped());
+            FastCgiCout::write(' ');
         }
-        out << classes.back().toHtmlEscaped();
-        out << '"';
+        FastCgiCout::write(classes.last().toHtmlEscaped());
+        FastCgiCout::write('"');
     }
 
-    out << '>';
+    FastCgiCout::write('>');
 
-   renderChildren();
+    renderChildren();
 
-    out << "</"<< tag << '>';
+    FastCgiCout::write("</");
+    FastCgiCout::write(tag);
+    FastCgiCout::write('>');
 }

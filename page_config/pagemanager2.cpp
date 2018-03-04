@@ -31,33 +31,13 @@ void PageManager2::runController(const QString&name, RequestData * requestData, 
     } else {
         throw QtException(QStringLiteral("page not found: %1").arg(name));
     }
-
-
-//        auto controller = P.createController();
-//        ->runController();
 }
-
-//QString PageManager2::getControllerUrl(const QString &name)
-//{
-    //return this->pages[qHash(name)].getController()->getUrl();
-//}
 
 void PageManager2::addPage( const shared_ptr<PageConfig> &config)
 {
     this->pages.insert(config->controllerName(),config);
 }
 
-//void PageManager2::addPage(const QString &name, const shared_ptr<PageConfig> &config)
-//{
-//    this->pages.insert(name,config);
-//}
 
-//shared_ptr<PageConfig> PageManager2::getCfg(const QString &name)
-//{
-//    if (!this->pages.contains(name)) {
-//        throw QtException("page not found");
-//    }
-//    return this->pages[name];
-//}
 
 QString PageManager2::baseUrl ="/";

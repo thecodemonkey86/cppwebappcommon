@@ -11,57 +11,38 @@ using namespace std;
 
 class WEBAPPCOMMONSHARED_EXPORT FastCgiCout
 {
-public:
+private:
     FastCgiCout() {
 
     }
 
+public:
     inline static void write(const QString&s) {
-
-    }
-
-    const inline FastCgiCout & operator <<(const QString&s) const {
-       // qDebug()<<s;
         auto data = s.toUtf8();
         cout.write(data.data(),data.length());
-        return *this;
     }
-    const inline FastCgiCout & operator <<(const QByteArray&b) const {
-       // qDebug()<<s;
+    inline static void write(const QByteArray&b) {
         cout.write(b.data(),b.length());
-        return *this;
     }
-    const inline FastCgiCout & operator <<(double d) const {
-       // qDebug()<<s;
+    inline static void write(double d) {
         cout <<d;
-        return *this;
     }
-    const inline FastCgiCout & operator <<(int d) const {
-       // qDebug()<<s;
+    inline static void write(int d) {
         cout <<d;
-        return *this;
     }
-    const inline FastCgiCout & operator <<(long long number) const {
-        // qDebug()<<s;
+    inline static void write(long long number) {
         cout <<number;
-        return *this;
     }
-    const inline FastCgiCout & operator <<(long number) const {
-        // qDebug()<<s;
+    inline static void write(long number) {
         cout <<number;
-        return *this;
+
     }
-    const inline FastCgiCout & operator <<(char c) const {
-       // qDebug()<<s;
+    inline static void write(char c) {
         cout <<c;
-        return *this;
     }
 
-    const inline FastCgiCout & operator <<(const char* c) const {
-       // qDebug()<<s;
+    inline static void write(const char* c) {
         cout.write(c, strnlen(c,INT32_MAX));
-//        cout << c;
-        return *this;
     }
 };
 

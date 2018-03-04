@@ -5,7 +5,7 @@
 #include <QHash>
 #include "htmlrenderable.h"
 #include "webappcommon_global.h"
-#include <vector>
+#include <QVector>
 #include <memory>
 using namespace std;
 
@@ -13,8 +13,8 @@ class WEBAPPCOMMONSHARED_EXPORT HtmlTag : public HtmlRenderable
 {
 protected:
     QString tag;
-    std::vector<QString> classes;
-    std::vector<QPair<QString,QString>> attributes;
+    QVector<QString> classes;
+    QVector<QPair<QString,QString>> attributes;
    // std::vector<shared_ptr<HtmlRenderable>> children;
 public:
     HtmlTag(const QString &tag);

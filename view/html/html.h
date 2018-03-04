@@ -9,8 +9,8 @@ protected :
      Html();
 public:
 
-    static HtmlSelect select();
-    static HtmlSelectOption option(const QString&value, const QString&display);
+    inline static HtmlSelect select();
+    inline static HtmlSelectOption option(const QString&value, const QString&display);
 };
 
 #endif // HTML_H

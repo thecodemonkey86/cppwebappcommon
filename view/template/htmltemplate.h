@@ -5,7 +5,7 @@
 #include <QSet>
 #include <memory>
 #include "core/httpheader.h"
-#include  "fastcgicout.h"
+#include "fastcgicout.h"
 #include "util/collection/orderedset.h"
 using namespace QtCommon2;
 using namespace std;
@@ -13,25 +13,24 @@ using namespace std;
 class WEBAPPCOMMONSHARED_EXPORT HtmlTemplate : public AbstractView
 {
 public:
-    void outAttr(const QString &attr, const QString &value);
-    inline void outBeginTag(const QString &tag);
-    inline void outBeginTagWithAttrs(const QString &tag);
-    inline void outEndTag(const QString &tag);
+    inline void outAttr(const QString &attr, const QString &value) const;
+    inline void outBeginTag(const QString &tag) const;
+    inline void outBeginTagWithAttrs(const QString &tag) const;
+    inline void outEndTag(const QString &tag) const;
    // virtual void beforeRender();
 protected:
-     protected: static FastCgiCout output;
 
-     void renderHeader();
-     void renderFooter();
-     virtual void renderInlineJs();
-     virtual void renderInlineCss();
+     void renderHeader() const;
+     void renderFooter() const;
+     virtual void renderInlineJs() const;
+     virtual void renderInlineCss() const;
 
      OrderedSet<QString> includeCss;
      OrderedSet<QString> includeJs;
     QString baseUrl;
      // AbstractTemplate interface
 public:
-     virtual QString getHttpContentType();
+     virtual QString getHttpContentType() const;
      void addCssFiles(const QStringList&cssFiles);
      void addJsFiles(const QStringList&jssFiles);
      QString getBaseUrl() const;

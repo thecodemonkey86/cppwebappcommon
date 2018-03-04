@@ -6,8 +6,6 @@
 #include "webappcommon_global.h"
 class WEBAPPCOMMONSHARED_EXPORT HtmlRenderable
 {
-protected:
-    FastCgiCout out;
 public:
     HtmlRenderable();
     virtual void render() const =0 ;

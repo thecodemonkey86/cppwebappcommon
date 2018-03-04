@@ -22,19 +22,19 @@ private:
 public:
  RequestData(const FCGX_Request & request, const QUrl &url);
     ~RequestData();
-    QString getString(const QString&name);
-    QString postString(const QString&name, bool required = false);
-    int getInt(const QString&name);
-    int postInt(const QString&name);
-    double postDouble(const QString&name);
-    double getDouble(const QString&name);
-    bool postBool(const QString&name);
-    ArrayRequestParam * getArray(const QString&name);
-    bool isGetParamSet(const QString&name);
-    bool isPostParamSet(const QString&name);
-    QString cookieString(const QString&name);
-    QStringList cookieAsArray(const QString&name);
-    bool isCookieSet(const QString&name);
+    QString getString(const QString&name) const;
+    QString postString(const QString&name, bool required = false) const;
+    int getInt(const QString&name) const;
+    int postInt(const QString&name) const;
+    double postDouble(const QString&name) const;
+    double getDouble(const QString&name) const;
+    bool postBool(const QString&name) const;
+    ArrayRequestParam * getArray(const QString&name) const;
+    bool isGetParamSet(const QString&name) const;
+    bool isPostParamSet(const QString&name) const;
+    QString cookieString(const QString&name) const;
+    QStringList cookieAsArray(const QString&name) const;
+    bool isCookieSet(const QString&name) const;
 };
 
 #endif // REQUESTDATA_H

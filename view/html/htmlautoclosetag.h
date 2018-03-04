@@ -6,14 +6,13 @@
 #include <QHash>
 #include "htmlrenderable.h"
 #include "webappcommon_global.h"
-#include <vector>
+#include <QVector>
 
 class WEBAPPCOMMONSHARED_EXPORT HtmlAutoCloseTag : public HtmlRenderable
 {
 protected:
     QString tag;
-    FastCgiCout out;
-    std::vector<QPair<QString,QString>> attributes;
+    QVector<QPair<QString,QString>> attributes;
 public:
     HtmlAutoCloseTag(const QString &tag);
     void setAttribute(const QString&name, const  QString&value);

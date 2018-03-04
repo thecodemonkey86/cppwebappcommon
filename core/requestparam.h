@@ -21,7 +21,7 @@ public:
 
     }
 
-    T getValue() const {
+    const T & getValue() const {
         return value;
     }
     virtual QString toString(){

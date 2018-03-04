@@ -10,7 +10,7 @@ class WEBAPPCOMMONSHARED_EXPORT AbstractView
 public:
     AbstractView();
     virtual ~AbstractView();
-    virtual QString getHttpContentType()=0;
+    virtual QString getHttpContentType() const=0;
     virtual void update(unique_ptr<MvcMessage>)=0;
 };
 

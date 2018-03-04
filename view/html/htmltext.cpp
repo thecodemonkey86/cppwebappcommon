@@ -8,5 +8,5 @@ HtmlText::HtmlText(const QString &content)
 
 void HtmlText::render() const
 {
-    out << content.toHtmlEscaped();
+    FastCgiCout::write(content.toHtmlEscaped());
 }
