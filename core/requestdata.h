@@ -2,6 +2,7 @@
 #define REQUESTDATA_H
 
 #include <QString>
+#include <QFile>
 #include <QHash>
 #include "core/requestparam.h"
 #include "arrayrequestparam.h"
@@ -11,6 +12,9 @@
 class WEBAPPCOMMONSHARED_EXPORT RequestData
 {
 private:
+    static constexpr char CR = '\r';
+    static constexpr char NL = '\n';
+    static constexpr int BUF_SIZE = 8192;
 
     QHash<QString, AbstractRequestParam*> getParams;
     QHash<QString, AbstractRequestParam*> postParams;
@@ -19,6 +23,8 @@ private:
     void parseGetParams(const QUrl& url);
     void parsePostParams(const FCGX_Request & request);
     void parseCookies(const FCGX_Request & request);
+    inline static void writeFileBuf(QFile * file, int & pos, char* & buf, char c );
+
 public:
  RequestData(const FCGX_Request & request, const QUrl &url);
     ~RequestData();

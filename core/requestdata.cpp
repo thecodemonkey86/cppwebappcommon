@@ -7,11 +7,11 @@
 #include "stringkeyarrayparam.h"
 #include "arrayvalue.h"
 #include "stdint.h"
-
+#include <QBuffer>
 
 #ifdef QT_DEBUG
-    #include <QDebug>
-    #include <QFile>
+#include <QDebug>
+#include <QFile>
 
 #endif
 
@@ -119,39 +119,149 @@ void RequestData::parseGetParams(const QUrl& url)
 
 void RequestData::parsePostParams(const FCGX_Request & request)
 {
-    if (QString(FCGX_GetParam("REQUEST_METHOD", request.envp))==QStringLiteral("POST")) {
+    if (strcmp(FCGX_GetParam("REQUEST_METHOD", request.envp),"POST" )==0) {
 
-#ifdef QT_DEBUG
-        QFile dbg("D:\\Temp\\debug.txt");
-        dbg.open(QIODevice::WriteOnly|QIODevice::Truncate);
-        dbg.write(FCGX_GetParam("CONTENT_TYPE", request.envp));
-        dbg.close();
-        return;
-#endif
-
+        QString contentType(FCGX_GetParam("CONTENT_TYPE", request.envp));
         QString contentLengthStr(FCGX_GetParam("CONTENT_LENGTH", request.envp));
 
         bool ok;
         int64_t contentLength = contentLengthStr.toULongLong(&ok);
-        if (!ok) {
-            throw QtException(QStringLiteral("Invalid content length"));
+        if( contentType.startsWith(QStringLiteral("multipart/form-data;"))) {
+//            const int BUFSIZE = 8192;
+//            char * buf= new char[BUFSIZE];
+
+//            int bytesRead;
+            QFile dbg2("D:\\Temp\\upload.dat");
+             dbg2.open(QIODevice::WriteOnly|QIODevice::Truncate);
+//            while ( (bytesRead = FCGX_GetStr(buf,BUFSIZE,request.in)) > 0) {
+//                dbg2.write(buf, bytesRead);
+//            }
+
+
+
+
+            char * buf = new char[BUF_SIZE];
+            QString fieldName;
+            QString delimiter;
+            //int r;
+            while(FCGX_GetLine(buf,BUF_SIZE,request.in)!=nullptr) {
+                QString line(buf);
+                if(delimiter.isEmpty()) {
+                     delimiter = line;
+                } else if(line != delimiter) {
+                    throw QtException(QStringLiteral("unexpected end of data: ") + line);
+                }
+
+                if(FCGX_GetLine(buf,BUF_SIZE,request.in)!=nullptr) {
+                    line =  QString::fromLatin1(buf);
+                    QString fileName;
+                    QString mimeType;
+
+                    while(line != QStringLiteral("\r\n")) {
+                        int k = line.indexOf(QChar(':'));
+                        QString header = line.left(k).toLower();
+                        QString headerValue = line.mid(k+1).trimmed();
+
+
+                        if(header == QStringLiteral("content-disposition")) {
+                            QStringList contentDispositionParts = headerValue.split(QChar(';'));
+                            for(auto c : contentDispositionParts) {
+                                QString trimmed = c.trimmed();
+                                if(trimmed.startsWith(QStringLiteral("name=\""))) {
+                                    fieldName = trimmed.right(trimmed.indexOf(QChar('"'),6)-1);
+                                } else if(trimmed.startsWith(QStringLiteral("filename=\""))) {
+                                    fileName =trimmed.mid(10, trimmed.lastIndexOf(QChar('"'))-10);
+                                }
+                            }
+                        } else if(header == QStringLiteral("content-type")) {
+                            mimeType = headerValue.trimmed();
+                        }
+
+                        if(FCGX_GetLine(buf,BUF_SIZE,request.in)!=nullptr) {
+                            line =  QString::fromLatin1(buf);
+                        } else {
+                             throw QtException(QStringLiteral("unexpected end of data"));
+                        }
+                    }
+
+
+
+
+                    if(!fileName.isEmpty()) {
+                        QFile uploadedFile( QStringLiteral("D:\\Temp\\upload-")+fileName);
+                        uploadedFile.open(QIODevice::WriteOnly|QIODevice::Truncate);
+                        int c;
+                        QByteArray byteArray(BUF_SIZE,Qt::Uninitialized);
+                        char * writeBuf = new char[BUF_SIZE];
+                        int bufpos = 0;
+                        while((c=FCGX_GetChar(request.in))>0) {
+                          writeFileBuf(&uploadedFile,bufpos,writeBuf,c);
+
+                           if(c == CR) {
+                                c=FCGX_GetChar(request.in);
+                                if(c == NL) {
+                                    QByteArray tempBuf(32,Qt::Uninitialized);
+                                    bool foundDelimiter = true;
+                                    for(int i=0;i<delimiter;i++) {
+                                        int c = FCGX_GetChar(request.in);
+                                        tempBuf.append(c);
+                                        if(c == 0) {
+                                            break;
+                                        } else if(delimiter[i] != QChar(c)) {
+                                            foundDelimiter = false;
+                                            break;
+                                        }
+                                    }
+                                    if(foundDelimiter) {
+                                        break;
+                                    } else {
+                                        uploadedFile.write(tempBuf);
+                                    }
+                                } else {
+                                    writeFileBuf(&uploadedFile,bufpos,writeBuf,CR);
+                                    writeFileBuf(&uploadedFile,bufpos,writeBuf,c);
+                                }
+                           } else {
+                                writeFileBuf(&uploadedFile,bufpos,writeBuf,c);
+                           }
+                        }
+                        uploadedFile.close();
+
+                    } else {
+                        if(FCGX_GetLine(buf,BUF_SIZE,request.in) != nullptr) {
+                            QString value(buf);
+                           dbg2.write( (fieldName+"->"+ value.trimmed()).toUtf8());
+                            if(FCGX_GetLine(buf,BUF_SIZE,request.in) != nullptr) {
+                                QString currentDelimiterEnd( buf);
+                                if(delimiter == currentDelimiterEnd.trimmed()) {
+                                    qDebug() << "ok";
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+            }
+            dbg2.close();
+            delete[] buf;
         } else {
-            const int bufSize = contentLength+1;
-            char * buf= new char[bufSize];
-            QString paramStr;
+
+            if (!ok) {
+                throw QtException(QStringLiteral("Invalid content length"));
+            } else {
+                char * buf= new char[contentLength];
 
 
-            paramStr+=QString(FCGX_GetLine(buf,bufSize,request.in));
+                QByteArray paramStr(FCGX_GetLine(buf,contentLength,request.in));
+                parseParams(QUrl::fromPercentEncoding(paramStr),postParams);
 
-            parseParams(QUrl::fromPercentEncoding(paramStr.toUtf8()),postParams);
+                delete[] buf;
+            }
+
+
         }
     }
-
-
-    //  char* line =    ;
-    /*if ( line != nullptr ) {
-
-    }*/
 }
 
 void RequestData::parseCookies(const FCGX_Request & request)
@@ -170,6 +280,18 @@ void RequestData::parseCookies(const FCGX_Request & request)
         }
     }
 }
+
+void RequestData::writeFileBuf(QFile *file, int &pos, char *&buf, char c)
+{
+     buf[pos++] = c;
+     if(pos == BUF_SIZE) {
+         file->write(buf, BUF_SIZE);
+         pos = 0;
+     }
+}
+
+
+
 QString RequestData::getString(const QString & name) const
 {
     if (getParams.contains(name)) {
