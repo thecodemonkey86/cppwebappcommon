@@ -7,6 +7,7 @@
 #include "stringkeyarrayparam.h"
 #include "arrayvalue.h"
 #include "stdint.h"
+#include "util/file/fileutil.h"
 #include <QBuffer>
 
 #ifdef QT_DEBUG
@@ -22,7 +23,9 @@ RequestData::RequestData(const FCGX_Request & request, const QUrl &url)
 
     parseCookies(request);
     parseGetParams(url);
-    parsePostParams(request);
+    if (strcmp(FCGX_GetParam("REQUEST_METHOD", request.envp),"POST" )==0) {
+        parsePostParams(request);
+    }
 }
 
 RequestData::~RequestData()
@@ -42,70 +45,13 @@ void RequestData::parseParams(const QString&requestString, QHash<QString, Abstra
         return;
     } else {
         QStringList parts = requestString.split(QChar('&'));
-        StringKeyArrayParam* currentArray = nullptr;
+
         for(const QString & part : parts) {
-            currentArray = nullptr;
             int j;
             if ( (j=part.indexOf(QChar('=')))>-1) {
                 QString key(part.left(j));
                 QString strValue( part.mid(j+1));
-                QString name;
-                if (key.endsWith(QStringLiteral("[]"))) {
-                    name = key.left(key.indexOf('['));
-                    ArrayRequestParam*arr = nullptr;
-                    if (params.contains(name)) {
-                        arr = dynamic_cast<ArrayRequestParam*>(params.value(name));
-                        if (arr == nullptr) {
-                            throw QtException(QStringLiteral("Unexpected error"));
-                        }
-                    } else {
-                        arr = new ArrayRequestParam(name);
-                        params.insert(name, arr);
-                    }
-                    arr->append(strValue);
-                } else if (key.endsWith(QChar(']'))) {
-                    name = key.left(key.indexOf('['));
-                    if (params.contains(name)) {
-                        currentArray = dynamic_cast<StringKeyArrayParam*>(params.value(name));
-                        if (currentArray == nullptr) {
-                            throw QtException(QStringLiteral("Unexpected error"));
-                        }
-                    } else {
-                        currentArray = new StringKeyArrayParam(name);
-                        params.insert(name, currentArray);
-                    }
-                    int arrayStart = 0;
-                    int arrayEnd = 0;
-                    for(int i=0;i<key.length();i++) {
-                        if (key[i] == QChar('[')) {
-                            arrayStart = i+1;
-
-                        } else if (key[i] == QChar(']')) {
-                            arrayEnd = i;
-                            if (i < key.length()-1) {
-                                QString arrayIndex(key.mid(arrayStart,arrayEnd-arrayStart));
-                                if (currentArray->contains(arrayIndex)) {
-                                    currentArray = dynamic_cast<StringKeyArrayParam*>(currentArray->value(arrayIndex));
-                                    if (currentArray == nullptr) {
-                                        throw QtException(QStringLiteral("Unexpected error"));
-                                    }
-                                } else {
-                                    StringKeyArrayParam*dimension=new StringKeyArrayParam(name);
-                                    currentArray->insert(key.mid(arrayStart,arrayEnd-arrayStart),dimension);
-                                    currentArray = dimension;
-                                }
-
-                            } else {
-                                currentArray->insert(key.mid(arrayStart,arrayEnd-arrayStart),new ArrayValue(strValue));
-                                currentArray = nullptr;
-                            }
-                        }
-                    }
-                } else {
-                    params.insert(key, new RequestParam<QString>(key, strValue));
-                }
-
-
+                parseParam(key,strValue,params);
             }
 
         }
@@ -119,167 +65,164 @@ void RequestData::parseGetParams(const QUrl& url)
 
 void RequestData::parsePostParams(const FCGX_Request & request)
 {
-    if (strcmp(FCGX_GetParam("REQUEST_METHOD", request.envp),"POST" )==0) {
+    QStringList contentType = QString(FCGX_GetParam("CONTENT_TYPE", request.envp)).split(QChar(';'));
+    QString contentLengthStr(FCGX_GetParam("CONTENT_LENGTH", request.envp));
 
-        QStringList contentType = QString(FCGX_GetParam("CONTENT_TYPE", request.envp)).split(QChar(';'));
-        QString contentLengthStr(FCGX_GetParam("CONTENT_LENGTH", request.envp));
+    bool ok;
+    int64_t contentLength = contentLengthStr.toULongLong(&ok);
+    if( contentType[0] == QStringLiteral("multipart/form-data")) {
+        int indexEq = contentType[1].indexOf('=');
+        if(indexEq == -1) {
+            throw QtException(QStringLiteral("invalid data"));
+        }
+        QString delimiter = QStringLiteral("--%1\r\n").arg(contentType[1].mid(indexEq+1));
+        if(!delimiter.startsWith(QStringLiteral("--"))) {
+            throw QtException(QStringLiteral("invalid data"));
+        }
 
-        bool ok;
-        int64_t contentLength = contentLengthStr.toULongLong(&ok);
-        if( contentType[0] == QStringLiteral("multipart/form-data")) {
-            int indexEq = contentType[1].indexOf('=');
-            if(indexEq == -1) {
-                throw QtException(QStringLiteral("invalid data"));
+
+        QChar quot('"');
+        char * buf = new char[BUF_SIZE];
+        QString fieldName;
+        QString line;
+
+        if(FCGX_GetLine(buf,BUF_SIZE,request.in)!=nullptr) {
+            line =  QString::fromLatin1(buf);
+            if(line != delimiter) {
+                throw QtException(QStringLiteral("unexpected end of data: ") + line);
             }
-            QString delimiter = QStringLiteral("--%1\r\n").arg(contentType[1].mid(indexEq+1));
-            if(!delimiter.startsWith(QStringLiteral("--"))) {
-                throw QtException(QStringLiteral("invalid data"));
-            }
-            //            const int BUFSIZE = 8192;
-            //            char * buf= new char[BUFSIZE];
+        }
 
-            //            int bytesRead;
-            QFile dbg2("/tmp/upload.dat");
-            dbg2.open(QIODevice::WriteOnly|QIODevice::Truncate);
-            //            while ( (bytesRead = FCGX_GetStr(buf,BUFSIZE,request.in)) > 0) {
-            //                dbg2.write(buf, bytesRead);
-            //            }
+        //int r;
+        while(FCGX_GetLine(buf,BUF_SIZE,request.in)!=nullptr) {
+            line =  QString::fromLatin1(buf);
+            QString fileName;
+            QString mimeType;
 
+            while(line != QStringLiteral("\r\n")) {
+                int k = line.indexOf(QChar(':'));
+                QString header = line.left(k).toLower();
+                QString headerValue = line.mid(k+1).trimmed();
 
 
-            QChar quot('"');
-            char * buf = new char[BUF_SIZE];
-            QString fieldName;
-            QString line;
-
-            if(FCGX_GetLine(buf,BUF_SIZE,request.in)!=nullptr) {
-                line =  QString::fromLatin1(buf);
-                if(line != delimiter) {
-                    throw QtException(QStringLiteral("unexpected end of data: ") + line);
-                }
-            }
-
-            //int r;
-            while(FCGX_GetLine(buf,BUF_SIZE,request.in)!=nullptr) {
-                line =  QString::fromLatin1(buf);
-                QString fileName;
-                QString mimeType;
-
-                while(line != QStringLiteral("\r\n")) {
-                    int k = line.indexOf(QChar(':'));
-                    QString header = line.left(k).toLower();
-                    QString headerValue = line.mid(k+1).trimmed();
-
-
-                    if(header == QStringLiteral("content-disposition")) {
-                        QStringList contentDispositionParts = headerValue.split(QChar(';'));
-                        for(auto c : contentDispositionParts) {
-                            QString trimmed = c.trimmed();
-                            if(trimmed.startsWith(QStringLiteral("name=\""))) {
-                                int indexStart = trimmed.indexOf(quot,5)+1;
-                                int indexEnd =trimmed.indexOf(quot,indexStart);
-                                if(indexStart == -1 || indexEnd < indexStart) {
-                                    throw QtException(QStringLiteral("invalid data"));
-                                }
-                                fieldName = trimmed.mid(trimmed.indexOf(quot)+1,indexEnd - indexStart );
-                            } else if(trimmed.startsWith(QStringLiteral("filename=\""))) {
-                                int indexStart = trimmed.indexOf(quot,9)+1;
-                                int indexEnd =trimmed.indexOf(quot,indexStart);
-                                if(indexStart == -1 || indexEnd < indexStart) {
-                                    throw QtException(QStringLiteral("invalid data"));
-                                }
-                                fileName = trimmed.mid(trimmed.indexOf(quot)+1,indexEnd - indexStart );
+                if(header == QStringLiteral("content-disposition")) {
+                    QStringList contentDispositionParts = headerValue.split(QChar(';'));
+                    for(auto c : contentDispositionParts) {
+                        QString trimmed = c.trimmed();
+                        if(trimmed.startsWith(QStringLiteral("name=\""))) {
+                            int indexStart = trimmed.indexOf(quot,5)+1;
+                            int indexEnd =trimmed.indexOf(quot,indexStart);
+                            if(indexStart == -1 || indexEnd < indexStart) {
+                                throw QtException(QStringLiteral("invalid data"));
+                            }
+                            fieldName = trimmed.mid(trimmed.indexOf(quot)+1,indexEnd - indexStart );
+                        } else if(trimmed.startsWith(QStringLiteral("filename=\""))) {
+                            int indexStart = trimmed.indexOf(quot,9)+1;
+                            int indexEnd =trimmed.indexOf(quot,indexStart);
+                            if(indexStart == -1 || indexEnd < indexStart) {
+                                throw QtException(QStringLiteral("invalid data"));
+                            }
+                            fileName = trimmed.mid(trimmed.indexOf(quot)+1,indexEnd - indexStart );
+                            if(!FileUtil::isValidFileName(fieldName)) {
+                                throw QtException(QStringLiteral("invalid data"));
                             }
                         }
-                    } else if(header == QStringLiteral("content-type")) {
-                        mimeType = headerValue.trimmed();
                     }
-
-                    if(FCGX_GetLine(buf,BUF_SIZE,request.in)!=nullptr) {
-                        line =  QString::fromLatin1(buf);
-                    } else {
-                        throw QtException(QStringLiteral("unexpected end of data"));
-                    }
+                } else if(header == QStringLiteral("content-type")) {
+                    mimeType = headerValue.trimmed();
                 }
 
+                if(FCGX_GetLine(buf,BUF_SIZE,request.in)!=nullptr) {
+                    line =  QString::fromLatin1(buf);
+                } else {
+                    throw QtException(QStringLiteral("unexpected end of data"));
+                }
+            }
 
 
 
-                if(!fileName.isEmpty()) {
-                    QFile uploadedFile( QStringLiteral("/tmp/upload-")+fileName);
-                    uploadedFile.open(QIODevice::WriteOnly|QIODevice::Truncate);
-                    int c;
-                    QByteArray byteArray(BUF_SIZE,Qt::Uninitialized);
-                    char * writeBuf = new char[BUF_SIZE];
-                    int bufpos = 0;
-                    while((c=FCGX_GetChar(request.in))>0) {
-                        writeFileBuf(&uploadedFile,bufpos,writeBuf,c);
 
-                        if(c == CR) {
-                            c=FCGX_GetChar(request.in);
-                            if(c == NL) {
-                                QByteArray tempBuf(32,Qt::Uninitialized);
-                                bool foundDelimiter = true;
-                                for(int i=0;i<delimiter.size();i++) {
-                                    int c = FCGX_GetChar(request.in);
-                                    tempBuf.append(c);
-                                    if(c == 0) {
-                                        break;
-                                    } else if(delimiter[i] != QChar(c)) {
-                                        foundDelimiter = false;
-                                        break;
-                                    }
-                                }
-                                if(foundDelimiter) {
+            if(!fileName.isEmpty()) {
+                QFile uploadedFile( QStringLiteral("/tmp/upload-")+fileName);
+                uploadedFile.open(QIODevice::WriteOnly|QIODevice::Truncate);
+                int c;
+                QByteArray byteArray;
+                byteArray.reserve(BUF_SIZE);
+                char * writeBuf = new char[BUF_SIZE];
+                int bufpos = 0;
+                while((c=FCGX_GetChar(request.in))>-1) {
+                  //  writeFileBuf(&uploadedFile,bufpos,writeBuf,c);
+
+                    if(c == CR) {
+                        c=FCGX_GetChar(request.in);
+                        if(c == NL) {
+                            QByteArray tempBuf;
+                            tempBuf.reserve(32);
+                            bool foundDelimiter = true;
+                            for(int i=0;i<delimiter.size();i++) {
+                                int c = FCGX_GetChar(request.in);
+                                tempBuf.append(c);
+                                if(c == 0 || delimiter[i] != c) {
+                                    foundDelimiter = false;
                                     break;
-                                } else {
-                                    uploadedFile.write(tempBuf);
                                 }
+                            }
+                            if(foundDelimiter) {
+                                break;
                             } else {
                                 writeFileBuf(&uploadedFile,bufpos,writeBuf,CR);
-                                writeFileBuf(&uploadedFile,bufpos,writeBuf,c);
+                                writeFileBuf(&uploadedFile,bufpos,writeBuf,NL);
+                                for(int i=0;i<tempBuf.size(); i++) {
+                                    writeFileBuf(&uploadedFile,bufpos,writeBuf,tempBuf[i]);
+                                }
                             }
                         } else {
+                            writeFileBuf(&uploadedFile,bufpos,writeBuf,CR);
                             writeFileBuf(&uploadedFile,bufpos,writeBuf,c);
                         }
+                    } else {
+                        writeFileBuf(&uploadedFile,bufpos,writeBuf,c);
                     }
-                    uploadedFile.close();
+                }
+                uploadedFile.write(writeBuf,bufpos);
+                uploadedFile.close();
 
-                } else {
+            } else {
+                if(FCGX_GetLine(buf,BUF_SIZE,request.in) != nullptr) {
+                    QString value(buf);
+                     parseParam(fieldName,value.trimmed(),postParams);
                     if(FCGX_GetLine(buf,BUF_SIZE,request.in) != nullptr) {
-                        QString value(buf);
-                        dbg2.write( (fieldName+"->"+ value.trimmed()).toUtf8());
-                        if(FCGX_GetLine(buf,BUF_SIZE,request.in) != nullptr) {
-                            QString currentDelimiterEnd( buf);
-                            if(delimiter == currentDelimiterEnd) {
-                                qDebug() << "ok";
-                            }
+                        QString currentDelimiterEnd( buf);
+                        if(delimiter == currentDelimiterEnd) {
+                            qDebug() << "ok";
+                        } else if(currentDelimiterEnd == QStringLiteral("%1--\r\n").arg(delimiter.mid(0,delimiter.length()-2))) {
+                            break;
                         }
                     }
                 }
-
-
-
             }
-            dbg2.close();
-            delete[] buf;
-        } else {
 
-            if (!ok) {
-                throw QtException(QStringLiteral("Invalid content length"));
-            } else {
-                char * buf= new char[contentLength];
-
-
-                QByteArray paramStr(FCGX_GetLine(buf,contentLength,request.in));
-                parseParams(QUrl::fromPercentEncoding(paramStr),postParams);
-
-                delete[] buf;
-            }
 
 
         }
+        delete[] buf;
+    } else {
+
+        if (!ok) {
+            throw QtException(QStringLiteral("Invalid content length"));
+        } else {
+            char * buf= new char[contentLength];
+
+
+            QByteArray paramStr(FCGX_GetLine(buf,contentLength,request.in));
+            parseParams(QUrl::fromPercentEncoding(paramStr),postParams);
+
+            delete[] buf;
+        }
+
+
     }
+
 }
 
 void RequestData::parseCookies(const FCGX_Request & request)
@@ -296,6 +239,66 @@ void RequestData::parseCookies(const FCGX_Request & request)
                 throw QtException(QStringLiteral("invalid cookie"));
             }
         }
+    }
+}
+
+void RequestData::parseParam(const QString &key, const QString &strValue, QHash<QString, AbstractRequestParam *> &params)
+{
+    StringKeyArrayParam* currentArray = nullptr;
+    QString name;
+    if (key.endsWith(QStringLiteral("[]"))) {
+        name = key.left(key.indexOf('['));
+        ArrayRequestParam*arr = nullptr;
+        if (params.contains(name)) {
+            arr = dynamic_cast<ArrayRequestParam*>(params.value(name));
+            if (arr == nullptr) {
+                throw QtException(QStringLiteral("Unexpected error"));
+            }
+        } else {
+            arr = new ArrayRequestParam(name);
+            params.insert(name, arr);
+        }
+        arr->append(strValue);
+    } else if (key.endsWith(QChar(']'))) {
+        name = key.left(key.indexOf('['));
+        if (params.contains(name)) {
+            currentArray = dynamic_cast<StringKeyArrayParam*>(params.value(name));
+            if (currentArray == nullptr) {
+                throw QtException(QStringLiteral("Unexpected error"));
+            }
+        } else {
+            currentArray = new StringKeyArrayParam(name);
+            params.insert(name, currentArray);
+        }
+        int arrayStart = 0;
+        int arrayEnd = 0;
+        for(int i=0;i<key.length();i++) {
+            if (key[i] == QChar('[')) {
+                arrayStart = i+1;
+
+            } else if (key[i] == QChar(']')) {
+                arrayEnd = i;
+                if (i < key.length()-1) {
+                    QString arrayIndex(key.mid(arrayStart,arrayEnd-arrayStart));
+                    if (currentArray->contains(arrayIndex)) {
+                        currentArray = dynamic_cast<StringKeyArrayParam*>(currentArray->value(arrayIndex));
+                        if (currentArray == nullptr) {
+                            throw QtException(QStringLiteral("Unexpected error"));
+                        }
+                    } else {
+                        StringKeyArrayParam*dimension=new StringKeyArrayParam(name);
+                        currentArray->insert(key.mid(arrayStart,arrayEnd-arrayStart),dimension);
+                        currentArray = dimension;
+                    }
+
+                } else {
+                    currentArray->insert(key.mid(arrayStart,arrayEnd-arrayStart),new ArrayValue(strValue));
+                    currentArray = nullptr;
+                }
+            }
+        }
+    } else {
+        params.insert(key, new RequestParam<QString>(key, strValue));
     }
 }
 

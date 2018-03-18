@@ -23,6 +23,7 @@ private:
     void parseGetParams(const QUrl& url);
     void parsePostParams(const FCGX_Request & request);
     void parseCookies(const FCGX_Request & request);
+    inline void parseParam(const QString & fieldName, const QString &value, QHash<QString, AbstractRequestParam*>& params);
     inline static void writeFileBuf(QFile * file, int & pos, char* & buf, char c );
 
 public:
