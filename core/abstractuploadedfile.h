@@ -1,8 +1,8 @@
 #ifndef ABSTRACTUPLOADEDFILE_H
 #define ABSTRACTUPLOADEDFILE_H
 #include <QString>
-
-class AbstractUploadedFile
+#include "webappcommon_global.h"
+class WEBAPPCOMMONSHARED_EXPORT AbstractUploadedFile
 {
 private:
      QString fieldName;

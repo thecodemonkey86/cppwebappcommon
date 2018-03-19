@@ -3,8 +3,8 @@
 #include "abstractuploadedfile.h"
 #include "uploadedfile.h"
 #include <QHash>
-
-class UploadedFileStringKeyArray : public AbstractUploadedFile, public QHash<QString, UploadedFile>
+#include "webappcommon_global.h"
+class WEBAPPCOMMONSHARED_EXPORT UploadedFileStringKeyArray : public AbstractUploadedFile, public QHash<QString, UploadedFile>
 {
 public:
     UploadedFileStringKeyArray(const QString & fieldName);

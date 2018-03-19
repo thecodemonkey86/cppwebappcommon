@@ -4,8 +4,8 @@
 #include "abstractuploadedfile.h"
 #include "uploadedfile.h"
 #include <QList>
-
-class UploadedFileArray : public AbstractUploadedFile, public QList<UploadedFile>
+#include "webappcommon_global.h"
+class WEBAPPCOMMONSHARED_EXPORT UploadedFileArray : public AbstractUploadedFile, public QList<UploadedFile>
 {
 public:
     UploadedFileArray(const QString & fieldName);

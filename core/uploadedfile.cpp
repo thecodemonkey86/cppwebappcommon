@@ -6,8 +6,8 @@ QString UploadedFile::getMimeType() const
     return mimeType;
 }
 
-UploadedFile::UploadedFile(const QString &fileName, const QString &temporaryPath, const QString &mimeType,int64_t size)
-    : AbstractUploadedFile (fileName)
+UploadedFile::UploadedFile(const QString & fieldName,const QString &temporaryPath, const QString &mimeType,int64_t size)
+    : AbstractUploadedFile (fieldName)
 {
     this->temporaryPath = temporaryPath;
     this->mimeType = mimeType;

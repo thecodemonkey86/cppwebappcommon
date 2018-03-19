@@ -12,12 +12,11 @@
 #include "uploadedfile.h"
 #include "uploadedfilearray.h"
 #include "uploadedfilestringkeyarray.h"
-
-#ifdef QT_DEBUG
-#include <QDebug>
 #include <QDir>
 #include <QFile>
 
+#ifdef QT_DEBUG
+#include <QDebug>
 #endif
 
 using namespace QtCommon2;
@@ -233,7 +232,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
                             throw QtException(QStringLiteral("Upload error"));
                         }
                     }
-                    uploadFiles.append(make_shared<UploadedFile>(fileName,filePath,mimeType,uploadedFile.size()));
+                    uploadFiles.append(make_shared<UploadedFile>(fieldName,filePath,mimeType,uploadedFile.size()));
                 }
 
             } else {
@@ -243,7 +242,9 @@ void RequestData::parsePostParams(const FCGX_Request & request)
                     if(FCGX_GetLine(buf,BUF_SIZE,request.in) != nullptr) {
                         QString currentDelimiterEnd( buf);
                         if(delimiter == currentDelimiterEnd) {
+                            #ifdef QT_DEBUG
                             qDebug() << "ok";
+                            #endif
                         } else if(currentDelimiterEnd == QStringLiteral("%1--\r\n").arg(delimiter.mid(0,delimiter.length()-2))) {
                             break;
                         }
