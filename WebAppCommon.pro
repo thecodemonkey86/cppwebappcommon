@@ -54,7 +54,11 @@ SOURCES += webappcommon.cpp \
     view/html/htmltag.cpp \
     view/html/htmlselectoption.cpp \
     view/html/htmltext.cpp \
-    view/html/util/htmlutil.cpp
+    view/html/util/htmlutil.cpp \
+    core/uploadedfile.cpp \
+    core/abstractuploadedfile.cpp \
+    core/uploadedfilearray.cpp \
+    core/uploadedfilestringkeyarray.cpp
 
 
 HEADERS += webappcommon.h\
@@ -92,7 +96,11 @@ HEADERS += webappcommon.h\
     view/html/htmltag.h \
     view/html/htmlselectoption.h \
     view/html/htmltext.h \
-    view/html/util/htmlutil.h
+    view/html/util/htmlutil.h \
+    core/uploadedfile.h \
+    core/abstractuploadedfile.h \
+    core/uploadedfilearray.h \
+    core/uploadedfilestringkeyarray.h
 
  #core/stringgetparam.h
 

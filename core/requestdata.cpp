@@ -9,9 +9,13 @@
 #include "stdint.h"
 #include "util/file/fileutil.h"
 #include <QBuffer>
+#include "uploadedfile.h"
+#include "uploadedfilearray.h"
+#include "uploadedfilestringkeyarray.h"
 
 #ifdef QT_DEBUG
 #include <QDebug>
+#include <QDir>
 #include <QFile>
 
 #endif
@@ -143,7 +147,8 @@ void RequestData::parsePostParams(const FCGX_Request & request)
 
 
             if(!fileName.isEmpty()) {
-                QFile uploadedFile( QStringLiteral("/tmp/upload-")+fileName);
+                QString filePath = QStringLiteral("%1/upload-%2").arg(QDir::tempPath(),fileName);
+                QFile uploadedFile( filePath );
                 uploadedFile.open(QIODevice::WriteOnly|QIODevice::Truncate);
                 int c;
                 QByteArray byteArray;
@@ -186,6 +191,50 @@ void RequestData::parsePostParams(const FCGX_Request & request)
                 }
                 uploadedFile.write(writeBuf,bufpos);
                 uploadedFile.close();
+
+                if(fieldName.endsWith(QStringLiteral("[]"))) {
+                    int j = fieldName.indexOf('[');
+                    if(j == -1) {
+                         throw QtException(QStringLiteral("Unexpected error"));
+                    }
+                    QString arrayBaseName = fieldName.left(j);
+                    for(const shared_ptr<AbstractUploadedFile> & u : uploadFiles) {
+                        if(u->getFieldName() == arrayBaseName) {
+                           auto arr = std::dynamic_pointer_cast<UploadedFileArray>(u);
+
+                           if(arr != nullptr) {
+                                arr->append(UploadedFile(fileName,filePath,mimeType,uploadedFile.size()));
+                           } else {
+                               throw QtException(QStringLiteral("Upload error"));
+                           }
+                        }
+                    }
+                } else if(fieldName.endsWith(']')){
+                    int j = fieldName.indexOf('[');
+                    if(j == -1) {
+                         throw QtException(QStringLiteral("Unexpected error"));
+                    }
+                    QString arrayBaseName = fieldName.left(j);
+                    for(const shared_ptr<AbstractUploadedFile> & u : uploadFiles) {
+                        if(u->getFieldName() == arrayBaseName) {
+                           auto arr = std::dynamic_pointer_cast<UploadedFileStringKeyArray>(u);
+                            auto key = fieldName.mid(j+1,fieldName.length()-j-2);
+                           if(arr != nullptr) {
+                                arr->insert(key, UploadedFile(fileName,filePath,mimeType,uploadedFile.size()));
+                           } else {
+                               throw QtException(QStringLiteral("Upload error"));
+                           }
+                        }
+                    }
+
+                } else {
+                    for(const shared_ptr<AbstractUploadedFile> & u : uploadFiles) {
+                        if(u->getFieldName() == fieldName) {
+                            throw QtException(QStringLiteral("Upload error"));
+                        }
+                    }
+                    uploadFiles.append(make_shared<UploadedFile>(fileName,filePath,mimeType,uploadedFile.size()));
+                }
 
             } else {
                 if(FCGX_GetLine(buf,BUF_SIZE,request.in) != nullptr) {
@@ -260,7 +309,11 @@ void RequestData::parseParam(const QString &key, const QString &strValue, QHash<
         }
         arr->append(strValue);
     } else if (key.endsWith(QChar(']'))) {
-        name = key.left(key.indexOf('['));
+        int j = key.indexOf('[');
+        if(j == -1) {
+             throw QtException(QStringLiteral("Unexpected error"));
+        }
+        name = key.left(j);
         if (params.contains(name)) {
             currentArray = dynamic_cast<StringKeyArrayParam*>(params.value(name));
             if (currentArray == nullptr) {
@@ -313,7 +366,7 @@ void RequestData::writeFileBuf(QFile *file, int &pos, char *&buf, char c)
 
 
 
-QString RequestData::getString(const QString & name) const
+const QString & RequestData::getString(const QString & name) const
 {
     if (getParams.contains(name)) {
         RequestParam<QString> * p = dynamic_cast< RequestParam<QString>* >(getParams.value(name));
@@ -326,7 +379,7 @@ QString RequestData::getString(const QString & name) const
     }
 }
 
-QString RequestData::postString(const QString &name, bool required) const
+const QString & RequestData::postString(const QString &name) const
 {
     if (postParams.contains(name)) {
         RequestParam<QString> * p = dynamic_cast< RequestParam<QString>* >(postParams.value(name));
@@ -334,10 +387,8 @@ QString RequestData::postString(const QString &name, bool required) const
             throw QtException(QStringLiteral("Parameter is not a simple value"));
         }
         return p->getValue();
-    } else if (required){
-        throw QtException(QStringLiteral("Parameter %1 does not exist").arg(name));
     } else {
-        return QStringLiteral("");
+        throw QtException(QStringLiteral("Parameter %1 does not exist").arg(name));
     }
 }
 
@@ -396,6 +447,61 @@ ArrayRequestParam *RequestData::getArray(const QString &name) const
     }
 }
 
+QString RequestData::getArrayValueString(const QString &name, const QString &key) const
+{
+    if (getParams.contains(name)) {
+        AbstractStringKeyArrayParam * p = dynamic_cast< AbstractStringKeyArrayParam* >(getParams.value(name));
+        if (p == nullptr) {
+            throw QtException(QStringLiteral("Parameter is not an array"));
+        }
+        ArrayValue * v = dynamic_cast<ArrayValue*>(p->val(key));
+        if(v == nullptr) {
+            throw QtException(QStringLiteral("Array key %1 does not exists").arg(key));
+        }
+
+        return  v->getValue();
+    } else {
+        throw QtException(QStringLiteral("Parameter does not exist"));
+    }
+}
+
+QString RequestData::getArrayValueString(const QString &name, int index) const
+{
+    if (getParams.contains(name)) {
+        ArrayRequestParam * p = dynamic_cast< ArrayRequestParam* >(getParams.value(name));
+        if (p == nullptr) {
+            throw QtException(QStringLiteral("Parameter is not an array"));
+        }
+        if(index >= 0 && index < p->size()) {
+            return p->at(index);
+        } else {
+            throw QtException(QStringLiteral("Array index %1 does not exists").arg(index));
+        }
+
+
+    } else {
+        throw QtException(QStringLiteral("Parameter does not exist"));
+    }
+}
+
+int RequestData::getArrayValueInt(const QString &name, const QString &key) const
+{
+    QString value(getArrayValueString(name,key));
+    bool ok = false;
+    int i = value.toInt(&ok);
+    if (!ok) throw QtException(QStringLiteral("Parameter is not a number"));
+    return i;
+}
+
+int RequestData::getArrayValueInt(const QString &name, int index) const
+{
+    QString value(getArrayValueString(name,index));
+    bool ok = false;
+    int i = value.toInt(&ok);
+    if (!ok) throw QtException(QStringLiteral("Parameter is not a number"));
+    return i;
+}
+
 bool RequestData::isGetParamSet(const QString &name) const
 {
     return getParams.contains(name);
@@ -418,6 +524,59 @@ QStringList RequestData::cookieAsArray(const QString &name) const
 {
     return cookieString(name).split(QChar('|'));
 }
+
+QStringList RequestData::postFieldNames() const
+{
+    return postParams.keys();
+}
+
+shared_ptr<UploadedFile> RequestData::uploadedFile(const QString &fieldname) const
+{
+    for(const shared_ptr<AbstractUploadedFile> & u : this->uploadFiles) {
+        if(u->getFieldName() == fieldname) {
+            auto f = dynamic_pointer_cast<UploadedFile>(u);
+            if(f != nullptr) {
+                return f;
+            } else {
+                throw QtException(QStringLiteral("Parameter is not a simple file field"));
+            }
+        }
+    }
+    throw QtException(QStringLiteral("no such file"));
+
+}
+
+shared_ptr<UploadedFileArray> RequestData::uploadedFileArray(const QString &fieldname) const
+{
+    for(const shared_ptr<AbstractUploadedFile> & u : this->uploadFiles) {
+        if(u->getFieldName() == fieldname) {
+            auto f = dynamic_pointer_cast<UploadedFileArray>(u);
+            if(f != nullptr) {
+                return f;
+            } else {
+                throw QtException(QStringLiteral("Parameter is not an array file field"));
+            }
+        }
+    }
+    throw QtException(QStringLiteral("no such file"));
+
+}
+
+shared_ptr<UploadedFileStringKeyArray> RequestData::uploadedFileArrayStringKey(const QString &fieldname) const
+{
+    for(const shared_ptr<AbstractUploadedFile> & u : this->uploadFiles) {
+        if(u->getFieldName() == fieldname) {
+            auto f = dynamic_pointer_cast<UploadedFileStringKeyArray>(u);
+            if(f != nullptr) {
+                return f;
+            } else {
+                throw QtException(QStringLiteral("Parameter is not an array file field"));
+            }
+        }
+    }
+    throw QtException(QStringLiteral("no such file"));
+}
+
 
 bool RequestData::isCookieSet(const QString &name) const
 {

@@ -9,7 +9,7 @@ class WEBAPPCOMMONSHARED_EXPORT AbstractStringKeyArrayParam : public AbstractReq
 public:
     AbstractStringKeyArrayParam();
     virtual ~AbstractStringKeyArrayParam();
-   virtual AbstractStringKeyArrayParam* val(const QString&key)=0;
+   virtual AbstractStringKeyArrayParam* val(const QString&key) const=0;
 };
 
 #endif // ABSTRACTSTRINGKEYARRAYPARAM_H

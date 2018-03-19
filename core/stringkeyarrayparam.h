@@ -12,11 +12,11 @@ protected:
 public:
     StringKeyArrayParam(const QString &name);
     virtual ~StringKeyArrayParam();
-    virtual QString toString();
-    QString getArrayValue(int dimensionsCount, ...);
-    QString getArrayValue(const QStringList & arrayKeys);
-    virtual AbstractStringKeyArrayParam* val(const QString&key);
-    void incrementDimension();
+    virtual QString toString() const;
+    QString getArrayValue(int dimensionsCount, ...) const;
+    QString getArrayValue(const QStringList & arrayKeys) const;
+    virtual AbstractStringKeyArrayParam* val(const QString&key) const;
+    void incrementDimension() ;
 };
 
 #endif // STRINGKEYARRAYPARAM_H

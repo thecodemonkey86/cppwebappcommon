@@ -12,7 +12,7 @@ protected:
 public:
     ArrayRequestParam(const QString & name);
     virtual ~ArrayRequestParam();
-    virtual QString toString();
+    virtual QString toString() const;
 };
 
 #endif // ARRAYREQUESTPARAM_H

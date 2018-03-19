@@ -24,7 +24,7 @@ public:
     const T & getValue() const {
         return value;
     }
-    virtual QString toString(){
+    virtual QString toString() const{
         return name;
     }
 

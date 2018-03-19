@@ -11,17 +11,17 @@ ArrayValue::~ArrayValue()
 
 }
 
-QString ArrayValue::toString()
+QString ArrayValue::toString() const
 {
     return value;
 }
 
-AbstractStringKeyArrayParam *ArrayValue::val(const QString&key)
+AbstractStringKeyArrayParam *ArrayValue::val(const QString&key) const
 {
     return nullptr;
 }
 
-QString ArrayValue::getValue()
+QString ArrayValue::getValue() const
 {
     return value;
 }
