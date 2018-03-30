@@ -33,6 +33,8 @@ public:
      virtual QString getHttpContentType() const;
      void addCssFiles(const QStringList&cssFiles);
      void addJsFiles(const QStringList&jssFiles);
+     void addCssFile(const QString&cssFile);
+     void addJsFile(const QString&jssFile);
      QString getBaseUrl() const;
      void setBaseUrl(const QString &value);
 };

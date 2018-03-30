@@ -21,7 +21,7 @@ AbstractPageController *AbstractPageController::setHttpHeader(HttpHeader *httpHe
 
 //QUrl AbstractPageController::getUrl()
 //{
-//    return QUrl(QStringLiteral("/?controller=%1").arg(getName()));
+//    return QUrl(QStringLiteral("./?controller=%1").arg(getName()));
 //}
 
 //QUrl AbstractPageController::getUrl(const QString &action)

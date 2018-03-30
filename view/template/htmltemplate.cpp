@@ -130,3 +130,13 @@ void HtmlTemplate::addJsFiles(const QStringList &jsFiles)
         this->includeJs.append(c);
 }
 
+void HtmlTemplate::addCssFile(const QString &cssFile)
+{
+    includeCss.append(cssFile);
+}
+
+void HtmlTemplate::addJsFile(const QString &jssFile)
+{
+    includeJs.append(jssFile);
+}
+
