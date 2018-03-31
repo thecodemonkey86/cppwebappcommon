@@ -24,7 +24,6 @@ using namespace QtCommon2;
 RequestData::RequestData(const FCGX_Request & request, const QUrl &url)
 {
 
-    parseCookies(request);
     parseGetParams(url);
     if (strcmp(FCGX_GetParam("REQUEST_METHOD", request.envp),"POST" )==0) {
         parsePostParams(request);
@@ -275,22 +274,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
 
 }
 
-void RequestData::parseCookies(const FCGX_Request & request)
-{
-    //    cookies = new QHash<QString,QString>();
-    QString cookieStr(FCGX_GetParam("HTTP_COOKIE", request.envp));
-    if (cookieStr.trimmed().length()>0) {
-        QStringList cookieStrLst =cookieStr.split(QChar(';'));
-        for (const QString & s : cookieStrLst) {
-            QStringList parts = s.split(QChar('='));
-            if (parts.length()==2) {
-                RequestData::cookies.insert(parts.at(0).trimmed(),parts.at(1).trimmed());
-            } else {
-                throw QtException(QStringLiteral("invalid cookie"));
-            }
-        }
-    }
-}
+
 
 void RequestData::parseParam(const QString &key, const QString &strValue, QHash<QString, AbstractRequestParam *> &params)
 {
@@ -513,18 +497,6 @@ bool RequestData::isPostParamSet(const QString &name) const
     return postParams.contains(name);
 }
 
-QString RequestData::cookieString(const QString &name) const
-{
-    if(cookies.contains(name)) {
-        return cookies[name];
-    }
-    throw QtException(QStringLiteral("Cookie is not set"));
-}
-
-QStringList RequestData::cookieAsArray(const QString &name) const
-{
-    return cookieString(name).split(QChar('|'));
-}
 
 QStringList RequestData::postFieldNames() const
 {
@@ -579,8 +551,4 @@ shared_ptr<UploadedFileStringKeyArray> RequestData::uploadedFileArrayStringKey(c
 }
 
 
-bool RequestData::isCookieSet(const QString &name) const
-{
-    return cookies.contains(name);
-}
 

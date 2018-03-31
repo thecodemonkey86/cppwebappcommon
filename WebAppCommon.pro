@@ -3,7 +3,7 @@
 # Project created by QtCreator 2015-07-25T12:18:49
 #
 #-------------------------------------------------
-QT += sql
+QT += sql network
 QT       -= gui
 
 TARGET = WebAppCommon
@@ -125,13 +125,13 @@ win32 {
 }
 
 unix {
-        CONFIG(release, debug|release): LIBS += -L$$PWD/../build-QtCommon2-Desktop_Qt_5_7_0_GCC_64bit/release/ -lQtCommon2
-        CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-QtCommon2-Desktop_Qt_5_7_0_GCC_64bit/debug/ -lQtCommon2
+        CONFIG(release, debug|release): LIBS += -L$$PWD/../build-QtCommon2-Desktop_Qt_5_11_0_GCC_64bit/release/ -lQtCommon2
+        CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-QtCommon2-Desktop_Qt_5_11_0_GCC_64bit/debug/ -lQtCommon2
 
         INCLUDEPATH += ../QtCommon2
 
-        CONFIG(release, debug|release): LIBS += -L$$PWD/../build-SqlUtil2-Desktop_Qt_5_7_0_GCC_64bit/release/ -lSqlUtil2
-        CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-SqlUtil2-Desktop_Qt_5_7_0_GCC_64bit/debug/ -lSqlUtil2
+        CONFIG(release, debug|release): LIBS += -L$$PWD/../build-SqlUtil2-Desktop_Qt_5_11_0_GCC_64bit/release/ -lSqlUtil2
+        CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-SqlUtil2-Desktop_Qt_5_11_0_GCC_64bit/debug/ -lSqlUtil2
 
         INCLUDEPATH += $$PWD/../SqlUtil2
 

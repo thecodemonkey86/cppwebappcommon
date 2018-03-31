@@ -28,11 +28,11 @@ private:
     QHash<QString, AbstractRequestParam*> getParams;
     QHash<QString, AbstractRequestParam*> postParams;
     QVector<shared_ptr<AbstractUploadedFile>> uploadFiles;
-    QHash<QString, QString> cookies;
+
     void parseParams(const QString&requestString, QHash<QString, AbstractRequestParam*>& params);
     void parseGetParams(const QUrl& url);
     void parsePostParams(const FCGX_Request & request);
-    void parseCookies(const FCGX_Request & request);
+
     inline void parseParam(const QString & fieldName, const QString &value, QHash<QString, AbstractRequestParam*>& params);
     inline static void writeFileBuf(QFile * file, int & pos, char* & buf, char c );
 
@@ -53,13 +53,10 @@ public:
     int getArrayValueInt(const QString &name, int index) const;
     bool isGetParamSet(const QString&name) const;
     bool isPostParamSet(const QString&name) const;
-    QString cookieString(const QString&name) const;
-    QStringList cookieAsArray(const QString&name) const;
     QStringList postFieldNames() const;
     shared_ptr<UploadedFile> uploadedFile(const QString&fieldname) const;
     shared_ptr<UploadedFileArray> uploadedFileArray(const QString&fieldname) const;
     shared_ptr<UploadedFileStringKeyArray> uploadedFileArrayStringKey(const QString&fieldname) const;
-    bool isCookieSet(const QString&name) const;
 
 };
 
