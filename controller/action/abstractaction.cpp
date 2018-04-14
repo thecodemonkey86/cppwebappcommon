@@ -32,12 +32,6 @@ AbstractAction *AbstractAction::setSessionData(SessionData *value)
 
 
 
-QUrl AbstractAction::getUrl()
-{
-    return QUrl::fromPercentEncoding((QString("/?controller=")+parent->getName()+QString("&action=")+getName()).toUtf8());
-}
-
-
 AbstractAction::AbstractAction()
 {
 

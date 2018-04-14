@@ -24,7 +24,6 @@ protected:
 public:
     AbstractPageController();
     virtual ~AbstractPageController();
-    virtual QString getName()=0;
 
     virtual void runController();
 

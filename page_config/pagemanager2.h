@@ -19,15 +19,17 @@ private:
 
 public:
   PageManager2();
-    static QString getControllerUrl(const QString&name);
+ //   static QString getControllerUrl(const QString&name);
     static QString baseUrl;
-    void runController(const QString&name, RequestData * requestData, SessionData * sessionData, ServerData * serverData, HttpHeader * httpHeader, Sql*sqlCon);
-    void addPage(const shared_ptr<PageConfig> &config);
+    void runController(const QString&page, RequestData * requestData, SessionData * sessionData, ServerData * serverData, HttpHeader * httpHeader, Sql*sqlCon);
+    template<class T> void addPage(const shared_ptr<T> &config) {
+        pages.insert(T::name(),config);
+    }
     template<class T> static QString getPageUrl() {
-         return QStringLiteral("%1?page=%2").arg(baseUrl,T::controllerName());
+         return QStringLiteral("%1?page=%2").arg(baseUrl,T::name());
     }
     template<class T> static QString getPageUrl(const QVector<QPair<QString,QString>>args) {
-         QString url = QStringLiteral("%1?page=%2").arg(baseUrl,T::controllerName());
+         QString url = QStringLiteral("%1?page=%2").arg(baseUrl,T::name());
          for(const QPair<QString,QString> & a : args) {
             url += QStringLiteral("&%1=%2").arg(a.first, a.second);
          }

@@ -35,7 +35,7 @@ bool Form::isSetAndNotEmpty(const QString &name)
 //bool Form::submit()
 //{
 //    if (requestData == nullptr) {
-//        throw QtException(QString("Form illegal state: reqdata not set"));
+//        throw QtException(QStringLiteral("Form illegal state: reqdata not set"));
 //    }
 //    if (isSubmitted()) {
 //        onSubmit();

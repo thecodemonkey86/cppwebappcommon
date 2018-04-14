@@ -7,7 +7,7 @@ class WEBAPPCOMMONSHARED_EXPORT FormGet : public Form
 {
 
 public:
-    FormGet(RequestData * request,const QString&submitFieldName=QString("submit"));
+    FormGet(RequestData * request,const QString&submitFieldName=QStringLiteral("submit"));
     virtual ~FormGet();
     virtual QString stringValue(const QString&name) const;
     virtual int intValue(const QString&name) const;

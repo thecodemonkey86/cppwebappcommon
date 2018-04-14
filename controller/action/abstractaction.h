@@ -30,7 +30,6 @@ public:
     virtual AbstractAction* setServerData(ServerData *value);
     virtual AbstractAction* setRequestData(RequestData *value);
     virtual AbstractAction* setSessionData(SessionData *value);
-    QUrl getUrl();
 };
 
 #endif // ABSTRACTACTION_H
