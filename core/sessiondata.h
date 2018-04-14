@@ -2,6 +2,7 @@
 #define SESSIONDATA_H
 
 #include <QString>
+#include <QDir>
 #include <QByteArray>
 #include <QHash>
 #include <QJsonObject>
@@ -12,7 +13,8 @@
 class WEBAPPCOMMONSHARED_EXPORT SessionData
 {
 protected:
-    static const QString KEY_SESSION_ID, KEY_SESSION_VALID_UNTIL;
+    QDir tempDir;
+     static const QString KEY_SESSION_VALID_UNTIL;
     QJsonObject data;
     QString sessId;
     ServerData * serverData;
@@ -24,7 +26,7 @@ protected:
     inline QString getSessionFileName(ServerData * serverData);
     inline void newSession(HttpHeader *httpHeader);
 public:
-    SessionData(int minutesSessionValid, ServerData * s,HttpHeader * httpHeader);
+    SessionData(int minutesSessionValid, ServerData * s,HttpHeader * httpHeader,QDir tempDir = QDir(QDir::tempPath()));
       virtual ~SessionData();
     void saveSession();
     void setValue(const QString&key,const QString&val);
@@ -39,6 +41,7 @@ public:
     bool hasValue(const QString&key) const;
     void clearSession();
 //    void setSessId(const QString &value);
+    void setTempDir(const QString &value);
 };
 
 #endif // SESSIONDATA_H

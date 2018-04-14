@@ -7,10 +7,12 @@ class WEBAPPCOMMONSHARED_EXPORT AbstractUploadedFile
 private:
      QString fieldName;
 public:
+     AbstractUploadedFile();
     AbstractUploadedFile(const QString & fieldName);
     virtual ~AbstractUploadedFile() = default;
 
     QString getFieldName() const;
+      bool operator ==(const AbstractUploadedFile & other) const;
 };
 
 #endif // ABSTRACTUPLOADEDFILE_H

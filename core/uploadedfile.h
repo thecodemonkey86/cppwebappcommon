@@ -12,12 +12,15 @@ private:
     QString mimeType;
     int64_t size;
 public:
+    UploadedFile();
     UploadedFile(const QString & fieldName, const QString & temporaryPath,const QString & mimeType,int64_t size);
     virtual ~UploadedFile() = default;
     int64_t getSize() const;
     QString getTemporaryPath() const;
     bool move(const QString & path);
     QString getMimeType() const;
-};
 
+    bool operator ==(const UploadedFile & other) const;
+};
+uint qHash(const UploadedFile & u);
 #endif // UPLOADEDFILE_H

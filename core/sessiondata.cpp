@@ -44,22 +44,27 @@ void SessionData::clearSession()
 
 
 
+void SessionData::setTempDir(const QString &value)
+{
+    tempDir = QDir(value);
+}
+
 QString SessionData::getSessionFileName(ServerData * serverData)
 {
-    return QDir(QDir::tempPath()).absoluteFilePath( QStringLiteral("sess_%1_%2.json").arg(
+    return tempDir.absoluteFilePath( QStringLiteral("sess_%1_%2.json").arg(
                                                         QString::fromUtf8(QCryptographicHash::hash(serverData->getIp().toUtf8(),QCryptographicHash::Md5).toHex()),this->sessId));
 }
 
 void SessionData::newSession(HttpHeader *httpHeader)
 {
     this->sessId = Util::randString(64);
-    this->data.insert(KEY_SESSION_ID,sessId);
     this->data.insert(KEY_SESSION_VALID_UNTIL, QDateTime::currentDateTime().addSecs(minutesSessionValid*60).toSecsSinceEpoch());
     httpHeader->setSessionCookie(this->sessId);
 }
 
-SessionData::SessionData(int minutesSessionValid,  ServerData * serverData, HttpHeader *httpHeader)
+SessionData::SessionData(int minutesSessionValid,  ServerData * serverData, HttpHeader *httpHeader,QDir tempDir)
 {
+    this->tempDir = tempDir;
     this->minutesSessionValid = minutesSessionValid;
     this->serverData = serverData;
     this->httpHeader = httpHeader;
@@ -70,12 +75,19 @@ SessionData::SessionData(int minutesSessionValid,  ServerData * serverData, Http
             auto jsonDoc=QJsonDocument::fromJson(f.readAll());
             this->data = jsonDoc.object();
             f.close();
+
             if(this->data.value(KEY_SESSION_VALID_UNTIL).toVariant().value<int64_t>() < QDateTime::currentSecsSinceEpoch()) {
                 clearSession();
                 newSession(httpHeader);
             }
 
         } else {
+            QFile f0("D:\\Temp\\debug.txt");
+             if (f0.open(QIODevice::WriteOnly|QIODevice::Truncate)) {
+                 f0.write(getSessionFileName(serverData).toUtf8());
+                 f0.close();
+             }
+
             newSession(httpHeader);
         }
     } else {
@@ -136,8 +148,6 @@ int SessionData::intValue(const QString &key) const
 }
 
 const QString SessionData::SESS_COOKIE_NAME=QStringLiteral("PHPSESSID");
-const QString SessionData::KEY_SESSION_ID=QStringLiteral("__session_id__");
 const QString SessionData::KEY_SESSION_VALID_UNTIL=QStringLiteral("__session_valid_until__");
-
 
 
