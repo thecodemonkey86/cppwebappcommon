@@ -47,7 +47,6 @@ SOURCES += webappcommon.cpp \
     page_config/pagemanager2.cpp \
     core/sessiondata.cpp \
     view/template/htmltemplate.cpp \
-    view/html/html.cpp \
     view/html/htmlselect.cpp \
     view/html/htmlrenderable.cpp \
     view/html/htmlautoclosetag.cpp \

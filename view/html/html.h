@@ -6,11 +6,20 @@
 class WEBAPPCOMMONSHARED_EXPORT Html
 {
 protected :
-     Html();
+    Html() {
+
+    }
 public:
 
-    inline static HtmlSelect select();
-    inline static HtmlSelectOption option(const QString&value, const QString&display);
+     inline static HtmlSelect select() {
+          return HtmlSelect();
+     }
+     inline static HtmlSelectOption option(const QString&value, const QString&display) {
+         return HtmlSelectOption(value,display);
+     }
+
+
+
 };
 
 #endif // HTML_H
