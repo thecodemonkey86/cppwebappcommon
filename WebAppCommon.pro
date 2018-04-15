@@ -124,6 +124,24 @@ win32 {
         INCLUDEPATH += $$PWD/../libfcgi/include
 }
 
+win32-msvc* {
+        CONFIG(release, debug|release): LIBS += -L$$PWD/../build-SqlUtil2-Desktop_Qt_5_10_1_MSVC2017_64bit/release/ -lSqlUtil2
+        else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-SqlUtil2-Desktop_Qt_5_10_1_MSVC2017_64bit/debug/ -lSqlUtil2
+
+        CONFIG(release, debug|release): LIBS += -L$$PWD/../build-QtCommon2-Desktop_Qt_5_10_1_MSVC2017_64bit/release/ -lQtCommon2
+        else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-QtCommon2-Desktop_Qt_5_10_1_MSVC2017_64bit/debug/ -lQtCommon2
+
+
+        CONFIG(release, debug|release): LIBS += -L$$PWD/../build-libfcgi-Desktop_Qt_5_10_1_MSVC2017_64bit/release/ -llibfcgi
+        else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-libfcgi-Desktop_Qt_5_10_1_MSVC2017_64bit/debug/ -llibfcgi
+
+}
+
+
+INCLUDEPATH += $$PWD/../QtCommon2
+INCLUDEPATH += $$PWD/../SqlUtil2
+INCLUDEPATH += $$PWD/../libfcgi/include
+
 unix {
         CONFIG(release, debug|release): LIBS += -L$$PWD/../build-QtCommon2-Desktop_Qt_5_11_0_GCC_64bit/release/ -lQtCommon2
         CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-QtCommon2-Desktop_Qt_5_11_0_GCC_64bit/debug/ -lQtCommon2

@@ -36,7 +36,7 @@ public:
          return url;
     }
     template<class T> static QString getPageUrl(const QString&action) {
-         return QStringLiteral("%1?page=%2&action=%3").arg(baseUrl,T::controllerName(),action);
+         return QStringLiteral("%1?page=%2&action=%3").arg(baseUrl,T::name(),action);
     }
     static QString getBaseUrl();
     static void setBaseUrl(const QString &value);
