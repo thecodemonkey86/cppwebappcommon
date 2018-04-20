@@ -260,10 +260,10 @@ void RequestData::parsePostParams(const FCGX_Request & request)
         if (!ok) {
             throw QtException(QStringLiteral("Invalid content length"));
         } else {
-            char * buf= new char[contentLength];
+            char * buf= new char[contentLength+1];
 
 
-            QByteArray paramStr(FCGX_GetLine(buf,contentLength,request.in));
+            QByteArray paramStr(FCGX_GetLine(buf,contentLength+1,request.in));
             parseParams(QUrl::fromPercentEncoding(paramStr),postParams);
 
             delete[] buf;

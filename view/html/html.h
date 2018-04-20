@@ -11,12 +11,8 @@ protected :
     }
 public:
 
-     inline static HtmlSelect select() {
-          return HtmlSelect();
-     }
-     inline static HtmlSelectOption option(const QString&value, const QString&display) {
-         return HtmlSelectOption(value,display);
-     }
+     static HtmlSelect select();
+     static HtmlSelectOption option(const QString&value, const QString&display);
 
 
 

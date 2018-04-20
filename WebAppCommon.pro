@@ -57,7 +57,8 @@ SOURCES += webappcommon.cpp \
     core/uploadedfile.cpp \
     core/abstractuploadedfile.cpp \
     core/uploadedfilearray.cpp \
-    core/uploadedfilestringkeyarray.cpp
+    core/uploadedfilestringkeyarray.cpp \
+    view/html/html.cpp
 
 
 HEADERS += webappcommon.h\

@@ -162,3 +162,4 @@ QString HttpHeader::cookieString(const QString &name) const
 const QString HttpHeader::CONTENT_TYPE_TEXT_HTML("text/html; charset=UTF-8");
 const QString HttpHeader::CONTENT_TYPE_BINARY("application/octet-stream");
 const QString HttpHeader::CONTENT_TYPE_TEXT_XML("text/xml; charset=UTF-8");
+const QString HttpHeader::CONTENT_TYPE_APPLICATION_JSON("application/json; charset=UTF-8");

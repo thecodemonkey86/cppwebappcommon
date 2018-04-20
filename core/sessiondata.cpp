@@ -82,12 +82,6 @@ SessionData::SessionData(int minutesSessionValid,  ServerData * serverData, Http
             }
 
         } else {
-            QFile f0("D:\\Temp\\debug.txt");
-             if (f0.open(QIODevice::WriteOnly|QIODevice::Truncate)) {
-                 f0.write(getSessionFileName(serverData).toUtf8());
-                 f0.close();
-             }
-
             newSession(httpHeader);
         }
     } else {
