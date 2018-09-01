@@ -28,7 +28,7 @@ output(tag);
 
 void HtmlTemplate::outEndTag(const QString &tag) const
 {
-    output(QStringLiteral("</"));
+    output("</");
     output(tag);
     output('>');
 }

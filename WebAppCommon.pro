@@ -110,31 +110,33 @@ unix {
 }
 
 win32 {
-        CONFIG(release, debug|release): LIBS += -L$$PWD/../build-QtCommon2-Desktop_Qt_5_9_0_MinGW_32bit/release/ -lQtCommon2
-        CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-QtCommon2-Desktop_Qt_5_9_0_MinGW_32bit/debug/ -lQtCommon2
+        CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/QtCommon2-Desktop_Qt_5_9_0_MinGW_32bit/release/ -lQtCommon2
+        CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/QtCommon2-Desktop_Qt_5_9_0_MinGW_32bit/debug/ -lQtCommon2
 
         INCLUDEPATH += ../QtCommon2
 
-        CONFIG(release, debug|release): LIBS += -L$$PWD/../build-SqlUtil2-Desktop_Qt_5_9_0_MinGW_32bit/release/ -lSqlUtil2
-        CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-SqlUtil2-Desktop_Qt_5_9_0_MinGW_32bit/debug/ -lSqlUtil2
+        CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/SqlUtil2-Desktop_Qt_5_9_0_MinGW_32bit/release/ -lSqlUtil2
+        CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/SqlUtil2-Desktop_Qt_5_9_0_MinGW_32bit/debug/ -lSqlUtil2
 
         INCLUDEPATH += $$PWD/../SqlUtil2
-        CONFIG(release, debug|release): LIBS += -L$$PWD/../build-libfcgi-Desktop_Qt_5_9_0_MinGW_32bit/release/ -llibfcgi
-        CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-libfcgi-Desktop_Qt_5_9_0_MinGW_32bit/debug/ -llibfcgi
+        CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/libfcgi-Desktop_Qt_5_9_0_MinGW_32bit/release/ -llibfcgi
+        CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/libfcgi-Desktop_Qt_5_9_0_MinGW_32bit/debug/ -llibfcgi
         INCLUDEPATH += $$PWD/../libfcgi/include
 }
 
 win32-msvc* {
-        CONFIG(release, debug|release): LIBS += -L$$PWD/../build-SqlUtil2-Desktop_Qt_5_10_1_MSVC2017_64bit/release/ -lSqlUtil2
-        else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-SqlUtil2-Desktop_Qt_5_10_1_MSVC2017_64bit/debug/ -lSqlUtil2
+MSVC_VER = $$(VisualStudioVersion)
+    equals(MSVC_VER, 15.0){
+        CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/SqlUtil2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_MSVC2017_64bit/release/ -lSqlUtil2
+        else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/SqlUtil2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_MSVC2017_64bit/debug/ -lSqlUtil2
 
-        CONFIG(release, debug|release): LIBS += -L$$PWD/../build-QtCommon2-Desktop_Qt_5_10_1_MSVC2017_64bit/release/ -lQtCommon2
-        else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-QtCommon2-Desktop_Qt_5_10_1_MSVC2017_64bit/debug/ -lQtCommon2
+        CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/QtCommon2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_MSVC2017_64bit/release/ -lQtCommon2
+        else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/QtCommon2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_MSVC2017_64bit/debug/ -lQtCommon2
 
 
-        CONFIG(release, debug|release): LIBS += -L$$PWD/../build-libfcgi-Desktop_Qt_5_10_1_MSVC2017_64bit/release/ -llibfcgi
-        else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-libfcgi-Desktop_Qt_5_10_1_MSVC2017_64bit/debug/ -llibfcgi
-
+        CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/libfcgi-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_MSVC2017_64bit/release/ -llibfcgi
+        else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/libfcgi-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_MSVC2017_64bit/debug/ -llibfcgi
+}
 }
 
 
@@ -143,13 +145,13 @@ INCLUDEPATH += $$PWD/../SqlUtil2
 INCLUDEPATH += $$PWD/../libfcgi/include
 
 unix {
-        CONFIG(release, debug|release): LIBS += -L$$PWD/../build-QtCommon2-Desktop_Qt_5_11_0_GCC_64bit/release/ -lQtCommon2
-        CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-QtCommon2-Desktop_Qt_5_11_0_GCC_64bit/debug/ -lQtCommon2
+        CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/QtCommon2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_GCC_64bit/release/ -lQtCommon2
+        CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/QtCommon2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_GCC_64bit/debug/ -lQtCommon2
 
         INCLUDEPATH += ../QtCommon2
 
-        CONFIG(release, debug|release): LIBS += -L$$PWD/../build-SqlUtil2-Desktop_Qt_5_11_0_GCC_64bit/release/ -lSqlUtil2
-        CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-SqlUtil2-Desktop_Qt_5_11_0_GCC_64bit/debug/ -lSqlUtil2
+        CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/SqlUtil2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_GCC_64bit/release/ -lSqlUtil2
+        CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/SqlUtil2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_GCC_64bit/debug/ -lSqlUtil2
 
         INCLUDEPATH += $$PWD/../SqlUtil2
 
