@@ -52,6 +52,8 @@ void AbstractPageController::runController()
 {
     auto msg = run();
     httpHeader->setContentType(view->getHttpContentType());
+    view->setHttpHeader(httpHeader);
+    view->setHeaders();
     httpHeader->finish();
     if (!httpHeader->getRedirectFlag()) {
         if (msg != nullptr ) {

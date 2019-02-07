@@ -36,9 +36,9 @@ HttpHeader::HttpHeader(const FCGX_Request & request)
 {
     this->redirectFlag = false;
     sessionCookie = nullptr;
-    char * cookieStr = FCGX_GetParam("HTTP_COOKIE", request.envp);
+   QString cookieStr(FCGX_GetParam("HTTP_COOKIE", request.envp));
     if(cookieStr != nullptr) {
-        auto cookies = QNetworkCookie::parseCookies(QByteArray::fromRawData(cookieStr, static_cast<int>(strlen(cookieStr))));
+        auto cookies = QNetworkCookie::parseCookies(cookieStr.replace(QChar(';'),QChar('\n')).toLatin1());
         for(auto c : cookies) {
             if(c.name() == SessionData::getSessionCookieName().toLatin1()) {
                 sessionCookie = make_unique<QNetworkCookie>(c);

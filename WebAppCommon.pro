@@ -35,7 +35,6 @@ SOURCES += webappcommon.cpp \
     core/httpheader.cpp \
     page_config/pageconfig.cpp \
     mvc/mvcmessage.cpp \
-    view/template/compiledtemplate.cpp \
     controller/abstractpagecontroller.cpp \
     controller/action/abstractaction.cpp \
     controller/multiactioncontroller.cpp \
@@ -58,7 +57,8 @@ SOURCES += webappcommon.cpp \
     core/abstractuploadedfile.cpp \
     core/uploadedfilearray.cpp \
     core/uploadedfilestringkeyarray.cpp \
-    view/html/html.cpp
+    view/html/html.cpp \
+    view/jsonview.cpp
 
 
 HEADERS += webappcommon.h\
@@ -78,7 +78,6 @@ HEADERS += webappcommon.h\
     page_config/pageconfig.h \
     mvc/mvcmessage.h \
     view/template/htmltemplate.h \
-    view/template/compiledtemplate.h \
     controller/action/abstractaction.h \
     controller/abstractpagecontroller.h \
     controller/multiactioncontroller.h \
@@ -100,7 +99,8 @@ HEADERS += webappcommon.h\
     core/uploadedfile.h \
     core/abstractuploadedfile.h \
     core/uploadedfilearray.h \
-    core/uploadedfilestringkeyarray.h
+    core/uploadedfilestringkeyarray.h \
+    view/jsonview.h
 
  #core/stringgetparam.h
 

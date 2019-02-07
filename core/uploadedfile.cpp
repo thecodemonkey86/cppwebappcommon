@@ -11,17 +11,24 @@ bool UploadedFile::operator ==(const UploadedFile &other) const
     return other.temporaryPath == this->temporaryPath;
 }
 
+QString UploadedFile::getSourceFileName() const
+{
+    return sourceFileName;
+}
+
+
 UploadedFile::UploadedFile()  : AbstractUploadedFile(QString())
 {
 
 }
 
-UploadedFile::UploadedFile(const QString & fieldName,const QString &temporaryPath, const QString &mimeType,int64_t size)
+UploadedFile::UploadedFile(const QString & sourceFileName, const QString & fieldName,const QString &temporaryPath, const QString &mimeType,int64_t size)
     : AbstractUploadedFile (fieldName)
 {
     this->temporaryPath = temporaryPath;
     this->mimeType = mimeType;
     this->size = size;
+    this->sourceFileName = sourceFileName;
 }
 
 int64_t UploadedFile::getSize() const
@@ -48,3 +55,4 @@ uint qHash(const UploadedFile &u)
 {
     return qHash(u.getFieldName());
 }
+

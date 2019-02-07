@@ -1,4 +1,5 @@
 #include "htmltemplate.h"
+#include "page_config/pagemanager2.h"
 #ifndef output
 #define output FastCgiCout::write
 #endif
@@ -43,7 +44,7 @@ void HtmlTemplate::renderHeader() const
    outBeginTag("html");
    outBeginTag("head");
    outBeginTagWithAttrs("base");
-   outAttr("href", baseUrl);
+   outAttr("href", getBaseUrl());
    output('>');
 
    outBeginTagWithAttrs("meta");
@@ -102,12 +103,7 @@ void HtmlTemplate::renderInlineCss() const
 
 QString HtmlTemplate::getBaseUrl() const
 {
-    return baseUrl;
-}
-
-void HtmlTemplate::setBaseUrl(const QString &value)
-{
-    baseUrl = value;
+    return PageManager2::getBaseUrl();
 }
 
 
