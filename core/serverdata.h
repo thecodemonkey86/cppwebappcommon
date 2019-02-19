@@ -14,10 +14,13 @@ public:
     QUrl& getRequestUrl();
     QString& getIp();
 
+    QString& getDocumentRoot();
+
 private:
 
     QUrl requestUrl;
     QString ip;
+    QString documentRoot;
 };
 
 #endif // SERVERDATA_H

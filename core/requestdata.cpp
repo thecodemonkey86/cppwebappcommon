@@ -90,7 +90,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
         QString line;
 
         if(FCGX_GetLine(buf,BUF_SIZE,request.in)!=nullptr) {
-            line =  QString::fromLatin1(buf);
+            line =  QString::fromUtf8(buf);
             if(line != delimiter) {
                 throw QtException(QLatin1Literal("unexpected end of data: ") + line);
             }
@@ -98,7 +98,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
 
         //int r;
         while(FCGX_GetLine(buf,BUF_SIZE,request.in)!=nullptr) {
-            line =  QString::fromLatin1(buf);
+            line =  QString::fromUtf8(buf);
             QString fileName;
             QString mimeType;
 
@@ -136,7 +136,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
                 }
 
                 if(FCGX_GetLine(buf,BUF_SIZE,request.in)!=nullptr) {
-                    line =  QString::fromLatin1(buf);
+                    line =  QString::fromUtf8(buf);
                 } else {
                     throw QtException(QLatin1Literal("unexpected end of data"));
                 }

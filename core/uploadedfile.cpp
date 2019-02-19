@@ -45,6 +45,10 @@ QString UploadedFile::getTemporaryPath() const
 bool UploadedFile::move(const QString &path)
 {
     QFile file(temporaryPath);
+    QFile dest(path);
+    if(dest.exists()) {
+        dest.remove();
+    }
     return file.rename(path);
 }
 
