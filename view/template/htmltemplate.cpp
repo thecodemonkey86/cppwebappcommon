@@ -1,5 +1,5 @@
 #include "htmltemplate.h"
-#include "page_config/pagemanager2.h"
+#include "page_config/pagemanager.h"
 #ifndef output
 #define output FastCgiCout::write
 #endif
@@ -39,7 +39,6 @@ void HtmlTemplate::outEndTag(const QString &tag) const
 
 void HtmlTemplate::renderHeader() const
 {
-    // qDebug()<<"teeets";
    output("<!DOCTYPE html>");
    outBeginTag("html");
    outBeginTag("head");
@@ -103,7 +102,7 @@ void HtmlTemplate::renderInlineCss() const
 
 QString HtmlTemplate::getBaseUrl() const
 {
-    return PageManager2::getBaseUrl();
+    return PageManager::getBaseUrl();
 }
 
 

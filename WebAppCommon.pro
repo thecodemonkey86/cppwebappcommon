@@ -43,7 +43,7 @@ SOURCES += webappcommon.cpp \
     form/formget.cpp \
     form/form.cpp \
     view/abstractview.cpp \
-    page_config/pagemanager2.cpp \
+    page_config/pagemanager.cpp \
     core/sessiondata.cpp \
     view/template/htmltemplate.cpp \
     view/html/htmlselect.cpp \
@@ -85,7 +85,7 @@ HEADERS += webappcommon.h\
     form/formpost.h \
     form/formget.h \
     form/form.h \
-    page_config/pagemanager2.h \
+    page_config/pagemanager.h \
     fastcgicout.h \
     core/sessiondata.h \
     view/html/html.h \
