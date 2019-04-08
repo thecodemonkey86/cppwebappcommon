@@ -13,17 +13,22 @@ ServerData::ServerData(const FCGX_Request &request)
     ip = QString(FCGX_GetParam("REMOTE_ADDR", request.envp));
     documentRoot = QString(FCGX_GetParam("DOCUMENT_ROOT", request.envp));
 }
-QString& ServerData::getIp()
+const QString& ServerData::getIp() const
 {
     return ip;
 }
 
-QString& ServerData::getDocumentRoot()
+const QString& ServerData::getDocumentRoot() const
 {
     return documentRoot;
 }
 
-QUrl& ServerData::getRequestUrl()
+QDir ServerData::getServerDirectory(const QString &subdir) const
+{
+    return QDir(documentRoot+ QDir::separator()+subdir);
+}
+
+const QUrl& ServerData::getRequestUrl() const
 {
     return requestUrl;
 }

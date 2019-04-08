@@ -72,7 +72,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
     QString contentLengthStr(FCGX_GetParam("CONTENT_LENGTH", request.envp));
 
     bool ok;
-    int64_t contentLength = contentLengthStr.toULongLong(&ok);
+    uint64_t contentLength = contentLengthStr.toULongLong(&ok);
     if( contentType[0] == QLatin1Literal("multipart/form-data")) {
         int indexEq = contentType[1].indexOf('=');
         if(indexEq == -1) {
@@ -173,7 +173,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
                             bool foundDelimiter = true;
                             for(int i=0;i<delimiter.size();i++) {
                                 int c = FCGX_GetChar(request.in);
-                                tempBuf.append(c);
+                                tempBuf.append(static_cast<char>(c));
                                 if(c == 0 || delimiter[i] != c) {
                                     foundDelimiter = false;
                                     break;
@@ -190,10 +190,10 @@ void RequestData::parsePostParams(const FCGX_Request & request)
                             }
                         } else {
                             writeFileBuf(&uploadedFile,bufpos,writeBuf,CR);
-                            writeFileBuf(&uploadedFile,bufpos,writeBuf,c);
+                            writeFileBuf(&uploadedFile,bufpos,writeBuf,static_cast<char>(c));
                         }
                     } else {
-                        writeFileBuf(&uploadedFile,bufpos,writeBuf,c);
+                        writeFileBuf(&uploadedFile,bufpos,writeBuf,static_cast<char>(c));
                     }
                 }
                 uploadedFile.write(writeBuf,bufpos);
@@ -272,7 +272,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
             char * buf= new char[contentLength+1];
 
 
-            QByteArray paramStr(FCGX_GetLine(buf,contentLength+1,request.in));
+            QByteArray paramStr(FCGX_GetLine(buf,static_cast<int>(contentLength+1) ,request.in));
             parseParams(QUrl::fromPercentEncoding(paramStr),postParams);
 
             delete[] buf;
