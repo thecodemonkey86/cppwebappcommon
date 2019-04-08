@@ -28,10 +28,10 @@ public:
     virtual void runController();
 
 //    virtual void registerTemplate(unique_ptr<AbstractTemplate>view);
-    virtual AbstractPageController* setServerData(ServerData *value);
-    virtual AbstractPageController* setRequestData(RequestData *value);
-    virtual AbstractPageController* setSessionData(SessionData *value);
-     virtual AbstractPageController* setHttpHeader(HttpHeader *  httpHeader);
+    virtual void setServerData(ServerData *value);
+    virtual void setRequestData(RequestData *value);
+    virtual void setSessionData(SessionData *value);
+     virtual void setHttpHeader(HttpHeader *  httpHeader);
     SessionData *getSessionData() const;
 //    virtual QUrl getUrl();
 //    virtual QUrl getUrl(const QString&action);

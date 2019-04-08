@@ -6,39 +6,45 @@ MultiActionController *AbstractAction::getParent() const
     return parent;
 }
 
-AbstractAction * AbstractAction::setParent(MultiActionController *value)
+void AbstractAction::setParent(MultiActionController *value)
 {
     AbstractAction::parent = value;
-    return this;
 }
 
-AbstractAction *AbstractAction::setServerData(ServerData *value)
+void AbstractAction::setServerData(ServerData *value)
 {
     this->serverData = value;
-    return this;
 }
 
-AbstractAction *AbstractAction::setRequestData(RequestData *value)
+void AbstractAction::setRequestData(RequestData *value)
 {
     this->requestData = value;
-    return this;
 }
 
-AbstractAction *AbstractAction::setSessionData(SessionData *value)
+void AbstractAction::setSessionData(SessionData *value)
 {
     this->sessionData = value;
-    return this;
 }
 
 
+
+void AbstractAction::setSql(Sql *value)
+{
+    sql = value;
+}
+
+void AbstractAction::setHttpHeader(HttpHeader *value)
+{
+    httpHeader = value;
+}
 
 AbstractAction::AbstractAction()
 {
-
+    
 }
 
 AbstractAction::~AbstractAction()
 {
-
+    
 }
 

@@ -19,6 +19,11 @@ int FormPost::intValue(const QString &name) const
     return request->postInt(name);
 }
 
+QVector<int> FormPost::intArrayValue(const QString &name) const
+{
+    return request->postIntArray(name);
+}
+
 double FormPost::doubleValue(const QString &name) const
 {
     return request->postDouble(name);

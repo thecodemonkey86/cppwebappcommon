@@ -9,16 +9,17 @@ QT       -= gui
 TARGET = WebAppCommon
 TEMPLATE = lib
 
-CONFIG += c++14
+CONFIG += c++1z
 
 DEFINES += WEBAPPCOMMON_LIBRARY
 
-
-CONFIG(release, debug|release) {
-    QMAKE_CFLAGS_RELEASE -= -O
-    QMAKE_CFLAGS_RELEASE -= -O1
-    QMAKE_CFLAGS_RELEASE -= -O2
-    QMAKE_CXXFLAGS_RELEASE *= -O3
+gcc {
+    CONFIG(release, debug|release) {
+        QMAKE_CFLAGS_RELEASE -= -O
+        QMAKE_CFLAGS_RELEASE -= -O1
+        QMAKE_CFLAGS_RELEASE -= -O2
+        QMAKE_CXXFLAGS_RELEASE *= -O3
+    }
 }
 
 SOURCES += webappcommon.cpp \

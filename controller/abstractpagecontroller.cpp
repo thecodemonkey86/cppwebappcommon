@@ -7,16 +7,14 @@ SessionData *AbstractPageController::getSessionData() const
     return sessionData;
 }
 
-AbstractPageController* AbstractPageController::setSessionData(SessionData *value)
+void AbstractPageController::setSessionData(SessionData *value)
 {
     sessionData = value;
-    return this;
 }
 
-AbstractPageController *AbstractPageController::setHttpHeader(HttpHeader *httpHeader)
+void AbstractPageController::setHttpHeader(HttpHeader *httpHeader)
 {
     this->httpHeader = httpHeader;
-    return this;
 }
 
 //QUrl AbstractPageController::getUrl()
@@ -51,31 +49,32 @@ AbstractPageController::~AbstractPageController()
 void AbstractPageController::runController()
 {
     auto msg = run();
-    httpHeader->setContentType(view->getHttpContentType());
-    view->setHttpHeader(httpHeader);
-    view->setHeaders();
-    httpHeader->finish();
-    if (!httpHeader->getRedirectFlag()) {
-        if (msg != nullptr ) {
-            msg->setSessionData(sessionData);
-            view->update(std::move(msg));
-        } else {
-            view->update(nullptr);
+    if(view != nullptr) {
+        httpHeader->setContentType(view->getHttpContentType());
+        view->setHttpHeader(httpHeader);
+        view->setHeaders();
+        httpHeader->finish();
+        if (!httpHeader->getRedirectFlag()) {
+            if (msg != nullptr ) {
+                msg->setSessionData(sessionData);
+                view->update(std::move(msg));
+            } else {
+                view->update(nullptr);
+            }
         }
     }
 
+
 }
 
-AbstractPageController *AbstractPageController::setServerData(ServerData *value)
+void AbstractPageController::setServerData(ServerData *value)
 {
     this->serverData = value;
-    return this;
 }
 
-AbstractPageController *AbstractPageController::setRequestData(RequestData *value)
+void AbstractPageController::setRequestData(RequestData *value)
 {
     this->requestData = value;
-    return this;
 }
 
 

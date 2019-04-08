@@ -47,6 +47,7 @@ public:
     double getDouble(const QString&name) const;
     bool postBool(const QString&name) const;
     ArrayRequestParam * getArray(const QString&name) const;
+    ArrayRequestParam * postArray(const QString&name) const;
     QString getArrayValueString(const QString &name, const QString &key) const;
     QString getArrayValueString(const QString &name, int index) const;
     int getArrayValueInt(const QString &name, const QString &key) const;
@@ -57,6 +58,8 @@ public:
     shared_ptr<UploadedFile> uploadedFile(const QString&fieldname) const;
     shared_ptr<UploadedFileArray> uploadedFileArray(const QString&fieldname) const;
     shared_ptr<UploadedFileStringKeyArray> uploadedFileArrayStringKey(const QString&fieldname) const;
+    QVector<int> getIntArray(const QString&name) const;
+    QVector<int> postIntArray(const QString&name) const;
 
 };
 

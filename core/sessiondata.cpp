@@ -26,9 +26,10 @@ bool SessionData::hasValue(const QString &key) const
 
 void SessionData::clearSession()
 {
+    QFile f(getSessionFileName(serverData));
     this->sessId = QStringLiteral("");
     this->data = QJsonObject();
-    QFile f(getSessionFileName(serverData));
+
     if(f.exists()) {
         f.remove();
     }
@@ -121,6 +122,11 @@ void SessionData::setValue(const QString&key, bool val)
     this->data.insert(key, QJsonValue(val));
 }
 
+void SessionData::setValue(const QString &key, qint64 val)
+{
+     this->data.insert(key, QJsonValue(val));
+}
+
 void SessionData::removeValue(const QString &key)
 {
     this->data.remove(key);
@@ -139,6 +145,11 @@ bool SessionData::boolValue(const QString &key) const
 int SessionData::intValue(const QString &key) const
 {
  return this->data.value(key).toInt();
+}
+
+qint64 SessionData::int64Value(const QString &key) const
+{
+ return static_cast<qint64>(this->data.value(key).toDouble());
 }
 
 const QString SessionData::SESS_COOKIE_NAME=QStringLiteral("PHPSESSID");

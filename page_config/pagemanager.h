@@ -22,21 +22,27 @@ public:
  //   static QString getControllerUrl(const QString&name);
     static QString baseUrl;
     void runController(const QString&page, RequestData * requestData, SessionData * sessionData, ServerData * serverData, HttpHeader * httpHeader, Sql*sqlCon);
-    template<class T> void addPage(const shared_ptr<T> &config) {
-        pages.insert(T::name(),config);
+    template<class Controller> void addPage(const shared_ptr<Controller> &config) {
+        pages.insert(Controller::name(),config);
     }
-    template<class T> static QString getPageUrl() {
-         return QStringLiteral("/?page=%1").arg(T::name());
+    template<class Controller> static QString getPageUrl() {
+         return QStringLiteral("/?page=%1").arg(Controller::name());
     }
-    template<class T> static QString getPageUrl(const QVector<QPair<QString,QString>>args) {
-         QString url = QStringLiteral("/?page=%1").arg(T::name());
+    template<class Controller> static QString getPageUrl(const QVector<QPair<QString,QString>>& args) {
+         QString url = QStringLiteral("/?page=%1").arg(Controller::name());
          for(const QPair<QString,QString> & a : args) {
             url += QStringLiteral("&%1=%2").arg(a.first, a.second);
          }
          return url;
     }
-    template<class T> static QString getPageUrl(const QString&action) {
-         return QStringLiteral("/?page=%1&action=%2").arg(T::name(),action);
+    template<class Controller> static QString getPageUrl(const QPair<QString,QString> & arg) {
+         return QStringLiteral("/?page=%1&%2=%3").arg(Controller::name(),arg.first, arg.second);
+    }
+    template<class Controller> static QString getPageUrl(const QString&action) {
+         return QStringLiteral("/?page=%1&action=%2").arg(Controller::name(),action);
+    }
+    template<class Controller,class Action> static QString getPageUrl() {
+         return QStringLiteral("/?page=%1&action=%2").arg(Controller::name(),Action::name());
     }
     static QString getBaseUrl();
     static void setBaseUrl(const QString &value);

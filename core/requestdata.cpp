@@ -63,7 +63,7 @@ void RequestData::parseParams(const QString&requestString, QHash<QString, Abstra
 
 void RequestData::parseGetParams(const QUrl& url)
 {
-    parseParams(url.query(),getParams);
+    parseParams(QUrl::fromPercentEncoding(url.query().toUtf8()),getParams);
 }
 
 void RequestData::parsePostParams(const FCGX_Request & request)
@@ -72,7 +72,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
     QString contentLengthStr(FCGX_GetParam("CONTENT_LENGTH", request.envp));
 
     bool ok;
-    uint64_t contentLength = contentLengthStr.toULongLong(&ok);
+    int64_t contentLength = contentLengthStr.toULongLong(&ok);
     if( contentType[0] == QLatin1Literal("multipart/form-data")) {
         int indexEq = contentType[1].indexOf('=');
         if(indexEq == -1) {
@@ -163,7 +163,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
                 char * writeBuf = new char[BUF_SIZE];
                 int bufpos = 0;
                 while((c=FCGX_GetChar(request.in))>-1) {
-                  //  writeFileBuf(&uploadedFile,bufpos,writeBuf,c);
+                    //  writeFileBuf(&uploadedFile,bufpos,writeBuf,c);
 
                     if(c == CR) {
                         c=FCGX_GetChar(request.in);
@@ -173,7 +173,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
                             bool foundDelimiter = true;
                             for(int i=0;i<delimiter.size();i++) {
                                 int c = FCGX_GetChar(request.in);
-                                tempBuf.append(static_cast<char>(c));
+                                tempBuf.append(c);
                                 if(c == 0 || delimiter[i] != c) {
                                     foundDelimiter = false;
                                     break;
@@ -190,10 +190,10 @@ void RequestData::parsePostParams(const FCGX_Request & request)
                             }
                         } else {
                             writeFileBuf(&uploadedFile,bufpos,writeBuf,CR);
-                            writeFileBuf(&uploadedFile,bufpos,writeBuf,static_cast<char>(c));
+                            writeFileBuf(&uploadedFile,bufpos,writeBuf,c);
                         }
                     } else {
-                        writeFileBuf(&uploadedFile,bufpos,writeBuf,static_cast<char>(c));
+                        writeFileBuf(&uploadedFile,bufpos,writeBuf,c);
                     }
                 }
                 uploadedFile.write(writeBuf,bufpos);
@@ -202,35 +202,35 @@ void RequestData::parsePostParams(const FCGX_Request & request)
                 if(fieldName.endsWith(QLatin1Literal("[]"))) {
                     int j = fieldName.indexOf('[');
                     if(j == -1) {
-                         throw QtException(QLatin1Literal("Unexpected error"));
+                        throw QtException(QLatin1Literal("Unexpected error"));
                     }
                     QString arrayBaseName = fieldName.left(j);
                     for(const shared_ptr<AbstractUploadedFile> & u : uploadFiles) {
                         if(u->getFieldName() == arrayBaseName) {
-                           auto arr = std::dynamic_pointer_cast<UploadedFileArray>(u);
+                            auto arr = std::dynamic_pointer_cast<UploadedFileArray>(u);
 
-                           if(arr != nullptr) {
+                            if(arr != nullptr) {
                                 arr->append(UploadedFile(fileName,arrayBaseName,filePath,mimeType,uploadedFile.size()));
-                           } else {
-                               throw QtException(QLatin1Literal("Upload error"));
-                           }
+                            } else {
+                                throw QtException(QLatin1Literal("Upload error"));
+                            }
                         }
                     }
                 } else if(fieldName.endsWith(']')){
                     int j = fieldName.indexOf('[');
                     if(j == -1) {
-                         throw QtException(QLatin1Literal("Unexpected error"));
+                        throw QtException(QLatin1Literal("Unexpected error"));
                     }
                     QString arrayBaseName = fieldName.left(j);
                     for(const shared_ptr<AbstractUploadedFile> & u : uploadFiles) {
                         if(u->getFieldName() == arrayBaseName) {
-                           auto arr = std::dynamic_pointer_cast<UploadedFileStringKeyArray>(u);
+                            auto arr = std::dynamic_pointer_cast<UploadedFileStringKeyArray>(u);
                             auto key = fieldName.mid(j+1,fieldName.length()-j-2);
-                           if(arr != nullptr) {
+                            if(arr != nullptr) {
                                 arr->insert(key, UploadedFile(fileName,arrayBaseName,filePath,mimeType,uploadedFile.size()));
-                           } else {
-                               throw QtException(QLatin1Literal("Upload error"));
-                           }
+                            } else {
+                                throw QtException(QLatin1Literal("Upload error"));
+                            }
                         }
                     }
 
@@ -246,13 +246,13 @@ void RequestData::parsePostParams(const FCGX_Request & request)
             } else {
                 if(FCGX_GetLine(buf,BUF_SIZE,request.in) != nullptr) {
                     QString value(buf);
-                     parseParam(fieldName,value.trimmed(),postParams);
+                    parseParam(fieldName,value.trimmed(),postParams);
                     if(FCGX_GetLine(buf,BUF_SIZE,request.in) != nullptr) {
                         QString currentDelimiterEnd( buf);
                         if(delimiter == currentDelimiterEnd) {
-                            #ifdef QT_DEBUG
+#ifdef QT_DEBUG
                             qDebug() << "ok";
-                            #endif
+#endif
                         } else if(currentDelimiterEnd == QStringLiteral("%1--\r\n").arg(delimiter.mid(0,delimiter.length()-2))) {
                             break;
                         }
@@ -272,7 +272,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
             char * buf= new char[contentLength+1];
 
 
-            QByteArray paramStr(FCGX_GetLine(buf,static_cast<int>(contentLength+1) ,request.in));
+            QByteArray paramStr(FCGX_GetLine(buf,contentLength+1,request.in));
             parseParams(QUrl::fromPercentEncoding(paramStr),postParams);
 
             delete[] buf;
@@ -305,7 +305,7 @@ void RequestData::parseParam(const QString &key, const QString &strValue, QHash<
     } else if (key.endsWith(QChar(']'))) {
         int j = key.indexOf('[');
         if(j == -1) {
-             throw QtException(QLatin1Literal("Unexpected error"));
+            throw QtException(QLatin1Literal("Unexpected error"));
         }
         name = key.left(j);
         if (params.contains(name)) {
@@ -441,6 +441,20 @@ ArrayRequestParam *RequestData::getArray(const QString &name) const
     }
 }
 
+ArrayRequestParam *RequestData::postArray(const QString &name) const
+{
+    if (postParams.contains(name)) {
+        ArrayRequestParam * p = dynamic_cast< ArrayRequestParam* >(postParams.value(name));
+        if (p == nullptr) {
+            throw QtException(QLatin1Literal("Parameter is not an array"));
+        }
+        return p;
+    } else {
+        throw QtException(QLatin1Literal("Parameter does not exist"));
+    }
+}
+
+
 QString RequestData::getArrayValueString(const QString &name, const QString &key) const
 {
     if (getParams.contains(name)) {
@@ -557,6 +571,34 @@ shared_ptr<UploadedFileStringKeyArray> RequestData::uploadedFileArrayStringKey(c
         }
     }
     throw QtException(QLatin1Literal("no such file"));
+}
+
+QVector<int> RequestData::getIntArray(const QString &name) const
+{
+    auto data = RequestData::getArray(name);
+    QVector<int> result;
+    for(const auto & d : *data) {
+        bool ok = false;
+        result << d.toInt(&ok);
+        if(!ok) {
+            throw QtException(QLatin1Literal("Parameter is not an integer"));
+        }
+    }
+    return result;
+}
+
+QVector<int> RequestData::postIntArray(const QString &name) const
+{
+    auto data = RequestData::postArray(name);
+    QVector<int> result;
+    for(const auto & d : *data) {
+        bool ok = false;
+        result << d.toInt(&ok);
+        if(!ok) {
+            throw QtException(QLatin1Literal("Parameter is not an integer"));
+        }
+    }
+    return result;
 }
 
 

@@ -42,9 +42,9 @@ void HtmlTemplate::renderHeader() const
    output("<!DOCTYPE html>");
    outBeginTag("html");
    outBeginTag("head");
-   outBeginTagWithAttrs("base");
-   outAttr("href", getBaseUrl());
-   output('>');
+   //outBeginTagWithAttrs("base");
+  // outAttr("href", getBaseUrl());
+  // output('>');
 
    outBeginTagWithAttrs("meta");
    outAttr("charset", "utf-8");
@@ -100,10 +100,10 @@ void HtmlTemplate::renderInlineCss() const
 
 }
 
-QString HtmlTemplate::getBaseUrl() const
-{
-    return PageManager::getBaseUrl();
-}
+//QString HtmlTemplate::getBaseUrl() const
+//{
+//    return PageManager::getBaseUrl();
+//}
 
 
 
