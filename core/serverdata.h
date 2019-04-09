@@ -1,6 +1,7 @@
 #ifndef SERVERDATA_H
 #define SERVERDATA_H
 #include "fcgio.h"
+#include <QDir>
 #include <QString>
 #include <QUrl>
 #include "webappcommon_global.h"
@@ -11,11 +12,11 @@ public:
     ServerData(const FCGX_Request & request);
     virtual ~ServerData();
 
-    QUrl& getRequestUrl();
-    QString& getIp();
+    const QUrl& getRequestUrl() const;
+    const QString& getIp() const;
+    const QString& getDocumentRoot() const;
 
-    QString& getDocumentRoot();
-
+    QDir getServerDirectory(const QString &subdir) const;
 private:
 
     QUrl requestUrl;
