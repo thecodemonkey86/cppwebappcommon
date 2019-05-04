@@ -18,12 +18,17 @@ protected:
   virtual unique_ptr<MvcMessage> run();
 public:
     MultiActionController();
+    virtual ~MultiActionController();
+    template <class T> void addAction() {
+        auto action = make_shared<T>();
+        action->setParent(this);
+        actions.insert(T::name(), action);
+    }
+    template <class T> void addAction( shared_ptr<T> action) {
+        action->setParent(this);
+        actions.insert(T::name(), action);
+    }
 
-
-    void addAction( shared_ptr<AbstractAction> action);
-    virtual AbstractPageController* setServerData(ServerData *value);
-    virtual AbstractPageController* setRequestData(RequestData *value);
-    virtual AbstractPageController* setSessionData(SessionData *value);
 };
 
 #endif // MULTIACTIONCONTROLLER_H

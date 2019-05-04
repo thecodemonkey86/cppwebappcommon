@@ -22,7 +22,6 @@ public:
     QString getMimeType() const;
 
     bool operator ==(const UploadedFile & other) const;
-    QString getFileName() const;
     QString getSourceFileName() const;
 };
 uint qHash(const UploadedFile & u);

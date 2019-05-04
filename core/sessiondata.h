@@ -32,16 +32,19 @@ public:
     void setValue(const QString&key,const QString&val);
     void setValue(const QString&key,bool val);
     void setValue(const QString&key,int val);
+    void setValue(const QString&key,qint64 val);
     void removeValue(const QString&key);
     QString stringValue(const QString&key) const;
     bool boolValue(const QString&key) const;
     int intValue(const QString&key) const;
+    qint64 int64Value(const QString &key) const;
     static const QString  & getSessionCookieName();
     QString getSessId() const;
     bool hasValue(const QString&key) const;
     void clearSession();
 //    void setSessId(const QString &value);
     void setTempDir(const QString &value);
+
 };
 
 #endif // SESSIONDATA_H

@@ -30,6 +30,19 @@ public:
     inline static void write(int d) {
         cout <<d;
     }
+
+    inline static void write(unsigned int d) {
+        cout <<d;
+    }
+
+    inline static void write(unsigned long long d) {
+        cout <<d;
+    }
+
+    inline static void write(bool b) {
+        cout << b;
+    }
+
     inline static void write(long long number) {
         cout <<number;
     }
@@ -42,7 +55,7 @@ public:
     }
 
     inline static void write(const char* c) {
-        cout.write(c, strnlen(c,INT32_MAX));
+        cout.write(c, static_cast<std::streamsize>(strnlen(c,UINT32_MAX))) ;
     }
 };
 

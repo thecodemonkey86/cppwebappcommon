@@ -34,8 +34,8 @@ public:
      void addJsFiles(const QStringList&jssFiles);
      void addCssFile(const QString&cssFile);
      void addJsFile(const QString&jssFile);
-     virtual QString getBaseUrl() const;
-     void setBaseUrl(const QString &value);
+//     virtual QString getBaseUrl() const;
+//     void setBaseUrl(const QString &value);
 };
 
 #endif // HTMLTEMPLATE_H
