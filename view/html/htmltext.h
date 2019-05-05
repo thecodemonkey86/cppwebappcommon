@@ -2,7 +2,7 @@
 #define HTMLTEXT_H
 
 #include "htmlrenderable.h"
-#include "fastcgicout.h"
+#include "core/fastcgioutput.h"
 #include "webappcommon_global.h"
 class WEBAPPCOMMONSHARED_EXPORT HtmlText : public HtmlRenderable
 {

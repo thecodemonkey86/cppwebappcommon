@@ -21,7 +21,7 @@ public:
   PageManager();
  //   static QString getControllerUrl(const QString&name);
     static QString baseUrl;
-    void runController(const QString&page, RequestData * requestData, SessionData * sessionData, ServerData * serverData, HttpHeader * httpHeader, Sql*sqlCon);
+    void runController(const QString&page,FCGX_Stream * outStream,  RequestData * requestData, SessionData * sessionData, ServerData * serverData, HttpHeader * httpHeader, Sql*sqlCon);
     template<class Controller> void addPage(const shared_ptr<Controller> &config) {
         pages.insert(Controller::name(),config);
     }

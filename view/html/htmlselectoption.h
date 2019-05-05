@@ -10,6 +10,7 @@ class WEBAPPCOMMONSHARED_EXPORT  HtmlSelectOption : public HtmlTag
     QString display;
 
 public:
+    HtmlSelectOption() = default;
     HtmlSelectOption(const QString&value,const QString&display);
 
     // HtmlTag interface

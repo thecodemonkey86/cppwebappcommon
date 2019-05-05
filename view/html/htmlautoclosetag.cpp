@@ -18,16 +18,16 @@ void HtmlAutoCloseTag::setAttribute(const QString &name, const QString &value)
 
 void HtmlAutoCloseTag::render() const
 {
-    FastCgiCout::write('<');
-    FastCgiCout::write( tag);
-    FastCgiCout::write( ' ');;
+    output('<');
+    output( tag);
+    output( ' ');;
     for(const QPair<QString,QString> & attr : this->attributes) {
-        FastCgiCout::write(attr.first);
-        FastCgiCout::write( "=\"");
-        FastCgiCout::write( attr.second.toHtmlEscaped());
-        FastCgiCout::write( "\"");
+        output(attr.first);
+        output( "=\"");
+        output( attr.second.toHtmlEscaped());
+        output( "\"");
     }
 
 
-    FastCgiCout::write("/>");
+    output("/>");
 }

@@ -9,13 +9,20 @@ class WEBAPPCOMMONSHARED_EXPORT AbstractView
 {
 protected:
     HttpHeader * httpHeader;
+    FCGX_Stream *out;
 public:
     AbstractView();
-    virtual ~AbstractView();
+    virtual ~AbstractView() = default;
     virtual QString getHttpContentType() const=0;
     virtual void setHeaders();
     virtual void update(unique_ptr<MvcMessage>)=0;
     void setHttpHeader(HttpHeader *value);
+    void setOutStream(FCGX_Stream *value);
+protected:
+    template<class T>
+    inline  void output(T value) const {
+        FastCgiOutput::write(value,out);
+    }
 };
 
 #endif // ABSTRACTVIEW_H

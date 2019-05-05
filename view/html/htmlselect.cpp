@@ -1,4 +1,5 @@
 #include "htmlselect.h"
+#include <QMap>
 using namespace QtCommon2;
 
 HtmlSelect::HtmlSelect() : HtmlTag(QStringLiteral("select"))
@@ -6,10 +7,6 @@ HtmlSelect::HtmlSelect() : HtmlTag(QStringLiteral("select"))
 
 }
 
-HtmlSelect::~HtmlSelect()
-{
-
-}
 
 HtmlSelect &HtmlSelect::option(const QString &value, const QString &display)
 {

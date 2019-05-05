@@ -63,6 +63,7 @@ SOURCES += webappcommon.cpp \
 
 
 HEADERS += webappcommon.h\
+    core/fastcgioutput.h \
         webappcommon_global.h \
     view/abstractview.h \
     core/requestdata.h \

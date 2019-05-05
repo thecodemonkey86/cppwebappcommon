@@ -16,9 +16,9 @@ void HttpHeader::finish()
 {
 
     if(sessionCookie != nullptr) {
-        FastCgiCout::write("Set-Cookie: ");
-        FastCgiCout::write(sessionCookie->toRawForm());
-        FastCgiCout::write("\r\n");
+        FastCgiOutput::write("Set-Cookie: ",out);
+        FastCgiOutput::write(sessionCookie->toRawForm(),out);
+        FastCgiOutput::write("\r\n",out);
     }
 
 
@@ -34,6 +34,7 @@ bool HttpHeader::isSessionCookieSet() const
 
 HttpHeader::HttpHeader(const FCGX_Request & request)
 {
+    this->out = request.out;
     this->redirectFlag = false;
     sessionCookie = nullptr;
    QString cookieStr(FCGX_GetParam("HTTP_COOKIE", request.envp));
@@ -85,56 +86,56 @@ void HttpHeader::clearCookie(const QString &name)
 */
 void HttpHeader::setContentType(const QString &contentType)
 {
-    FastCgiCout::write( "Content-Type: ");
-    FastCgiCout::write(contentType);
-    FastCgiCout::write("\r\n");
+    FastCgiOutput::write( "Content-Type: ",out);
+    FastCgiOutput::write(contentType,out);
+    FastCgiOutput::write("\r\n",out);
 }
 
 void HttpHeader::setRawHeader(const QString &header)
 {
-    FastCgiCout::write(header);
-    FastCgiCout::write("\r\n");
+    FastCgiOutput::write(header,out);
+    FastCgiOutput::write("\r\n",out);
 }
 
 void HttpHeader::setRawHeader(const QString &key, const QString &value)
 {
-    FastCgiCout::write(key);
-    FastCgiCout::write(':');
-    FastCgiCout::write(value);
-    FastCgiCout::write("\r\n");
+    FastCgiOutput::write(key,out);
+    FastCgiOutput::write(':',out);
+    FastCgiOutput::write(value,out);
+    FastCgiOutput::write("\r\n",out);
 }
 
 void HttpHeader::setRawHeader(const QString &key, int value)
 {
-   FastCgiCout::write(key);
-   FastCgiCout::write(':');
-   FastCgiCout::write( QString::number(value));
-   FastCgiCout::write("\r\n");
+   FastCgiOutput::write(key,out);
+   FastCgiOutput::write(':',out);
+   FastCgiOutput::write( QString::number(value),out);
+   FastCgiOutput::write("\r\n",out);
 }
 
 void HttpHeader::setReturnCode(int code)
 {
-    FastCgiCout::write("Status: ");
-    FastCgiCout::write(QString::number(code));
-    FastCgiCout::write("\r\n");
+    FastCgiOutput::write("Status: ",out);
+    FastCgiOutput::write(QString::number(code),out);
+    FastCgiOutput::write("\r\n",out);
 
 }
 
 void HttpHeader::setReturnCode(int code, const QString &msg)
 {
-    FastCgiCout::write("Status: ");
-    FastCgiCout::write(QString::number(code));
-    FastCgiCout::write(QChar(' '));
-    FastCgiCout::write(msg);
-    FastCgiCout::write("\r\n");
+    FastCgiOutput::write("Status: ",out);
+    FastCgiOutput::write(QString::number(code),out);
+    FastCgiOutput::write(' ',out);
+    FastCgiOutput::write(msg,out);
+    FastCgiOutput::write("\r\n",out);
 }
 
 void HttpHeader::redirect(const QUrl &url)
 {
     this->redirectFlag = true;
-    FastCgiCout::write( "Location: ");
-    FastCgiCout::write(url.toString(QUrl::None));
-    FastCgiCout::write("\r\n");
+    FastCgiOutput::write( "Location: ",out);
+    FastCgiOutput::write(url.toString(QUrl::None),out);
+    FastCgiOutput::write("\r\n",out);
 }
 /*
 void HttpHeader::parseCookies(const FCGX_Request & request)

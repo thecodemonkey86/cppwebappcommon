@@ -2,7 +2,7 @@
 #define HTMLTAG_H
 
 #include <QString>
-#include "fastcgicout.h"
+#include "core/fastcgioutput.h"
 #include <QHash>
 #include "htmlrenderable.h"
 #include "webappcommon_global.h"

@@ -3,7 +3,7 @@
 
 #include <QString>
 #include <QUrl>
-#include "fastcgicout.h"
+#include "core/fastcgioutput.h"
 #include "webappcommon_global.h"
 #include <QNetworkCookie>
 #include <memory>
@@ -16,6 +16,7 @@ protected:
 
     bool redirectFlag;
     unique_ptr<QNetworkCookie> sessionCookie;
+    FCGX_Stream * out;
 
 //    QList<QNetworkCookie> cookies;
 public:

@@ -15,7 +15,7 @@ void PageManager::setBaseUrl(const QString &value)
     baseUrl = value;
 }
 
-void PageManager::runController(const QString&page, RequestData * requestData, SessionData * sessionData, ServerData * serverData, HttpHeader *httpHeader, Sql*sqlCon)
+void PageManager::runController(const QString&page, FCGX_Stream * outStream, RequestData * requestData, SessionData * sessionData, ServerData * serverData, HttpHeader *httpHeader, Sql*sqlCon)
 {
     if (this->pages.contains(page)) {
         auto cfg = this->pages[page];
@@ -25,8 +25,9 @@ void PageManager::runController(const QString&page, RequestData * requestData, S
         ctrl->setServerData(serverData);
         ctrl->setHttpHeader(httpHeader);
         ctrl->setSql(sqlCon);
-        auto tmpl = cfg->getView();
-        ctrl->registerView(std::move(tmpl));
+        auto view = cfg->getView();
+        view->setOutStream(outStream);
+        ctrl->registerView(std::move(view));
         ctrl->runController();
     } else {
         throw QtException(QStringLiteral("page not found: %1").arg(page));

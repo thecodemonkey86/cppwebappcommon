@@ -1,8 +1,6 @@
 #include "htmltemplate.h"
 #include "page_config/pagemanager.h"
-#ifndef output
-#define output FastCgiCout::write
-#endif
+
 
 void HtmlTemplate::outAttr(const QString &attr, const QString &value) const
 {
@@ -72,12 +70,6 @@ void HtmlTemplate::renderHeader() const
 void HtmlTemplate::renderFooter() const
 {
     outBeginTag("footer");
-    outBeginTagWithAttrs("script");
-    outAttr("type", "text/javascript");
-    output('>');
-     renderInlineJs();
-    outEndTag("script");
-
     for(const QString &js: includeJs) {
        outBeginTagWithAttrs("script");
        outAttr("type", "text/javascript");
@@ -85,6 +77,13 @@ void HtmlTemplate::renderFooter() const
        output('>');
        outEndTag("script");
     }
+    outBeginTagWithAttrs("script");
+    outAttr("type", "text/javascript");
+    output('>');
+     renderInlineJs();
+    outEndTag("script");
+
+
     outEndTag("footer");
     outEndTag("body");
     outEndTag("html");

@@ -5,7 +5,7 @@
 #include <QSet>
 #include <memory>
 #include "core/httpheader.h"
-#include "fastcgicout.h"
+#include "core/fastcgioutput.h"
 #include "util/collection/orderedset.h"
 using namespace QtCommon2;
 using namespace std;

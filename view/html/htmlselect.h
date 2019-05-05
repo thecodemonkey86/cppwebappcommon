@@ -10,7 +10,9 @@ protected:
     vector<HtmlSelectOption> selectOptions;
 public:
     HtmlSelect();
-    virtual ~HtmlSelect();
+     HtmlSelect(const HtmlSelect &)  = default;
+     HtmlSelect& operator=(const HtmlSelect&) = default;
+    virtual ~HtmlSelect() override = default;
 HtmlSelect & option(const  QString&value, const QString&display);
 HtmlSelect & options(const vector<QPair<QString,QString>>& options);
 HtmlSelect & options(const QVector<HtmlSelectOption>& options);

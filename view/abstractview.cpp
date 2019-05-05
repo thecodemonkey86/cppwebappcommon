@@ -5,15 +5,17 @@ void AbstractView::setHttpHeader(HttpHeader *value)
     httpHeader = value;
 }
 
+void AbstractView::setOutStream(FCGX_Stream *value)
+{
+    out = value;
+}
+
 AbstractView::AbstractView()
 {
 
 }
 
-AbstractView::~AbstractView()
-{
 
-}
 
 void AbstractView::setHeaders()
 {

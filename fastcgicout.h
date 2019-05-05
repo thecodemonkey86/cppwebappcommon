@@ -9,7 +9,7 @@
 using namespace std;
 
 
-class WEBAPPCOMMONSHARED_EXPORT FastCgiCout
+class Q_DECL_DEPRECATED WEBAPPCOMMONSHARED_EXPORT FastCgiCout
 {
 private:
     FastCgiCout() {

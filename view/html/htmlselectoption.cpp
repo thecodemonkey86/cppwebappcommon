@@ -10,5 +10,5 @@ HtmlSelectOption::HtmlSelectOption(const QString &value, const QString &display)
 
 void HtmlSelectOption::renderChildren() const
 {
-    FastCgiCout::write(display.toHtmlEscaped());
+    output(display.toHtmlEscaped());
 }
