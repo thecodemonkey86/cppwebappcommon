@@ -1,6 +1,5 @@
 #include "httpheader.h"
 #include "exception/qtexception.h"
-#include <iostream>
 #include <QNetworkCookie>
 #include "sessiondata.h"
 
@@ -22,7 +21,7 @@ void HttpHeader::finish()
     }
 
 
-    cout << "\r\n";
+    FastCgiOutput::write("\r\n",out);
 }
 
 bool HttpHeader::isSessionCookieSet() const
