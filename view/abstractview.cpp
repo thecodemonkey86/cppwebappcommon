@@ -12,13 +12,12 @@ void AbstractView::setOutStream(FCGX_Stream *value)
 
 AbstractView::AbstractView()
 {
-
+    autoSendHeaders = true;
 }
 
-
-
-void AbstractView::setHeaders()
+bool AbstractView::getAutoSendHeaders() const
 {
-
+    return autoSendHeaders;
 }
+
 

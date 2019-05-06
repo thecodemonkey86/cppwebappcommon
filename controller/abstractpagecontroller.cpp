@@ -50,10 +50,12 @@ void AbstractPageController::runController()
 {
     auto msg = run();
     if(view != nullptr) {
-        httpHeader->setContentType(view->getHttpContentType());
-        view->setHttpHeader(httpHeader);
-        view->setHeaders();
-        httpHeader->finish();
+         view->setHttpHeader(httpHeader);
+        if(view->getAutoSendHeaders()) {
+            httpHeader->setContentType(view->getHttpContentType());
+            httpHeader->finish();
+        }
+
         if (!httpHeader->getRedirectFlag()) {
             if (msg != nullptr ) {
                 msg->setSessionData(sessionData);
