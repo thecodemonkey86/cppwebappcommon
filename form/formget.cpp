@@ -83,6 +83,11 @@ QVector<int> FormGet::intArrayValue(const QString &name) const
     return  request->getIntArray(name);
 }
 
+ArrayRequestParam *FormGet::array(const QString &name) const
+{
+    return  request->getArray(name);
+}
+
 
 QString FormGet::stringValue(const QString &name, const QString &defaultValue) const
 {

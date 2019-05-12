@@ -19,7 +19,7 @@ QString StringKeyArrayParam::toString() const
     return name;
 }
 
-QString StringKeyArrayParam::getArrayValue(int dimensionsCount,...) const
+QString StringKeyArrayParam::arrayValue(int dimensionsCount,...) const
 {
     va_list ap;
     va_start(ap, dimensionsCount);
@@ -39,7 +39,7 @@ QString StringKeyArrayParam::getArrayValue(int dimensionsCount,...) const
     return v->getValue();
 }
 
-QString StringKeyArrayParam::getArrayValue(const QStringList &arrayKeys) const
+QString StringKeyArrayParam::arrayValue(const QStringList &arrayKeys) const
 {
     const AbstractStringKeyArrayParam*arr = this;
     for(const QString & key : arrayKeys) {
@@ -54,7 +54,20 @@ QString StringKeyArrayParam::getArrayValue(const QStringList &arrayKeys) const
 
 AbstractStringKeyArrayParam *StringKeyArrayParam::val(const QString &key) const
 {
+    if(!contains(key)) {
+         throw QtException(QStringLiteral("no such array key: ")+key);
+    }
     return this->value(key);
+}
+
+StringKeyArrayParam *StringKeyArrayParam::stringKeyArray(const QString &key) const
+{
+    auto arr = dynamic_cast<StringKeyArrayParam*>(val(key));
+    if(arr == nullptr) {
+        throw QtException(QStringLiteral("Illegal url"));
+    }
+    return arr;
+
 }
 
 

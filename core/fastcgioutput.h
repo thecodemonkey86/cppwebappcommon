@@ -15,7 +15,7 @@ public:
     }
 
     inline static void write(int d, FCGX_Stream *out) {
-         FCGX_PutChar(d,out);
+         write(QString::number(d),out);
     }
 
     inline static void write(unsigned int d, FCGX_Stream *out) {

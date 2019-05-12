@@ -27,7 +27,7 @@ public:
     virtual double doubleValue(const QString&name) const=0;
     virtual bool isValueEmpty(const QString&name) const=0;
    virtual QVector<int> intArrayValue(const QString&name) const=0;
-
+   virtual ArrayRequestParam * array(const QString&name) const=0;
     virtual QString stringValue(const QString&name, const QString & defaultValue) const;
     virtual int intValue(const QString&name,int defaultValue) const;
     virtual bool boolValue(const QString&name,bool defaultValue) const;

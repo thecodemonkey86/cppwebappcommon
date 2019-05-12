@@ -13,6 +13,7 @@
 #include "arrayrequestparam.h"
 #include "abstractstringkeyarrayparam.h"
 #include "fcgio.h"
+#include "stringkeyarrayparam.h"
 #include <QUrl>
 #include <memory>
 
@@ -35,7 +36,7 @@ private:
 
     inline void parseParam(const QString & fieldName, const QString &value, QHash<QString, AbstractRequestParam*>& params);
     inline static void writeFileBuf(QFile * file, int & pos, char* & buf, char c );
-
+    inline static void writeFileBuf(QFile *file, int &pos, char *&buf, int c);
 public:
  RequestData(const FCGX_Request & request, const QUrl &url);
     ~RequestData();
@@ -48,6 +49,8 @@ public:
     bool postBool(const QString&name) const;
     ArrayRequestParam * getArray(const QString&name) const;
     ArrayRequestParam * postArray(const QString&name) const;
+    StringKeyArrayParam * postStringKeyArray(const QString&name) const;
+     StringKeyArrayParam *getStringKeyArray(const QString &name) const;
     QString getArrayValueString(const QString &name, const QString &key) const;
     QString getArrayValueString(const QString &name, int index) const;
     int getArrayValueInt(const QString &name, const QString &key) const;
@@ -60,6 +63,8 @@ public:
     shared_ptr<UploadedFileStringKeyArray> uploadedFileArrayStringKey(const QString&fieldname) const;
     QVector<int> getIntArray(const QString&name) const;
     QVector<int> postIntArray(const QString&name) const;
+
+
 
 };
 

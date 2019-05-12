@@ -72,7 +72,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
     QString contentLengthStr(FCGX_GetParam("CONTENT_LENGTH", request.envp));
 
     bool ok;
-    int64_t contentLength = contentLengthStr.toULongLong(&ok);
+    uint32_t contentLength = contentLengthStr.toULong(&ok);
     if( contentType[0] == QLatin1Literal("multipart/form-data")) {
         int indexEq = contentType[1].indexOf('=');
         if(indexEq == -1) {
@@ -85,7 +85,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
 
 
         QChar quot('"');
-        char * buf = new char[BUF_SIZE];
+        char buf[BUF_SIZE];
         QString fieldName;
         QString line;
 
@@ -173,7 +173,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
                             bool foundDelimiter = true;
                             for(int i=0;i<delimiter.size();i++) {
                                 int c = FCGX_GetChar(request.in);
-                                tempBuf.append(c);
+                                tempBuf.append(static_cast<char>(c));
                                 if(c == 0 || delimiter[i] != c) {
                                     foundDelimiter = false;
                                     break;
@@ -263,7 +263,6 @@ void RequestData::parsePostParams(const FCGX_Request & request)
 
 
         }
-        delete[] buf;
     } else {
 
         if (!ok) {
@@ -272,7 +271,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
             char * buf= new char[contentLength+1];
 
 
-            QByteArray paramStr(FCGX_GetLine(buf,contentLength+1,request.in));
+            QByteArray paramStr(FCGX_GetLine(buf,static_cast<int>(contentLength)+1,request.in));
             parseParams(QUrl::fromPercentEncoding(paramStr),postParams);
 
             delete[] buf;
@@ -347,6 +346,7 @@ void RequestData::parseParam(const QString &key, const QString &strValue, QHash<
     } else {
         params.insert(key, new RequestParam<QString>(key, strValue));
     }
+    qDebug() << "test";
 }
 
 void RequestData::writeFileBuf(QFile *file, int &pos, char *&buf, char c)
@@ -358,7 +358,14 @@ void RequestData::writeFileBuf(QFile *file, int &pos, char *&buf, char c)
     }
 }
 
-
+void RequestData::writeFileBuf(QFile *file, int &pos, char *&buf, int c)
+{
+    buf[pos++] = static_cast<char>(c);
+    if(pos == BUF_SIZE) {
+        file->write(buf, BUF_SIZE);
+        pos = 0;
+    }
+}
 
 const QString & RequestData::getString(const QString & name) const
 {
@@ -441,10 +448,37 @@ ArrayRequestParam *RequestData::getArray(const QString &name) const
     }
 }
 
+StringKeyArrayParam *RequestData::getStringKeyArray(const QString &name) const
+{
+    if (getParams.contains(name)) {
+        StringKeyArrayParam * p = dynamic_cast< StringKeyArrayParam* >(postParams.value(name));
+        if (p == nullptr) {
+            throw QtException(QLatin1Literal("Parameter is not an array"));
+        }
+        return p;
+    } else {
+        throw QtException(QLatin1Literal("Parameter does not exist"));
+    }
+}
+
+
 ArrayRequestParam *RequestData::postArray(const QString &name) const
 {
     if (postParams.contains(name)) {
         ArrayRequestParam * p = dynamic_cast< ArrayRequestParam* >(postParams.value(name));
+        if (p == nullptr) {
+            throw QtException(QLatin1Literal("Parameter is not an array"));
+        }
+        return p;
+    } else {
+        throw QtException(QLatin1Literal("Parameter does not exist"));
+    }
+}
+
+StringKeyArrayParam *RequestData::postStringKeyArray(const QString &name) const
+{
+    if (postParams.contains(name)) {
+        StringKeyArrayParam * p = dynamic_cast< StringKeyArrayParam* >(postParams.value(name));
         if (p == nullptr) {
             throw QtException(QLatin1Literal("Parameter is not an array"));
         }

@@ -22,7 +22,7 @@ public:
     virtual bool isSet(const QString &name)const override;
 
     virtual QVector<int> intArrayValue(const QString &name) const override;
-
+    virtual ArrayRequestParam * array(const QString&name) const override;
     // Form interface
 public:
     virtual QString stringValue(const QString &name, const QString &defaultValue) const override;
