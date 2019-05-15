@@ -346,7 +346,6 @@ void RequestData::parseParam(const QString &key, const QString &strValue, QHash<
     } else {
         params.insert(key, new RequestParam<QString>(key, strValue));
     }
-    qDebug() << "test";
 }
 
 void RequestData::writeFileBuf(QFile *file, int &pos, char *&buf, char c)
