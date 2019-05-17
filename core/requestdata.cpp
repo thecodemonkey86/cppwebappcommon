@@ -395,18 +395,33 @@ const QString & RequestData::postString(const QString &name) const
 
 int RequestData::getInt(const QString & name) const
 {
+    bool ok = false;
+    int i = getString(name).toInt(&ok);
+    if (!ok) throw QtException(QLatin1Literal("Parameter is not a number"));
+    return i;
+}
+
+qint64 RequestData::getInt64(const QString &name) const
+{
     QString value(getString(name));
     bool ok = false;
-    int i = value.toInt(&ok);
+    qint64 i = value.toLongLong(&ok);
     if (!ok) throw QtException(QLatin1Literal("Parameter is not a number"));
     return i;
 }
 
 int RequestData::postInt(const QString & name) const
 {
-    QString value(postString(name));
     bool ok = false;
-    int i = value.toInt(&ok);
+    int i = postString(name).toInt(&ok);
+    if (!ok) throw QtException(QLatin1Literal("Parameter is not a number"));
+    return i;
+}
+
+qint64 RequestData::postInt64(const QString &name) const
+{
+    bool ok = false;
+    qint64 i = postString(name).toLongLong(&ok);
     if (!ok) throw QtException(QLatin1Literal("Parameter is not a number"));
     return i;
 }

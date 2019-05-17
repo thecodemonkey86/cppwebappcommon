@@ -43,7 +43,9 @@ public:
     const QString & getString(const QString&name) const;
     const QString & postString(const QString&name) const;
     int getInt(const QString&name) const;
+    qint64 getInt64(const QString&name) const;
     int postInt(const QString&name) const;
+    qint64 postInt64(const QString&name) const;
     double postDouble(const QString&name) const;
     double getDouble(const QString&name) const;
     bool postBool(const QString&name) const;
