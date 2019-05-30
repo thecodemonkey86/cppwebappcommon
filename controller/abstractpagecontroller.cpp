@@ -17,25 +17,17 @@ void AbstractPageController::setHttpHeader(HttpHeader *httpHeader)
     this->httpHeader = httpHeader;
 }
 
-//QUrl AbstractPageController::getUrl()
-//{
-//    return QUrl(QStringLiteral("./?controller=%1").arg(getName()));
-//}
 
-//QUrl AbstractPageController::getUrl(const QString &action)
-//{
-//    return QUrl(QStringLiteral("/?controller=%1&action=%2").arg(getName(),action));
-//}
-
-Sql *AbstractPageController::getSql() const
+QSqlDatabase AbstractPageController::getSql() const
 {
     return sql;
 }
 
-void AbstractPageController::setSql(Sql *value)
+void AbstractPageController::setSql(const QSqlDatabase &value)
 {
     sql = value;
 }
+
 AbstractPageController::AbstractPageController()
 {
     

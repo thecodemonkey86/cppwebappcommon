@@ -16,7 +16,7 @@ unique_ptr<MvcMessage> MultiActionController::run()
 {
     if (actions.contains(requestData->getString(QStringLiteral("action")))) {
         auto a = actions.value(requestData->getString(QStringLiteral("action")));
-        a->setSql(sql);
+        a->setSqlCon(sql);
         a->setServerData(serverData);
         a->setRequestData(requestData);
         a->setSessionData(sessionData);

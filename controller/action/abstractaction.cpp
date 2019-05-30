@@ -27,15 +27,19 @@ void AbstractAction::setSessionData(SessionData *value)
 }
 
 
-
-void AbstractAction::setSql(Sql *value)
-{
-    sql = value;
-}
-
 void AbstractAction::setHttpHeader(HttpHeader *value)
 {
     httpHeader = value;
+}
+
+QSqlDatabase AbstractAction::getSqlCon() const
+{
+    return sqlCon;
+}
+
+void AbstractAction::setSqlCon(const QSqlDatabase &value)
+{
+    sqlCon = value;
 }
 
 AbstractAction::AbstractAction()

@@ -7,7 +7,7 @@
 #include "core/serverdata.h"
 #include "core/requestdata.h"
 #include "core/sessiondata.h"
-#include "sqlcon.h"
+#include <QSqlDatabase>
 #include <memory>
 #include "webappcommon_global.h"
 using namespace std;
@@ -19,7 +19,7 @@ protected:
      RequestData * requestData;
      SessionData * sessionData;
      HttpHeader *  httpHeader;
-     Sql * sql;
+     QSqlDatabase sql;
      virtual unique_ptr<MvcMessage> run()=0;
 public:
     AbstractPageController();
@@ -35,8 +35,9 @@ public:
     SessionData *getSessionData() const;
 //    virtual QUrl getUrl();
 //    virtual QUrl getUrl(const QString&action);
-    Sql *getSql() const;
-    void setSql(Sql *value);
+
+    QSqlDatabase getSql() const;
+    void setSql(const QSqlDatabase &value);
 };
 
 #endif // ABSTRACTPAGECONTROLLER_H

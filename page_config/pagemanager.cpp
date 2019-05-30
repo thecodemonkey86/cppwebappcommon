@@ -15,7 +15,7 @@ void PageManager::setBaseUrl(const QString &value)
     baseUrl = value;
 }
 
-void PageManager::runController(const QString&page, FCGX_Stream * outStream, RequestData * requestData, SessionData * sessionData, ServerData * serverData, HttpHeader *httpHeader, Sql*sqlCon)
+void PageManager::runController(const QString&page, FCGX_Stream * outStream, RequestData * requestData, SessionData * sessionData, ServerData * serverData, HttpHeader *httpHeader, const QSqlDatabase & sqlCon)
 {
     if (this->pages.contains(page)) {
         auto cfg = this->pages[page];

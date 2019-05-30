@@ -23,7 +23,7 @@ protected:
      RequestData * requestData;
      SessionData * sessionData;
      HttpHeader * httpHeader;
-     Sql * sql;
+    QSqlDatabase sqlCon;
 public:
     AbstractAction();
     virtual ~AbstractAction();
@@ -33,8 +33,9 @@ public:
     void setServerData(ServerData *value);
     void setRequestData(RequestData *value);
     void setSessionData(SessionData *value);
-    void setSql(Sql *value);
     void setHttpHeader(HttpHeader *value);
+    QSqlDatabase getSqlCon() const;
+    void setSqlCon(const QSqlDatabase &value);
 };
 
 #endif // ABSTRACTACTION_H
