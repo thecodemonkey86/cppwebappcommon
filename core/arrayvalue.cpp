@@ -11,7 +11,7 @@ ArrayValue::~ArrayValue()
 
 }
 
-QString ArrayValue::toString() const
+const QString &  ArrayValue::toString() const
 {
     return value;
 }
@@ -21,7 +21,7 @@ AbstractStringKeyArrayParam *ArrayValue::val(const QString&key) const
     return nullptr;
 }
 
-QString ArrayValue::getValue() const
+const QString &  ArrayValue::getValue() const
 {
     return value;
 }

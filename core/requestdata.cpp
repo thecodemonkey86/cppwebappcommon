@@ -344,7 +344,7 @@ void RequestData::parseParam(const QString &key, const QString &strValue, QHash<
             }
         }
     } else {
-        params.insert(key, new RequestParam<QString>(key, strValue));
+        params.insert(key, new RequestParam(key, strValue));
     }
 }
 
@@ -369,7 +369,7 @@ void RequestData::writeFileBuf(QFile *file, int &pos, char *&buf, int c)
 const QString & RequestData::getString(const QString & name) const
 {
     if (getParams.contains(name)) {
-        RequestParam<QString> * p = dynamic_cast< RequestParam<QString>* >(getParams.value(name));
+        RequestParam * p = dynamic_cast< RequestParam* >(getParams.value(name));
         if (p == nullptr) {
             throw QtException(QLatin1Literal("Parameter is not a simple value"));
         }
@@ -382,7 +382,7 @@ const QString & RequestData::getString(const QString & name) const
 const QString & RequestData::postString(const QString &name) const
 {
     if (postParams.contains(name)) {
-        RequestParam<QString> * p = dynamic_cast< RequestParam<QString>* >(postParams.value(name));
+        RequestParam * p = dynamic_cast< RequestParam* >(postParams.value(name));
         if (p == nullptr) {
             throw QtException(QLatin1Literal("Parameter is not a simple value"));
         }

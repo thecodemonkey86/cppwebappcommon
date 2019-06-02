@@ -3,37 +3,23 @@
 
 #include "abstractrequestparam.h"
 #include "webappcommon_global.h"
-template <class T>
+#include <QUrl>
+
 class WEBAPPCOMMONSHARED_EXPORT RequestParam : public AbstractRequestParam
 {
 protected:
     QString name;
-    T value;
+    QString value;
 public:
-    RequestParam(const QString &name,const T& value) : AbstractRequestParam() {
-        this->name = name;
-        this->value = value;
-    }
+    RequestParam(const QString &name,const QString& value);
+    RequestParam(const RequestParam& other) = default;
+    virtual ~RequestParam() = default;
 
+    const QString & getValue() const;
+    virtual const QString &  toString() const;
 
-
-    virtual ~RequestParam() {
-
-    }
-
-    const T & getValue() const {
-        return value;
-    }
-    virtual QString toString() const{
-        return name;
-    }
-
-    QString getName() const {
-        return name;
-    }
-    void setName(const QString &name) {
-        this->name = name;
-    }
+    const QString & getName() const;
+    void setName(const QString &name);
 };
 
 

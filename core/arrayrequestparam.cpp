@@ -11,7 +11,7 @@ ArrayRequestParam::~ArrayRequestParam()
 
 }
 
-QString ArrayRequestParam::toString() const
+const QString & ArrayRequestParam::toString() const
 {
     return name;
 }

@@ -1,166 +1,96 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2015-07-25T12:18:49
+# Project created by QtCreator 2019-05-31T18:43:43
 #
 #-------------------------------------------------
-QT += sql network
+QT += core sql network
 QT       -= gui
 
 TARGET = WebAppCommon
 TEMPLATE = lib
 
-CONFIG += c++1z
-
 DEFINES += WEBAPPCOMMON_LIBRARY
 
-gcc {
-    CONFIG(release, debug|release) {
-        QMAKE_CFLAGS_RELEASE -= -O
-        QMAKE_CFLAGS_RELEASE -= -O1
-        QMAKE_CFLAGS_RELEASE -= -O2
-        QMAKE_CXXFLAGS_RELEASE *= -O3
-    }
-}
+# The following define makes your compiler emit warnings if you use
+# any feature of Qt which has been marked as deprecated (the exact warnings
+# depend on your compiler). Please consult the documentation of the
+# deprecated API in order to know how to port your code away from it.
+DEFINES += QT_DEPRECATED_WARNINGS
 
-SOURCES += webappcommon.cpp \
+# You can also make your code fail to compile if you use deprecated APIs.
+# In order to do so, uncomment the following line.
+# You can also select to disable deprecated APIs only up to a certain version of Qt.
+#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+
+SOURCES += \
+    core/requestparam.cpp \
+    mvc/controller/abstractpagecontroller.cpp \
+    core/abstractrequestparam.cpp \
+    core/abstractstringkeyarrayparam.cpp \
+    core/abstractuploadedfile.cpp \
+    core/arrayrequestparam.cpp \
+    core/arrayvalue.cpp \
+    core/httpheader.cpp \
+    core/page/pageconfig.cpp \
+    core/page/pagemanager.cpp \
     core/requestdata.cpp \
     core/serverdata.cpp \
-    #core/stringgetparam.cpp
-    core/arrayvalue.cpp \
-    core/abstractstringkeyarrayparam.cpp \
-    core/stringkeyarrayparam.cpp \
-    core/abstractrequestparam.cpp \
-    core/arrayrequestparam.cpp \
-    util/util.cpp \
-    controller/abstractcontroller.cpp \
-    core/httpheader.cpp \
-    page_config/pageconfig.cpp \
-    mvc/mvcmessage.cpp \
-    controller/abstractpagecontroller.cpp \
-    controller/action/abstractaction.cpp \
-    controller/multiactioncontroller.cpp \
-    mvc/pagemvcmessage.cpp \
-    form/formpost.cpp \
-    form/formget.cpp \
-    form/form.cpp \
-    view/abstractview.cpp \
-    page_config/pagemanager.cpp \
     core/sessiondata.cpp \
-    view/template/htmltemplate.cpp \
-    view/html/htmlselect.cpp \
-    view/html/htmlrenderable.cpp \
-    view/html/htmlautoclosetag.cpp \
-    view/html/htmltag.cpp \
-    view/html/htmlselectoption.cpp \
-    view/html/htmltext.cpp \
-    view/html/util/htmlutil.cpp \
+    core/stringkeyarrayparam.cpp \
     core/uploadedfile.cpp \
-    core/abstractuploadedfile.cpp \
     core/uploadedfilearray.cpp \
     core/uploadedfilestringkeyarray.cpp \
-    view/html/html.cpp \
-    view/jsonview.cpp
+    mvc/controller/action/abstractaction.cpp \
+    mvc/controller/multiactionpagecontroller.cpp \
+    mvc/view/abstractview.cpp \
+    mvc/view/html/htmltemplate.cpp \
+    mvc/view/jsonview.cpp \
+    mvc/model/viewdata.cpp \
+    util/form/form.cpp \
+    util/form/formget.cpp \
+    util/form/formpost.cpp
 
-
-HEADERS += webappcommon.h\
-    core/fastcgioutput.h \
-        webappcommon_global.h \
-    view/abstractview.h \
-    core/requestdata.h \
-    core/serverdata.h \
-    core/arrayvalue.h \
-    core/abstractstringkeyarrayparam.h \
-    core/stringkeyarrayparam.h \
+HEADERS += webappcommon_global.h \
+    mvc/controller/abstractpagecontroller.h \
     core/abstractrequestparam.h \
-    core/requestparam.h \
-    core/arrayrequestparam.h \
-    util/util.h \
-    controller/abstractcontroller.h \
-    core/httpheader.h \
-    page_config/pageconfig.h \
-    mvc/mvcmessage.h \
-    view/template/htmltemplate.h \
-    controller/action/abstractaction.h \
-    controller/abstractpagecontroller.h \
-    controller/multiactioncontroller.h \
-    mvc/pagemvcmessage.h \
-    form/formpost.h \
-    form/formget.h \
-    form/form.h \
-    page_config/pagemanager.h \
-    core/sessiondata.h \
-    view/html/html.h \
-    view/html/htmlselect.h \
-    view/html/htmlrenderable.h \
-    view/html/htmlautoclosetag.h \
-    view/html/htmltag.h \
-    view/html/htmlselectoption.h \
-    view/html/htmltext.h \
-    view/html/util/htmlutil.h \
-    core/uploadedfile.h \
+    core/abstractstringkeyarrayparam.h \
     core/abstractuploadedfile.h \
+    core/arrayrequestparam.h \
+    core/arrayvalue.h \
+    core/fastcgioutput.h \
+    core/httpheader.h \
+    core/page/pageconfig.h \
+    core/page/pagemanager.h \
+    core/requestdata.h \
+    core/requestparam.h \
+    core/serverdata.h \
+    core/sessiondata.h \
+    core/stringkeyarrayparam.h \
+    core/uploadedfile.h \
     core/uploadedfilearray.h \
     core/uploadedfilestringkeyarray.h \
-    view/jsonview.h
+    mvc/controller/action/abstractaction.h \
+    mvc/controller/multiactionpagecontroller.h \
+    mvc/view/abstractview.h \
+    mvc/view/html/htmltemplate.h \
+    mvc/view/jsonview.h \
+    mvc/model/viewdata.h \
+    util/form/form.h \
+    util/form/formget.h \
+    util/form/formpost.h
 
- #core/stringgetparam.h
+msvc {
+CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/libfcgi-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_MSVC2017_64bit/release/ -llibfcgi
+else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/libfcgi-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_MSVC2017_64bit/debug/ -llibfcgi
+
+CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/QtCommon2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_MSVC2017_64bit/release/ -lQtCommon2
+else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/QtCommon2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_MSVC2017_64bit/debug/ -lQtCommon2
+}
+
+INCLUDEPATH += $$PWD/../libfcgi/include
+INCLUDEPATH += $$PWD/../QtCommon2
 
 unix {
     target.path = /usr/lib
     INSTALLS += target
 }
-
-win32 {
-        CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/QtCommon2-Desktop_Qt_5_9_0_MinGW_32bit/release/ -lQtCommon2
-        CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/QtCommon2-Desktop_Qt_5_9_0_MinGW_32bit/debug/ -lQtCommon2
-
-        INCLUDEPATH += ../QtCommon2
-
-        CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/SqlUtil2-Desktop_Qt_5_9_0_MinGW_32bit/release/ -lSqlUtil2
-        CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/SqlUtil2-Desktop_Qt_5_9_0_MinGW_32bit/debug/ -lSqlUtil2
-
-        INCLUDEPATH += $$PWD/../SqlUtil2
-        CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/libfcgi-Desktop_Qt_5_9_0_MinGW_32bit/release/ -llibfcgi
-        CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/libfcgi-Desktop_Qt_5_9_0_MinGW_32bit/debug/ -llibfcgi
-        INCLUDEPATH += $$PWD/../libfcgi/include
-}
-
-win32-msvc* {
-MSVC_VER = $$(VisualStudioVersion)
-    equals(MSVC_VER, 15.0){
-        CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/SqlUtil2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_MSVC2017_64bit/release/ -lSqlUtil2
-        else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/SqlUtil2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_MSVC2017_64bit/debug/ -lSqlUtil2
-
-        CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/QtCommon2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_MSVC2017_64bit/release/ -lQtCommon2
-        else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/QtCommon2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_MSVC2017_64bit/debug/ -lQtCommon2
-
-
-        CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/libfcgi-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_MSVC2017_64bit/release/ -llibfcgi
-        else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/libfcgi-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_MSVC2017_64bit/debug/ -llibfcgi
-}
-}
-
-
-INCLUDEPATH += $$PWD/../QtCommon2
-INCLUDEPATH += $$PWD/../SqlUtil2
-INCLUDEPATH += $$PWD/../libfcgi/include
-
-unix {
-        CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/QtCommon2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_GCC_64bit/release/ -lQtCommon2
-        CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/QtCommon2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_GCC_64bit/debug/ -lQtCommon2
-
-        INCLUDEPATH += ../QtCommon2
-
-        CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/SqlUtil2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_GCC_64bit/release/ -lSqlUtil2
-        CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/SqlUtil2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_GCC_64bit/debug/ -lSqlUtil2
-
-        INCLUDEPATH += $$PWD/../SqlUtil2
-
-        CONFIG(release, debug|release): LIBS += -lfcgi++ -lfcgi
-        CONFIG(debug, debug|release): LIBS += -lfcgi++ -lfcgi
-        INCLUDEPATH += $$PWD/../libfcgi/include
-
-}
-
-
-QMAKE_RPATHDIR += $$PWD

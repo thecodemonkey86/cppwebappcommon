@@ -16,7 +16,7 @@
 #include "stringkeyarrayparam.h"
 #include <QUrl>
 #include <memory>
-
+#include "webappcommon_global.h"
 using namespace std;
 
 class WEBAPPCOMMONSHARED_EXPORT RequestData

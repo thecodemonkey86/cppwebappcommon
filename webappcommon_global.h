@@ -11,7 +11,6 @@
 #else
 #  define WEBAPPCOMMONSHARED_EXPORT Q_DECL_IMPORT
 #endif
-
 inline QPair<QString,QString> GetParam(const QString &name,const QString &value){
     return QPair<QString,QString>(name,value);
 }

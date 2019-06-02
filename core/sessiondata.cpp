@@ -1,13 +1,15 @@
 #include "sessiondata.h"
 #include <QCryptographicHash>
 #include <QJsonDocument>
-#include "util/util.h"
+#include "util/string/stringutil.h"
 #include "requestdata.h"
 #include "serverdata.h"
 #include "httpheader.h"
 #include <QFile>
 #include <QDir>
 #include <QDateTime>
+
+using namespace QtCommon2;
 
 const QString & SessionData::getSessionCookieName()
 {
@@ -27,7 +29,7 @@ bool SessionData::hasValue(const QString &key) const
 void SessionData::clearSession()
 {
     QFile f(getSessionFileName(serverData));
-    this->sessId = QStringLiteral("");
+    this->sessId = QString();
     this->data = QJsonObject();
 
     if(f.exists()) {
@@ -58,7 +60,7 @@ QString SessionData::getSessionFileName(ServerData * serverData)
 
 void SessionData::newSession(HttpHeader *httpHeader)
 {
-    this->sessId = Util::randString(64);
+    this->sessId = StringUtil::randString(64);
     this->data.insert(KEY_SESSION_VALID_UNTIL, QDateTime::currentDateTime().addSecs(minutesSessionValid*60).toSecsSinceEpoch());
     httpHeader->setSessionCookie(this->sessId);
 }

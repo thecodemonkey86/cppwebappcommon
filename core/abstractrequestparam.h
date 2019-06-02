@@ -10,7 +10,7 @@ protected:
 public:
     AbstractRequestParam();
     virtual ~AbstractRequestParam();
-    virtual QString toString() const=0 ;
+    virtual const QString &  toString() const=0 ;
 };
 
 #endif // ABSTRACTREQUESTPARAM_H
