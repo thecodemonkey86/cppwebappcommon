@@ -5,6 +5,12 @@ RequestParam::RequestParam(const QString &name, const QString &value) : Abstract
     this->value = value;
 }
 
+RequestParam::RequestParam(const QString &name, int value)
+{
+    this->name = name;
+    this->value = QString::number(value);
+}
+
 const QString & RequestParam::getValue() const {
     return value;
 }

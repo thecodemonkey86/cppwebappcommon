@@ -11,12 +11,5 @@
 #else
 #  define WEBAPPCOMMONSHARED_EXPORT Q_DECL_IMPORT
 #endif
-inline QPair<QString,QString> GetParam(const QString &name,const QString &value){
-    return QPair<QString,QString>(name,value);
-}
-
-inline QPair<QString,QString> GetParam(const QString &name,int value){
-    return QPair<QString,QString>(name,QString::number(value));
-}
 
 #endif // WEBAPPCOMMON_GLOBAL_H

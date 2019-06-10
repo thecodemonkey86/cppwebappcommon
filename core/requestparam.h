@@ -4,6 +4,9 @@
 #include "abstractrequestparam.h"
 #include "webappcommon_global.h"
 #include <QUrl>
+class RequestParam;
+
+typedef RequestParam GetParam  ;
 
 class WEBAPPCOMMONSHARED_EXPORT RequestParam : public AbstractRequestParam
 {
@@ -12,6 +15,7 @@ protected:
     QString value;
 public:
     RequestParam(const QString &name,const QString& value);
+    RequestParam(const QString &name,int value);
     RequestParam(const RequestParam& other) = default;
     virtual ~RequestParam() = default;
 

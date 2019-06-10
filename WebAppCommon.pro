@@ -43,6 +43,7 @@ SOURCES += \
     mvc/controller/action/abstractaction.cpp \
     mvc/controller/multiactionpagecontroller.cpp \
     mvc/view/abstractview.cpp \
+    mvc/view/html/ajaxhtmlview.cpp \
     mvc/view/html/htmltemplate.cpp \
     mvc/view/jsonview.cpp \
     mvc/model/viewdata.cpp \
@@ -72,6 +73,7 @@ HEADERS += webappcommon_global.h \
     mvc/controller/action/abstractaction.h \
     mvc/controller/multiactionpagecontroller.h \
     mvc/view/abstractview.h \
+    mvc/view/html/ajaxhtmlview.h \
     mvc/view/html/htmltemplate.h \
     mvc/view/jsonview.h \
     mvc/model/viewdata.h \
