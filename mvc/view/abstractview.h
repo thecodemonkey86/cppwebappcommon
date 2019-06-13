@@ -14,6 +14,8 @@ protected:
     bool autoSendHeaders;
 public:
     AbstractView();
+    AbstractView(const AbstractView &)= default;
+    AbstractView& operator=(const AbstractView&) = default;
     virtual ~AbstractView() = default;
     virtual QString getHttpContentType() const=0;
 

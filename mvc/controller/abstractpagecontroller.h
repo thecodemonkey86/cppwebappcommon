@@ -42,7 +42,7 @@ public:
     SessionData *getSessionData() const;
     void setSessionData(SessionData *value);
     QSqlDatabase getSqlCon() const;
-    void setSqlCon(const QSqlDatabase &value);
+    virtual void setSqlCon(const QSqlDatabase &value);
     HttpHeader *getHttpHeader() const;
     void setHttpHeader(HttpHeader *value);
     virtual void setOutStream(FCGX_Stream *outStream);
