@@ -4,6 +4,7 @@
 #include "mvc/model/viewdata.h"
 #include <memory>
 #include <core/httpheader.h>
+#include "core/fastcgioutput.h"
 using namespace std;
 
 class WEBAPPCOMMONSHARED_EXPORT AbstractView
