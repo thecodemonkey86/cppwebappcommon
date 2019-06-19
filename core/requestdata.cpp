@@ -101,6 +101,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
             line =  QString::fromUtf8(buf);
             QString fileName;
             QString mimeType;
+            QString contentTransferEncoding;
 
             while(line != QLatin1Literal("\r\n")) {
                 int k = line.indexOf(QChar(':'));
@@ -133,6 +134,8 @@ void RequestData::parsePostParams(const FCGX_Request & request)
                     }
                 } else if(header == QLatin1Literal("content-type")) {
                     mimeType = headerValue.trimmed();
+                } else if(header == QLatin1Literal("content-transfer-encoding")) {
+                    contentTransferEncoding = headerValue.trimmed();
                 }
 
                 if(FCGX_GetLine(buf,BUF_SIZE,request.in)!=nullptr) {
@@ -198,6 +201,28 @@ void RequestData::parsePostParams(const FCGX_Request & request)
                 }
                 uploadedFile.write(writeBuf,bufpos);
                 uploadedFile.close();
+
+                if(contentTransferEncoding == QLatin1Literal("base64"))
+                {
+                  QFile uploadedFileDecode(uploadedFile.fileName()+"_decode");
+                  if(uploadedFileDecode.open(QIODevice::WriteOnly)) {
+                    if(uploadedFile.open(QIODevice::ReadOnly)) {
+                      uploadedFileDecode.write(QByteArray::fromBase64(uploadedFile.readAll()));
+                      uploadedFileDecode.close();
+                      if(uploadedFile.remove()) {
+                        if(!uploadedFileDecode.rename(uploadedFile.fileName())) {
+                          throw QtException(QStringLiteral("Error renaming file %1: %2").arg(uploadedFileDecode.fileName(),uploadedFileDecode.errorString()));
+                        }
+                      } else {
+                        throw QtException(QStringLiteral("Error deleting file %1: %2").arg(uploadedFile.fileName(),uploadedFile.errorString()));
+                      }
+                    } else{
+                      throw QtException(QStringLiteral("Error reading file %1: %2").arg(uploadedFile.fileName(),uploadedFile.errorString()));
+                    }
+                  } else{
+                    throw QtException(QStringLiteral("Error writing file %1: %2").arg(uploadedFileDecode.fileName(),uploadedFileDecode.errorString()));
+                  }
+                }
 
                 if(fieldName.endsWith(QLatin1Literal("[]"))) {
                     int j = fieldName.indexOf('[');
