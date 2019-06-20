@@ -24,6 +24,7 @@ class WEBAPPCOMMONSHARED_EXPORT RequestData
 private:
     static constexpr char CR = '\r';
     static constexpr char NL = '\n';
+    static constexpr char HYPHEN = '-';
     static constexpr int BUF_SIZE = 8192;
 
     QHash<QString, AbstractRequestParam*> getParams;
@@ -35,8 +36,13 @@ private:
     void parsePostParams(const FCGX_Request & request);
 
     inline void parseParam(const QString & fieldName, const QString &value, QHash<QString, AbstractRequestParam*>& params);
-    inline static void writeFileBuf(QFile * file, int & pos, char* & buf, char c );
-    inline static void writeFileBuf(QFile *file, int &pos, char *&buf, int c);
+    inline static void writeFileBuf(QIODevice *writeDevice, int & pos, char*  buf, char c );
+    inline static void writeFileBuf(QIODevice *file, int &pos, char *buf, int c);
+    inline static int checkNotEof(int c);
+    inline static void expectChar(int c, int expected);
+
+    static void parseMultipart(QIODevice * writeDevice,const FCGX_Request & request, bool & foundFinalDelimiter, const QString &delimiter);
+
 public:
  RequestData(const FCGX_Request & request, const QUrl &url);
     ~RequestData();
