@@ -16,6 +16,15 @@ QString UploadedFile::getSourceFileName() const
     return sourceFileName;
 }
 
+void UploadedFile::cleanup() const
+{
+    QFile f(temporaryPath);
+
+    if(f.exists()) {
+        f.remove();
+    }
+}
+
 
 UploadedFile::UploadedFile()  : AbstractUploadedFile(QString())
 {
@@ -30,6 +39,7 @@ UploadedFile::UploadedFile(const QString & sourceFileName, const QString & field
     this->size = size;
     this->sourceFileName = sourceFileName;
 }
+
 
 int64_t UploadedFile::getSize() const
 {

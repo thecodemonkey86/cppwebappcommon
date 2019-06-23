@@ -24,7 +24,7 @@ Form::~Form()
 
 }
 
-QString Form::stringValue(const QString &name, const QString &defaultValue) const
+const QString & Form::stringValue(const QString &name, const QString &defaultValue) const
 {
     if(!isSet(name)) {
         return defaultValue;

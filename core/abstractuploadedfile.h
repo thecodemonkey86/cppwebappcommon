@@ -13,6 +13,7 @@ public:
 
     QString getFieldName() const;
       bool operator ==(const AbstractUploadedFile & other) const;
+       virtual void cleanup() const =0;
 };
 
 #endif // ABSTRACTUPLOADEDFILE_H

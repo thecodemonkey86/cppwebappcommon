@@ -8,7 +8,7 @@ FormPost::FormPost(RequestData * request, const QString&submitFieldName) : Form(
 }
 
 
-QString FormPost::stringValue(const QString &name) const
+const QString & FormPost::stringValue(const QString &name) const
 {
     return request->postString(name);
 }
@@ -79,14 +79,14 @@ bool FormPost::isSet(const QString &name) const
     return request->isPostParamSet(name);
 }
 
-ArrayRequestParam *FormPost::array(const QString &name) const
+const ArrayRequestParam & FormPost::array(const QString &name) const
 {
     return request->postArray(name);
 }
 
 
 
-QString FormPost::stringValue(const QString &name, const QString &defaultValue) const
+const QString & FormPost::stringValue(const QString &name, const QString &defaultValue) const
 {
     return Form::stringValue(name,defaultValue);
 }

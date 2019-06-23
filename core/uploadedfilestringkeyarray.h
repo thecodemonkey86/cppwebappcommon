@@ -8,7 +8,12 @@ class WEBAPPCOMMONSHARED_EXPORT UploadedFileStringKeyArray : public AbstractUplo
 {
 public:
     UploadedFileStringKeyArray(const QString & fieldName);
+    UploadedFileStringKeyArray(const QString & fieldName,const QString & key,const UploadedFile & file);
     virtual ~UploadedFileStringKeyArray() = default;
+
+    // AbstractUploadedFile interface
+public:
+    virtual void cleanup() const override;
 };
 
 #endif // UPLOADEDFILESTRINGKEYARRAY_H

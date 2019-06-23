@@ -29,13 +29,12 @@ private:
 
     QHash<QString, AbstractRequestParam*> getParams;
     QHash<QString, AbstractRequestParam*> postParams;
-    QVector<shared_ptr<AbstractUploadedFile>> uploadFiles;
+    QVector<AbstractUploadedFile*> uploadFiles;
 
-    void parseParams(const QString&requestString, QHash<QString, AbstractRequestParam*>& params);
     void parseGetParams(const QUrl& url);
     void parsePostParams(const FCGX_Request & request);
 
-    inline void parseParam(const QString & fieldName, const QString &value, QHash<QString, AbstractRequestParam*>& params);
+    inline void addToHashtable(const QString & fieldName, const QString &value, QHash<QString, AbstractRequestParam*>& params);
     inline static void writeFileBuf(QIODevice *writeDevice, int & pos, char*  buf, char c );
     inline static void writeFileBuf(QIODevice *file, int &pos, char *buf, int c);
     inline static int checkNotEof(int c);
@@ -55,10 +54,10 @@ public:
     double postDouble(const QString&name) const;
     double getDouble(const QString&name) const;
     bool postBool(const QString&name) const;
-    ArrayRequestParam * getArray(const QString&name) const;
-    ArrayRequestParam * postArray(const QString&name) const;
-    StringKeyArrayParam * postStringKeyArray(const QString&name) const;
-     StringKeyArrayParam *getStringKeyArray(const QString &name) const;
+    const ArrayRequestParam & getArray(const QString&name) const;
+    const ArrayRequestParam & postArray(const QString&name) const;
+    const StringKeyArrayParam & postStringKeyArray(const QString&name) const;
+    const StringKeyArrayParam & getStringKeyArray(const QString &name) const;
     QString getArrayValueString(const QString &name, const QString &key) const;
     QString getArrayValueString(const QString &name, int index) const;
     int getArrayValueInt(const QString &name, const QString &key) const;
@@ -66,9 +65,9 @@ public:
     bool isGetParamSet(const QString&name) const;
     bool isPostParamSet(const QString&name) const;
     QStringList postFieldNames() const;
-    shared_ptr<UploadedFile> uploadedFile(const QString&fieldname) const;
-    shared_ptr<UploadedFileArray> uploadedFileArray(const QString&fieldname) const;
-    shared_ptr<UploadedFileStringKeyArray> uploadedFileArrayStringKey(const QString&fieldname) const;
+    const UploadedFile & uploadedFile(const QString&fieldname) const;
+    const UploadedFileArray & uploadedFileArray(const QString&fieldname) const;
+    const UploadedFileStringKeyArray & uploadedFileArrayStringKey(const QString&fieldname) const;
     QVector<int> getIntArray(const QString&name) const;
     QVector<int> postIntArray(const QString&name) const;
 

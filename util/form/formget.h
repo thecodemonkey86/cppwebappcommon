@@ -8,8 +8,8 @@ class WEBAPPCOMMONSHARED_EXPORT FormGet : public Form
 
 public:
     FormGet(RequestData * request,const QString&submitFieldName=QLatin1Literal("submit"));
-    virtual ~FormGet();
-    virtual QString stringValue(const QString&name) const override;
+    virtual ~FormGet() override = default;
+    virtual const QString & stringValue(const QString&name) const override;
     virtual int intValue(const QString&name) const override;
     virtual double doubleValue(const QString&name) const override;
     virtual QDate dateValue(const QString&name) const override;
@@ -22,10 +22,10 @@ public:
     virtual bool isSet(const QString &name)const override;
 
     virtual QVector<int> intArrayValue(const QString &name) const override;
-    virtual ArrayRequestParam * array(const QString&name) const override;
+    virtual const ArrayRequestParam &  array(const QString&name) const override;
     // Form interface
 public:
-    virtual QString stringValue(const QString &name, const QString &defaultValue) const override;
+    virtual const QString & stringValue(const QString &name, const QString &defaultValue) const override;
     virtual int intValue(const QString &name, int defaultValue) const override;
     virtual bool boolValue(const QString &name, bool defaultValue) const override;
     virtual QDate dateValue(const QString &name, const QDate &defaultValue) const override;

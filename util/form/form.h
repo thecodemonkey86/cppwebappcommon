@@ -19,7 +19,7 @@ protected:
 public:
     Form(RequestData *request,const QString&submitFieldName);
     virtual ~Form();
-    virtual QString stringValue(const QString&name) const=0;
+    virtual const QString & stringValue(const QString&name) const=0;
     virtual int intValue(const QString&name) const=0;
     virtual bool boolValue(const QString&name) const=0;
     virtual QDate dateValue(const QString&name) const=0;
@@ -27,8 +27,8 @@ public:
     virtual double doubleValue(const QString&name) const=0;
     virtual bool isValueEmpty(const QString&name) const=0;
    virtual QVector<int> intArrayValue(const QString&name) const=0;
-   virtual ArrayRequestParam * array(const QString&name) const=0;
-    virtual QString stringValue(const QString&name, const QString & defaultValue) const;
+   virtual const ArrayRequestParam &  array(const QString&name) const=0;
+    virtual const QString & stringValue(const QString&name, const QString & defaultValue) const;
     virtual int intValue(const QString&name,int defaultValue) const;
     virtual bool boolValue(const QString&name,bool defaultValue) const;
     virtual QDate dateValue(const QString&name, const QDate & defaultValue) const;

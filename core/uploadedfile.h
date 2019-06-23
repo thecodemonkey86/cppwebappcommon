@@ -23,6 +23,7 @@ public:
 
     bool operator ==(const UploadedFile & other) const;
     QString getSourceFileName() const;
+    virtual void cleanup() const override;
 };
 uint qHash(const UploadedFile & u);
 #endif // UPLOADEDFILE_H

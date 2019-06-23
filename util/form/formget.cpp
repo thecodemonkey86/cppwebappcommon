@@ -8,7 +8,7 @@ FormGet::FormGet(RequestData * request,const QString&submitFieldName) : Form(req
 }
 
 
-QString FormGet::stringValue(const QString &name) const
+const QString & FormGet::stringValue(const QString &name) const
 {
     return request->getString(name);
 }
@@ -53,12 +53,6 @@ bool FormGet::isSubmitted() const
     return request->isPostParamSet(submitFieldName) && !request->getString(submitFieldName).isEmpty();
 }
 
-FormGet::~FormGet()
-{
-
-}
-
-
 
 bool FormGet::boolValue(const QString &name) const
 {
@@ -83,13 +77,13 @@ QVector<int> FormGet::intArrayValue(const QString &name) const
     return  request->getIntArray(name);
 }
 
-ArrayRequestParam *FormGet::array(const QString &name) const
+const ArrayRequestParam & FormGet::array(const QString &name) const
 {
     return  request->getArray(name);
 }
 
 
-QString FormGet::stringValue(const QString &name, const QString &defaultValue) const
+const QString & FormGet::stringValue(const QString &name, const QString &defaultValue) const
 {
     return Form::stringValue(name,defaultValue);
 }
