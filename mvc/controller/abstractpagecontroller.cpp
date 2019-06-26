@@ -69,6 +69,7 @@ void AbstractPageController::registerView(unique_ptr<AbstractView> view)
 
 void AbstractPageController::runController()
 {
+   this->view->setHttpHeader(httpHeader);
     if(this->view->isAutoSendHeaders()) {
          auto viewdata = run();
          httpHeader->setContentType(this->view->getHttpContentType());
