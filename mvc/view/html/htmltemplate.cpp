@@ -48,12 +48,23 @@ void HtmlTemplate::renderHeader() const
    outBeginTagWithAttrs("meta");
    outAttr("charset", "utf-8");
    output('>');
+   outBeginTagWithAttrs("meta");
+   outAttr("viewport", "width=device-width, initial-scale=1, shrink-to-fit=no");
+   output('>');
    for(const QString &css: includeCss) {
        outBeginTagWithAttrs("link");
        outAttr("rel", "stylesheet");
        outAttr("href", css);
        outAttr("type", "text/css");
        outAttr("media", "screen");
+       output('>');
+
+   }
+
+   for(const QString &font: includeFonts) {
+       outBeginTagWithAttrs("link");
+       outAttr("href", font);
+       outAttr("rel", "stylesheet");
        output('>');
 
    }
@@ -133,5 +144,10 @@ void HtmlTemplate::addCssFile(const QString &cssFile)
 void HtmlTemplate::addJsFile(const QString &jssFile)
 {
     includeJs.append(jssFile);
+}
+
+void HtmlTemplate::addFont(const QString &font)
+{
+    includeFonts.append(font);
 }
 
