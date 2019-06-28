@@ -45,6 +45,8 @@ SOURCES += \
     mvc/view/abstractview.cpp \
     mvc/view/html/ajaxhtmlview.cpp \
     mvc/view/html/htmltemplate.cpp \
+    mvc/view/html/linktag.cpp \
+    mvc/view/html/metatag.cpp \
     mvc/view/jsonview.cpp \
     mvc/model/viewdata.cpp \
     util/form/form.cpp \
@@ -75,6 +77,8 @@ HEADERS += webappcommon_global.h \
     mvc/view/abstractview.h \
     mvc/view/html/ajaxhtmlview.h \
     mvc/view/html/htmltemplate.h \
+    mvc/view/html/linktag.h \
+    mvc/view/html/metatag.h \
     mvc/view/jsonview.h \
     mvc/model/viewdata.h \
     util/form/form.h \

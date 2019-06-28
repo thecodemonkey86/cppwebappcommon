@@ -51,7 +51,18 @@ void HtmlTemplate::renderHeader() const
    outBeginTagWithAttrs("meta");
    outAttr("viewport", "width=device-width, initial-scale=1, shrink-to-fit=no");
    output('>');
-   for(const QString &css: includeCss) {
+   for(const auto & m : metaTags)
+   {
+     output(m.toHtmlString());
+   }
+
+
+   for(const auto & l : linkTags)
+   {
+     output(l.toHtmlString());
+   }
+   for(const QString &css: includeCss)
+   {
        outBeginTagWithAttrs("link");
        outAttr("rel", "stylesheet");
        outAttr("href", css);
@@ -61,7 +72,8 @@ void HtmlTemplate::renderHeader() const
 
    }
 
-   for(const QString &font: includeFonts) {
+   for(const QString &font: includeFonts)
+   {
        outBeginTagWithAttrs("link");
        outAttr("href", font);
        outAttr("rel", "stylesheet");
@@ -82,7 +94,8 @@ void HtmlTemplate::renderHeader() const
 void HtmlTemplate::renderFooter() const
 {
     outBeginTag("footer");
-    for(const QString &js: includeJs) {
+    for(const QString &js: includeJs)
+    {
        outBeginTagWithAttrs("script");
        outAttr("type", "text/javascript");
        outAttr("src", js);
@@ -148,6 +161,16 @@ void HtmlTemplate::addJsFile(const QString &jssFile)
 
 void HtmlTemplate::addFont(const QString &font)
 {
-    includeFonts.append(font);
+  includeFonts.append(font);
+}
+
+void HtmlTemplate::addMetaTag(const MetaTag &meta)
+{
+  this->metaTags += meta;
+}
+
+void HtmlTemplate::addLinkTag(const LinkTag &link)
+{
+  this->linkTags += link;
 }
 

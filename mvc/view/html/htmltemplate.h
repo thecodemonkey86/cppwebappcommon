@@ -7,6 +7,9 @@
 #include "core/httpheader.h"
 #include "core/fastcgioutput.h"
 #include "util/collection/orderedset.h"
+#include "linktag.h"
+#include "metatag.h"
+
 using namespace QtCommon2;
 using namespace std;
 
@@ -28,6 +31,8 @@ protected:
      OrderedSet<QString> includeCss;
      OrderedSet<QString> includeJs;
      OrderedSet<QString> includeFonts;
+     QList<MetaTag> metaTags;
+     QList<LinkTag> linkTags;
      // AbstractTemplate interface
 public:
      virtual QString getHttpContentType() const;
@@ -36,6 +41,8 @@ public:
      void addCssFile(const QString&cssFile);
      void addJsFile(const QString&jssFile);
      void addFont(const QString&font);
+     void addMetaTag(const MetaTag&meta);
+     void addLinkTag(const LinkTag&link);
 //     virtual QString getBaseUrl() const;
 //     void setBaseUrl(const QString &value);
 };
