@@ -15,10 +15,10 @@
 #include <QDir>
 #include <QFile>
 #include <QDateTime>
+#include <QStack>
 
 #ifdef QT_DEBUG
 #include <QDebug>
-#include <QStack>
 #endif
 
 using namespace QtCommon2;
