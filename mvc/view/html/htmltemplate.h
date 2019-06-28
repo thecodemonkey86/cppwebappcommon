@@ -27,6 +27,7 @@ protected:
 
      OrderedSet<QString> includeCss;
      OrderedSet<QString> includeJs;
+     OrderedSet<QString> includeFonts;
      // AbstractTemplate interface
 public:
      virtual QString getHttpContentType() const;
@@ -34,6 +35,7 @@ public:
      void addJsFiles(const QStringList&jssFiles);
      void addCssFile(const QString&cssFile);
      void addJsFile(const QString&jssFile);
+     void addFont(const QString&font);
 //     virtual QString getBaseUrl() const;
 //     void setBaseUrl(const QString &value);
 };
