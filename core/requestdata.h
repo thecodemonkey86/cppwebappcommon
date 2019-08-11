@@ -37,10 +37,10 @@ private:
     inline void addToHashtable(const QString & fieldName, const QString &value, QHash<QString, AbstractRequestParam*>& params);
     inline static void writeFileBuf(QIODevice *writeDevice, int & pos, char*  buf, char c );
     inline static void writeFileBuf(QIODevice *file, int &pos, char *buf, int c);
-    inline static char nextByte(const QByteArray &bytes, int & pos);
+    inline static int checkNotEof(int c);
     inline static void expectChar(int c, int expected);
-    QString readLine(const QByteArray & bytes,int & pos);
-    static void parseMultipart(QIODevice * writeDevice,const QByteArray & requestBody, int & pos,  bool & foundFinalDelimiter, const QString &delimiter);
+
+    static void parseMultipart(QIODevice * writeDevice,const FCGX_Request & request, bool & foundFinalDelimiter, const QString &delimiter);
 
 public:
  RequestData(const FCGX_Request & request, const QUrl &url);

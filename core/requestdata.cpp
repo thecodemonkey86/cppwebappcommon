@@ -16,6 +16,7 @@
 #include <QFile>
 #include <QDateTime>
 #include <QStack>
+#include <QQueue>
 
 #ifdef QT_DEBUG
 #include <QDebug>
@@ -66,6 +67,12 @@ void RequestData::parseGetParams(const QUrl& url)
     }
 }
 
+int RequestData::checkNotEof(int c)
+{
+    if(c==-1)
+        throw QtException("unexpected end of stream");
+    return c;
+}
 
 void RequestData::expectChar(int c, int expected)
 {
@@ -73,48 +80,28 @@ void RequestData::expectChar(int c, int expected)
         throw QtException(QStringLiteral("expected character %1 but got %2").arg(static_cast<char>(expected),c));
 }
 
-QString RequestData::readLine(const QByteArray &bytes, int &pos)
+void RequestData::parseMultipart(QIODevice *writeDevice,const FCGX_Request & request, bool & foundFinalDelimiter, const QString &delimiter)
 {
-    int start = pos;
-    while(pos < bytes.size())
-    {
-        if(bytes[pos] == CR)
-        {
-            pos++;
-            if(pos < bytes.size()&&bytes[pos] == NL)
-            {
-                pos++;
-                return QString::fromUtf8(bytes.mid(start,pos - start));
-
-            }
-
-
-        }
-        pos++;
-
-    }
-    return QString();
-}
-
-void RequestData::parseMultipart(QIODevice *writeDevice,const QByteArray & requestBody, int & pos, bool & foundFinalDelimiter, const QString &delimiter)
-{
+    int c;
+	QQueue<int> lookBehindBuffer;
     char writeBuf[BUF_SIZE];
     int bufpos = 0;
-    while(pos < requestBody.length()) {
-        char c = nextByte(requestBody, pos);
-
+    while((c=(lookBehindBuffer.isEmpty() ? FCGX_GetChar(request.in) : lookBehindBuffer.dequeue() ))>-1) {
+        
         if(c == CR) {
-           c = nextByte(requestBody, pos);
-           int unget=1;
 
-            if(c == NL) {                
+            c=checkNotEof((lookBehindBuffer.isEmpty() ? FCGX_GetChar(request.in) : lookBehindBuffer.dequeue() ));
+            
+            lookBehindBuffer.enqueue(c);
+          
+            if(c == NL) {
                 bool foundDelimiter = true;
 
                 for(int i=0;i<delimiter.size();i++) {
 
-                    c = nextByte(requestBody, pos);
-                    unget++;
-
+                    c = checkNotEof(FCGX_GetChar(request.in));
+                    lookBehindBuffer.enqueue(c);
+                    //qDebug() << static_cast<char>(c);
                     if(c == 0 || delimiter[i] != c) {
                         foundDelimiter = false;
                         break;
@@ -122,14 +109,14 @@ void RequestData::parseMultipart(QIODevice *writeDevice,const QByteArray & reque
 
                 }
                 if(foundDelimiter) {
-                     c = nextByte(requestBody, pos);
+                    c=checkNotEof(FCGX_GetChar(request.in));
                     if(c == CR){
-                        expectChar(nextByte(requestBody, pos), NL);
+                        expectChar(checkNotEof(FCGX_GetChar(request.in)), NL);
                         break;
                     } else if(c == HYPHEN) {
-                        expectChar(nextByte(requestBody, pos), HYPHEN);
-                        expectChar(nextByte(requestBody, pos), CR);
-                        expectChar(nextByte(requestBody, pos), NL);
+                        expectChar(checkNotEof(FCGX_GetChar(request.in)), HYPHEN);
+                        expectChar(checkNotEof(FCGX_GetChar(request.in)), CR);
+                        expectChar(checkNotEof(FCGX_GetChar(request.in)), NL);
                         foundFinalDelimiter = true;
                         break;
                     } else {
@@ -138,12 +125,9 @@ void RequestData::parseMultipart(QIODevice *writeDevice,const QByteArray & reque
 
                 } else {
                     writeFileBuf(writeDevice,bufpos,writeBuf,CR);
-                    pos -= unget;
-
                 }
             } else {
-                 writeFileBuf(writeDevice,bufpos,writeBuf,CR);
-                 pos -= unget;
+                 writeFileBuf(writeDevice,bufpos,writeBuf,CR);                 
             }
         } else {
             writeFileBuf(writeDevice,bufpos,writeBuf,c);
@@ -163,7 +147,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
     QString contentLengthStr(FCGX_GetParam("CONTENT_LENGTH", request.envp));
 
     bool ok;
-    int64_t contentLength = contentLengthStr.toLongLong(&ok);
+    uint64_t contentLength = contentLengthStr.toULongLong(&ok);
     if( contentType[0] == QLatin1Literal("multipart/form-data")) {
         int indexEq = contentType[1].indexOf('=');
         if(indexEq == -1) {
@@ -174,30 +158,21 @@ void RequestData::parsePostParams(const FCGX_Request & request)
             throw QtException(QLatin1Literal("invalid data"));
         }
 
-        int pos = 0;
-        QByteArray requestBody ;
-        requestBody.reserve( static_cast<int>(contentLength));
-        for(int i=0;i<contentLength;i++){
-            int c = FCGX_GetChar(request.in);
-            if( c == EOF) {
-                throw QtException(QLatin1Literal("Unexpected EOF"));
-            }
-            requestBody += static_cast<char>(c);
-        }
-        if (FCGX_GetChar(request.in) != EOF) {
-            throw QtException(QLatin1Literal("Expected EOF"));
-        }
-
 
         QChar quot('"');
         QString crlf("\r\n");
-       // char readBuf[BUF_SIZE];
+        char readBuf[BUF_SIZE];
         QString fieldName;
-        QString line = readLine(requestBody,pos);;
+        QString line;
 
-        if(line != delimiter+crlf) {
-            throw QtException(QLatin1Literal("unexpected end of data: ") + line);
+        if(FCGX_GetLine(readBuf,BUF_SIZE,request.in)!=nullptr) {
+            line =  QString::fromUtf8(readBuf);
+            if(line != delimiter+crlf) {
+                throw QtException(QLatin1Literal("unexpected end of data: ") + line);
+            }
         }
+
+
 
         bool foundFinalDelimiter = false;
         while(!foundFinalDelimiter) {
@@ -205,7 +180,8 @@ void RequestData::parsePostParams(const FCGX_Request & request)
             QString mimeType;
             QString contentTransferEncoding;
 
-            while( !(line = readLine(requestBody,pos)).isNull()){
+            while(FCGX_GetLine(readBuf,BUF_SIZE,request.in)!=nullptr){
+                line =  QString::fromUtf8(readBuf);
                 if(line == crlf){
                     break;
                 }
@@ -248,6 +224,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
 
 
 
+
             if(!fileName.isEmpty()) {
                 QString filePath = QStringLiteral("%1/upload-%2-%3").arg(QDir::tempPath(), QString::number(QDateTime::currentMSecsSinceEpoch()),fileName);
                 if(filePath.endsWith(QLatin1Literal(".exe"))
@@ -260,9 +237,10 @@ void RequestData::parsePostParams(const FCGX_Request & request)
 
                 QFile uploadedFile( filePath );
                 uploadedFile.open(QIODevice::WriteOnly|QIODevice::Truncate);
-                parseMultipart(&uploadedFile,requestBody,pos,foundFinalDelimiter,delimiter);
+                parseMultipart(&uploadedFile,request,foundFinalDelimiter,delimiter);
 
                 uploadedFile.close();
+
 
 
                 if(fieldName.endsWith(QLatin1Literal("[]"))) {
@@ -323,7 +301,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
             } else {
                 QBuffer buffer;
                 if(buffer.open(QIODevice::WriteOnly)){
-                    parseMultipart(&buffer,requestBody,pos,foundFinalDelimiter,delimiter);
+                    parseMultipart(&buffer,request,foundFinalDelimiter,delimiter);
                     addToHashtable(fieldName,QString::fromUtf8(buffer.data()),postParams);
                     buffer.close();
                 }
@@ -332,13 +310,15 @@ void RequestData::parsePostParams(const FCGX_Request & request)
 
 
         }
-
+        if (FCGX_GetChar(request.in) != -1) {
+            throw QtException(QLatin1Literal("Expected EOF"));
+        }
     } else {
 
         if (!ok) {
             throw QtException(QLatin1Literal("Invalid content length"));
         } else {
-            char * buf= new char[static_cast<uint32_t>(contentLength)+1];
+            char * buf= new char[contentLength+1];
 
 
             QString paramStr = QString::fromUtf8(FCGX_GetLine(buf,static_cast<int>(contentLength)+1,request.in));
@@ -449,14 +429,6 @@ void RequestData::writeFileBuf(QIODevice * writeDevice, int &pos, char *buf, int
         writeDevice->write(buf, BUF_SIZE);
         pos = 0;
     }
-}
-
-char RequestData::nextByte(const QByteArray &bytes, int & pos)
-{
-    if(pos < bytes.size()){
-        return bytes[pos++];
-    }
-    throw QtException(QLatin1Literal("Unexpected EOF"));
 }
 
 const QString & RequestData::getString(const QString & name) const
