@@ -13,6 +13,9 @@
 
 using namespace std;
 
+/**
+ * @brief abstract base class for single action page controllers
+ */
 class WEBAPPCOMMONSHARED_EXPORT AbstractPageController
 {
 protected:

@@ -10,7 +10,9 @@ class AbstractAction;
 
 using namespace std;
 
-
+/**
+ * @brief abstract base class for multi action page controllers
+ */
 class WEBAPPCOMMONSHARED_EXPORT MultiActionPageController : public AbstractPageController
 {
 protected:
