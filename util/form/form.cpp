@@ -72,9 +72,15 @@ double Form::doubleValue(const QString &name, double defaultValue) const
     return doubleValue(name);
 }
 
+
 bool Form::isSetAndNotEmpty(const QString &name) const
 {
-    return isSet(name) && !isValueEmpty(name);
+  return isSet(name) && !isValueEmpty(name);
+}
+
+bool Form::isNotSetOrEmpty(const QString &name) const
+{
+  return !isSet(name) || isValueEmpty(name);
 }
 
 

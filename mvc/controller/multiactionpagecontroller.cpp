@@ -12,7 +12,7 @@ unique_ptr<ViewData> MultiActionPageController::run()
 
 void MultiActionPageController::runController()
 {
-    QString action = requestData->getString(QStringLiteral("action"));
+    QString action = requestData->getString(QLatin1String("action"));
     if (actions.contains(action)) {
         auto a = actions.value(action);
         a->setSqlCon(sqlCon);
@@ -22,7 +22,7 @@ void MultiActionPageController::runController()
         a->setHttpHeader(httpHeader);
         a->runAction();
     } else {
-        throw QtException("No such action");
+        throw QtException(QLatin1String("No such action"));
     }
 
 

@@ -19,6 +19,11 @@ int FormPost::intValue(const QString &name) const
     return request->postInt(name);
 }
 
+uint32_t FormPost::uintValue(const QString &name) const
+{
+  return request->postUInt(name);
+}
+
 QVector<int> FormPost::intArrayValue(const QString &name) const
 {
     return request->postIntArray(name);
@@ -31,10 +36,11 @@ double FormPost::doubleValue(const QString &name) const
 
 QDate FormPost::dateValue(const QString &name) const
 {
-    if (name.count(QChar('-')) == 2) {
-        return QDate::fromString(request->postString(name),QStringLiteral("yyyy-MM-dd"));
-    } else if (name.count(QChar('.')) == 2) {
-        return QDate::fromString(request->postString(name),QStringLiteral("dd.MM.yyyy"));
+  QString d = request->postString(name);
+    if (d.count(QChar('-')) == 2) {
+        return QDate::fromString(d,QStringLiteral("yyyy-MM-dd"));
+    } else if (d.count(QChar('.')) == 2) {
+        return QDate::fromString(d,QStringLiteral("dd.MM.yyyy"));
     } else {
         throw QtException("Invalid date format");
     }
@@ -42,10 +48,11 @@ QDate FormPost::dateValue(const QString &name) const
 
 QDateTime FormPost::dateTimeValue(const QString &name) const
 {
-    if (name.count(QChar('-')) == 2) {
-        return QDateTime::fromString(request->postString(name),QStringLiteral("yyyy-MM-dd HH:mm:ss"));
+  QString d = request->postString(name);
+    if (d.count(QChar('-')) == 2) {
+        return QDateTime::fromString(d,QStringLiteral("yyyy-MM-dd HH:mm:ss"));
     } else if (name.count(QChar('.')) == 2) {
-        return QDateTime::fromString(request->postString(name),QStringLiteral("dd.MM.yyyy HH:mm:ss"));
+        return QDateTime::fromString(d,QStringLiteral("dd.MM.yyyy HH:mm:ss"));
     } else {
         throw QtException("Invalid date format");
     }
