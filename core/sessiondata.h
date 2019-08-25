@@ -31,7 +31,7 @@ protected:
     inline void newSession(HttpHeader *httpHeader);
 public:
     SessionData(int minutesSessionValid, ServerData * s,HttpHeader * httpHeader,QDir tempDir = QDir(QDir::tempPath()));
-      virtual ~SessionData();
+    ~SessionData();
     void saveSession();
     void setValue(const QString&key,const QString&val);
     void setValue(const QString&key,bool val);

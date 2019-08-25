@@ -20,34 +20,48 @@ private:
 public:
   PageManager() = default;
     void runController(const QString&page,FCGX_Stream * outStream,  RequestData * requestData, SessionData * sessionData, ServerData * serverData, HttpHeader * httpHeader, const QSqlDatabase & sqlCon);
+
+    /**
+     * @brief hasPageForPath
+     * @param path normalized path, that MUST start with a slash and MUST NOT end with a slash
+     * @return
+     */
+    bool hasPageForPath(const QString & path) const;
+
     template<class C> void addPage(const shared_ptr<C> &config) {
-        pages.insert(C::name(),config);
+        pages.insert(C::path(),config);
     }
     template<class C> void addPage() {
-        pages.insert(C::name(),make_shared<C>());
+        pages.insert(C::path(),make_shared<C>());
     }
     template<class C> static QString url() {
-         return QStringLiteral("/?page=%1").arg(C::name());
+        // return QStringLiteral("/?page=%1").arg(C::path());
+        return C::path();
     }
 
     template<class C> static QString url(const QVector<RequestParam>& args) {
-         QString url = QStringLiteral("/?page=%1").arg(C::name());
-         for(const RequestParam & a : args) {
-            url += QStringLiteral("&%1=%2").arg(a.toString());
+         QString url = QStringLiteral("%1/?").arg(C::path());
+         if(args.size() > 0)
+         {
+             url += QStringLiteral("%1=%2").arg(args[0].toString());
+
+             for(int i = 1; i < args.size(); i++) {
+                url += QStringLiteral("&%1=%2").arg(args[i].toString());
+             }
          }
          return url;
     }
     template<class C> static QString url(const RequestParam & arg) {
-         return QStringLiteral("/?page=%1&%2=%3").arg(C::name(),arg.getName(), arg.getValue());
+         return QStringLiteral("%1/?%2=%3").arg(C::path(),arg.getName(), arg.getValue());
     }
     template<class C> static QString url(const QString&action) {
-         return QStringLiteral("/?page=%1&action=%2").arg(C::name(),action);
+         return QStringLiteral("%1/?action=%2").arg(C::path(),action);
     }
     template<class C,class A> static QString url() {
-         return QStringLiteral("/?page=%1&action=%2").arg(C::name(),A::name());
+         return QStringLiteral("%1/?action=%2").arg(C::path(),A::name());
     }
     template<class C,class A> static QString url(const RequestParam & arg) {
-      return QStringLiteral("/?page=%1&action=%2&%3=%4").arg(C::name(),A::name(),arg.getName(), arg.getValue());
+      return QStringLiteral("%1/?action=%2&%3=%4").arg(C::path(),A::name(),arg.getName(), arg.getValue());
     }
 };
 

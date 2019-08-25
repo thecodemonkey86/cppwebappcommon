@@ -10,7 +10,7 @@ class WEBAPPCOMMONSHARED_EXPORT ServerData
 {
 public:
     ServerData(const FCGX_Request & request);
-    virtual ~ServerData();
+    ~ServerData();
 
     const QUrl& getRequestUrl() const;
     const QString& getIp() const;
