@@ -465,6 +465,14 @@ int RequestData::getInt(const QString & name) const
     return i;
 }
 
+uint32_t RequestData::getUInt(const QString & name) const
+{
+  bool ok = false;
+  uint32_t i = getString(name).toUInt(&ok);
+  if (!ok) throw QtException(QLatin1Literal("Parameter is not a number"));
+  return i;
+}
+
 qint64 RequestData::getInt64(const QString &name) const
 {
     QString value(getString(name));
@@ -480,6 +488,14 @@ int RequestData::postInt(const QString & name) const
     int i = postString(name).toInt(&ok);
     if (!ok) throw QtException(QLatin1Literal("Parameter is not a number"));
     return i;
+}
+
+uint32_t RequestData::postUInt(const QString & name) const
+{
+  bool ok = false;
+  uint32_t i = postString(name).toUInt(&ok);
+  if (!ok) throw QtException(QLatin1Literal("Parameter is not a number"));
+  return i;
 }
 
 qint64 RequestData::postInt64(const QString &name) const

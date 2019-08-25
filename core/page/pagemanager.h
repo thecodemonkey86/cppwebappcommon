@@ -46,6 +46,9 @@ public:
     template<class C,class A> static QString url() {
          return QStringLiteral("/?page=%1&action=%2").arg(C::name(),A::name());
     }
+    template<class C,class A> static QString url(const RequestParam & arg) {
+      return QStringLiteral("/?page=%1&action=%2&%3=%4").arg(C::name(),A::name(),arg.getName(), arg.getValue());
+    }
 };
 
 #endif // PAGEMANAGER_H

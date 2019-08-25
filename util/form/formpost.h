@@ -10,6 +10,7 @@ public:
     virtual ~FormPost() override;
     virtual const QString & stringValue(const QString&name) const override;
     virtual int intValue(const QString&name) const override;
+    virtual uint32_t uintValue(const QString&name) const override;
     virtual QVector<int> intArrayValue(const QString&name) const override;
     virtual double doubleValue(const QString&name) const override;
     virtual QDate dateValue(const QString&name) const override;
