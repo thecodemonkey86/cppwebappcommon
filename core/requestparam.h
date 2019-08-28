@@ -17,10 +17,11 @@ public:
     RequestParam(const QString &name,const QString& value);
     RequestParam(const QString &name,int value);
     RequestParam(const RequestParam& other) = default;
-    virtual ~RequestParam() = default;
+    virtual ~RequestParam() override = default;
 
     const QString & getValue() const;
-    virtual const QString &  toString() const;
+    QString getPercentEscapedValue() const;
+    virtual const QString &  toString() const override ;
 
     const QString & getName() const;
     void setName(const QString &name);

@@ -12,18 +12,35 @@ unique_ptr<ViewData> MultiActionPageController::run()
 
 void MultiActionPageController::runController()
 {
-    QString action = requestData->getString(QLatin1String("action"));
+  QString pAction("action");
+  if(requestData->isGetParamSet(pAction)){
+    QString action = requestData->getStringNoCheckForExistance(pAction);
     if (actions.contains(action)) {
-        auto a = actions.value(action);
-        a->setSqlCon(sqlCon);
-        a->setServerData(serverData);
-        a->setRequestData(requestData);
-        a->setSessionData(sessionData);
-        a->setHttpHeader(httpHeader);
-        a->runAction();
+      auto a = actions.value(action);
+      a->setSqlCon(sqlCon);
+      a->setServerData(serverData);
+      a->setRequestData(requestData);
+      a->setSessionData(sessionData);
+      a->setHttpHeader(httpHeader);
+      a->runAction();
+    } else if(defaultAction != nullptr) {
+      defaultAction->setServerData(serverData);
+      defaultAction->setRequestData(requestData);
+      defaultAction->setSessionData(sessionData);
+      defaultAction->setHttpHeader(httpHeader);
+      defaultAction->runAction();
     } else {
-        throw QtException(QLatin1String("No such action"));
+      throw QtException(QLatin1String("No such action"));
     }
+  } else if(defaultAction != nullptr) {
+    defaultAction->setServerData(serverData);
+    defaultAction->setRequestData(requestData);
+    defaultAction->setSessionData(sessionData);
+    defaultAction->setHttpHeader(httpHeader);
+    defaultAction->runAction();
+  } else {
+    throw QtException(QLatin1String("No such action"));
+  }
 
 
 }

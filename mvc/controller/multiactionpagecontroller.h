@@ -17,15 +17,20 @@ class WEBAPPCOMMONSHARED_EXPORT MultiActionPageController : public AbstractPageC
 {
 protected:
     QHash<QString, shared_ptr<AbstractAction>> actions;
+    shared_ptr<AbstractAction> defaultAction;
   virtual unique_ptr<ViewData> run() override;
 
 public:
     virtual void runController() override;
     MultiActionPageController() = default;
     virtual ~MultiActionPageController() override = default;
-    template <class A> shared_ptr<A> addAction() {
+    template <class A> shared_ptr<A> addAction(bool setDefaultAction = false) {
         auto action = make_shared<A>();
         actions.insert(A::name(), action);
+        if(setDefaultAction)
+        {
+          this->defaultAction = action;
+        }
         return action;
     }
 

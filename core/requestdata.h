@@ -46,6 +46,7 @@ public:
  RequestData(const FCGX_Request & request, const QUrl &url);
     ~RequestData();
     const QString & getString(const QString&name) const;
+    const QString & getStringNoCheckForExistance(const QString&name) const;
     const QString & postString(const QString&name) const;
     int getInt(const QString&name) const;
     uint32_t getUInt(const QString&name) const;
@@ -62,6 +63,8 @@ public:
     const StringKeyArrayParam & getStringKeyArray(const QString &name) const;
     QString getArrayValueString(const QString &name, const QString &key) const;
     QString getArrayValueString(const QString &name, int index) const;
+    int getArrayCount(const QString &name) const;
+    int postArrayCount(const QString &name) const;
     int getArrayValueInt(const QString &name, const QString &key) const;
     int getArrayValueInt(const QString &name, int index) const;
     bool isGetParamSet(const QString&name) const;
@@ -72,7 +75,8 @@ public:
     const UploadedFileStringKeyArray & uploadedFileArrayStringKey(const QString&fieldname) const;
     QVector<int> getIntArray(const QString&name) const;
     QVector<int> postIntArray(const QString&name) const;
-
+    QStringList getStringArray(const QString&name) const;
+    QStringList postStringArray(const QString&name) const;
 
 
 };

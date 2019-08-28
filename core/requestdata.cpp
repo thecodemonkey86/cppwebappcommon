@@ -444,6 +444,15 @@ const QString & RequestData::getString(const QString & name) const
     }
 }
 
+const QString &RequestData::getStringNoCheckForExistance(const QString &name) const
+{
+  RequestParam * p = dynamic_cast< RequestParam* >(getParams.value(name));
+  if (p == nullptr) {
+    throw QtException(QLatin1Literal("Parameter is not a simple value"));
+  }
+  return p->getValue();
+}
+
 const QString & RequestData::postString(const QString &name) const
 {
     if (postParams.contains(name)) {
@@ -539,7 +548,7 @@ const ArrayRequestParam & RequestData::getArray(const QString &name) const
         }
         return *p;
     } else {
-        throw QtException(QLatin1Literal("Parameter does not exist"));
+        throw QtException(QStringLiteral("Parameter does not exist: %1").arg(name));
     }
 }
 
@@ -552,7 +561,7 @@ const StringKeyArrayParam &RequestData::getStringKeyArray(const QString &name) c
         }
         return *p;
     } else {
-        throw QtException(QLatin1Literal("Parameter does not exist"));
+        throw QtException(QStringLiteral("Parameter does not exist: %1").arg(name));
     }
 }
 
@@ -566,7 +575,7 @@ const ArrayRequestParam &RequestData::postArray(const QString &name) const
         }
         return *p;
     } else {
-        throw QtException(QLatin1Literal("Parameter does not exist"));
+        throw QtException(QStringLiteral("Parameter does not exist: %1").arg(name));
     }
 }
 
@@ -579,7 +588,7 @@ const StringKeyArrayParam & RequestData::postStringKeyArray(const QString &name)
         }
         return *p;
     } else {
-        throw QtException(QLatin1Literal("Parameter does not exist"));
+        throw QtException(QStringLiteral("Parameter does not exist: %1").arg(name));
     }
 }
 
@@ -598,7 +607,7 @@ QString RequestData::getArrayValueString(const QString &name, const QString &key
 
         return  v->getValue();
     } else {
-        throw QtException(QLatin1Literal("Parameter does not exist"));
+        throw QtException(QStringLiteral("Parameter does not exist: %1").arg(name));
     }
 }
 
@@ -617,8 +626,18 @@ QString RequestData::getArrayValueString(const QString &name, int index) const
 
 
     } else {
-        throw QtException(QLatin1Literal("Parameter does not exist"));
+        throw QtException(QStringLiteral("Parameter does not exist: %1").arg(name));
     }
+}
+
+int RequestData::getArrayCount(const QString &name) const
+{
+  return getArray(name).size();
+}
+
+int RequestData::postArrayCount(const QString &name) const
+{
+  return postArray(name).size();
 }
 
 int RequestData::getArrayValueInt(const QString &name, const QString &key) const
@@ -728,6 +747,16 @@ QVector<int> RequestData::postIntArray(const QString &name) const
         }
     }
     return result;
+}
+
+QStringList RequestData::getStringArray(const QString &name) const
+{
+  return static_cast<QStringList>(getArray(name));
+}
+
+QStringList RequestData::postStringArray(const QString &name) const
+{
+  return static_cast<QStringList>(postArray(name));
 }
 
 

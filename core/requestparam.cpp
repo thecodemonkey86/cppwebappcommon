@@ -12,7 +12,12 @@ RequestParam::RequestParam(const QString &name, int value)
 }
 
 const QString & RequestParam::getValue() const {
-    return value;
+  return value;
+}
+
+QString RequestParam::getPercentEscapedValue() const
+{
+  return QString::fromUtf8(QUrl::toPercentEncoding(value));
 }
 
 const QString &  RequestParam::toString() const{

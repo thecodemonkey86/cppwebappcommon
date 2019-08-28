@@ -43,16 +43,16 @@ public:
          QString url = QStringLiteral("%1/?").arg(C::path());
          if(args.size() > 0)
          {
-             url += QStringLiteral("%1=%2").arg(args[0].toString());
+           url += QStringLiteral("%1=%2").arg(args[0].getName(),args[0].getPercentEscapedValue());
 
              for(int i = 1; i < args.size(); i++) {
-                url += QStringLiteral("&%1=%2").arg(args[i].toString());
+                url += QStringLiteral("&%1=%2").arg(args[i].getName(),args[i].getPercentEscapedValue());
              }
          }
          return url;
     }
     template<class C> static QString url(const RequestParam & arg) {
-         return QStringLiteral("%1/?%2=%3").arg(C::path(),arg.getName(), arg.getValue());
+         return QStringLiteral("%1/?%2=%3").arg(C::path(),arg.getName(), arg.getPercentEscapedValue());
     }
     template<class C> static QString url(const QString&action) {
          return QStringLiteral("%1/?action=%2").arg(C::path(),action);
@@ -61,7 +61,7 @@ public:
          return QStringLiteral("%1/?action=%2").arg(C::path(),A::name());
     }
     template<class C,class A> static QString url(const RequestParam & arg) {
-      return QStringLiteral("%1/?action=%2&%3=%4").arg(C::path(),A::name(),arg.getName(), arg.getValue());
+      return QStringLiteral("%1/?action=%2&%3=%4").arg(C::path(),A::name(),arg.getName(), arg.getPercentEscapedValue());
     }
 };
 
