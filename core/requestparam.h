@@ -21,7 +21,7 @@ public:
 
     const QString & getValue() const;
     QString getPercentEscapedValue() const;
-    virtual const QString &  toString() const override ;
+    virtual QString  toString() const override ;
 
     const QString & getName() const;
     void setName(const QString &name);

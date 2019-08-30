@@ -13,7 +13,7 @@ protected:
 public:
     StringKeyArrayParam(const QString &name);
     virtual ~StringKeyArrayParam();
-    virtual const QString &  toString() const;
+    virtual QString  toString() const;
     QString arrayValue(int dimensionsCount, ...) const;
     QString arrayValue(const QStringList & arrayKeys) const;
     virtual AbstractStringKeyArrayParam* val(const QString&key) const;

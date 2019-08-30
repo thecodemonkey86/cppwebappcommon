@@ -14,7 +14,7 @@ StringKeyArrayParam::~StringKeyArrayParam()
     qDeleteAll(QHash::begin(), QHash::end());
 }
 
-const QString & StringKeyArrayParam::toString() const
+QString StringKeyArrayParam::toString() const
 {
     return name;
 }

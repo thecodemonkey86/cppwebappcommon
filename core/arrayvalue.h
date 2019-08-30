@@ -11,7 +11,7 @@ protected:
 public:
     ArrayValue(const QString &value);
     virtual ~ArrayValue();
-    virtual const QString &  toString() const;
+    virtual QString  toString() const;
     virtual AbstractStringKeyArrayParam* val(const QString&key) const;
     const QString &  getValue() const;
 

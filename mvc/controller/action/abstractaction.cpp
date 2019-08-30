@@ -9,6 +9,7 @@ void AbstractAction::runAction()
         httpHeader->finish();
         this->view->update(std::move(viewdata));
     } else {
+      this->view->setHttpHeader(httpHeader);
         this->view->update(run());
     }
 }

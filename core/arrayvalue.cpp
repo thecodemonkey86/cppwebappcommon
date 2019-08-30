@@ -11,7 +11,7 @@ ArrayValue::~ArrayValue()
 
 }
 
-const QString &  ArrayValue::toString() const
+QString ArrayValue::toString() const
 {
     return value;
 }

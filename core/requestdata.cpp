@@ -555,7 +555,7 @@ const ArrayRequestParam & RequestData::getArray(const QString &name) const
 const StringKeyArrayParam &RequestData::getStringKeyArray(const QString &name) const
 {
     if (getParams.contains(name)) {
-        StringKeyArrayParam * p = dynamic_cast< StringKeyArrayParam* >(postParams.value(name));
+        StringKeyArrayParam * p = dynamic_cast< StringKeyArrayParam* >(getParams.value(name));
         if (p == nullptr) {
             throw QtException(QLatin1Literal("Parameter is not an array"));
         }
@@ -735,6 +735,20 @@ QVector<int> RequestData::getIntArray(const QString &name) const
     return result;
 }
 
+QVector<int64_t> RequestData::getInt64Array(const QString &name) const
+{
+  auto data = RequestData::getArray(name);
+  QVector<int64_t> result;
+  for(const auto & d : data) {
+    bool ok = false;
+    result << d.toLongLong(&ok);
+    if(!ok) {
+      throw QtException(QLatin1Literal("Parameter is not an integer"));
+    }
+  }
+  return result;
+}
+
 QVector<int> RequestData::postIntArray(const QString &name) const
 {
     auto data = RequestData::postArray(name);
@@ -747,6 +761,20 @@ QVector<int> RequestData::postIntArray(const QString &name) const
         }
     }
     return result;
+}
+
+QVector<int64_t> RequestData::postInt64Array(const QString &name) const
+{
+  auto data = RequestData::postArray(name);
+  QVector<int64_t> result;
+  for(const auto & d : data) {
+    bool ok = false;
+    result << d.toInt(&ok);
+    if(!ok) {
+      throw QtException(QLatin1Literal("Parameter is not an integer"));
+    }
+  }
+  return result;
 }
 
 QStringList RequestData::getStringArray(const QString &name) const

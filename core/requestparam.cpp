@@ -20,7 +20,7 @@ QString RequestParam::getPercentEscapedValue() const
   return QString::fromUtf8(QUrl::toPercentEncoding(value));
 }
 
-const QString &  RequestParam::toString() const{
+QString RequestParam::toString() const{
     return name;
 }
 
