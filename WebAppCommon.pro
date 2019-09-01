@@ -24,7 +24,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     core/requestparam.cpp \
-    core/stringkeysubarrayparam.cpp \
     mvc/controller/abstractpagecontroller.cpp \
     core/abstractrequestparam.cpp \
     core/abstractstringkeyarrayparam.cpp \
@@ -55,7 +54,6 @@ SOURCES += \
     util/form/formpost.cpp
 
 HEADERS += webappcommon_global.h \
-    core/stringkeysubarrayparam.h \
     mvc/controller/abstractpagecontroller.h \
     core/abstractrequestparam.h \
     core/abstractstringkeyarrayparam.h \
