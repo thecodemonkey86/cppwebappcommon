@@ -55,6 +55,12 @@ public:
     QString getSourceFileName() const;
 
     /**
+     * @brief readAllBytes
+     * @return
+     */
+    QByteArray readAllBytes() const;
+
+    /**
      * @brief if the file is discarded for some reason, i.e. has not been moved to a destination folder, this method deletes the temp file. This method is called and cascaded in RequestData's destructor
      */
     virtual void cleanup() const override;

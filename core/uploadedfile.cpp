@@ -1,5 +1,6 @@
 #include "uploadedfile.h"
 #include <QFileInfo>
+#include "exception/qtexception.h"
 
 QString UploadedFile::getMimeType() const
 {
@@ -13,7 +14,17 @@ bool UploadedFile::operator ==(const UploadedFile &other) const
 
 QString UploadedFile::getSourceFileName() const
 {
-    return sourceFileName;
+  return sourceFileName;
+}
+
+QByteArray UploadedFile::readAllBytes() const
+{
+  QFile f(temporaryPath);
+
+  if(f.exists() && f.open(QIODevice::ReadOnly)) {
+    return f.readAll();
+  }
+  throwExceptionWithLine(f.errorString());
 }
 
 void UploadedFile::cleanup() const
