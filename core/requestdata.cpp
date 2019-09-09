@@ -533,6 +533,12 @@ double RequestData::getDouble(const QString &name) const
     return d;
 }
 
+bool RequestData::getBool(const QString &name) const
+{
+  QString value(getString(name));
+  return value == QLatin1Literal("1") || value == QLatin1Literal("true");
+}
+
 bool RequestData::postBool(const QString &name) const
 {
     QString value(postString(name));
