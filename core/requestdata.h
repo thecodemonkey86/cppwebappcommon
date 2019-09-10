@@ -56,6 +56,7 @@ public:
     qint64 postInt64(const QString&name) const;
     double postDouble(const QString&name) const;
     double getDouble(const QString&name) const;
+    bool getBool(const QString&name) const;
     bool postBool(const QString&name) const;
     const ArrayRequestParam & getArray(const QString&name) const;
     const ArrayRequestParam & postArray(const QString&name) const;
