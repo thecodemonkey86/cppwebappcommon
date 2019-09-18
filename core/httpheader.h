@@ -44,7 +44,7 @@ public:
      * @brief sets the session ID, class QNetworkCookie is used internally
      * @param session ID
      */
-    void setSessionCookie(const QString& value);
+    void setSessionCookie(const QString& value, const QDateTime & validUntil);
 
     /**
      * @brief sets the HTTP header "Content-Type: <MIME type>"

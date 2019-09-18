@@ -17,6 +17,7 @@
 class WEBAPPCOMMONSHARED_EXPORT SessionData
 {
 protected:
+  static QHash<QString,QJsonDocument> sessionData;
     QDir tempDir;
      static const QString KEY_SESSION_VALID_UNTIL;
     QJsonObject data;
@@ -27,8 +28,8 @@ protected:
     public:
     static const QString SESS_COOKIE_NAME;
 protected:
-    inline QString getSessionFileName(ServerData * serverData);
-    inline void newSession(HttpHeader *httpHeader);
+    inline QString getSessionFileName();
+    inline void newSession(HttpHeader *httpHeader,ServerData * serverData);
 public:
     SessionData(int minutesSessionValid, ServerData * s,HttpHeader * httpHeader,QDir tempDir = QDir(QDir::tempPath()));
     ~SessionData();
@@ -48,6 +49,7 @@ public:
     void clearSession();
 //    void setSessId(const QString &value);
     void setTempDir(const QString &value);
+    void debug();
 
 };
 
