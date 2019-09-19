@@ -8,6 +8,7 @@
 #include <QFile>
 #include <QDir>
 #include <QDateTime>
+#include <QDebug>
 
 using namespace QtCommon2;
 
@@ -28,7 +29,11 @@ bool SessionData::hasValue(const QString &key) const
 
 void SessionData::clearSession()
 {
-    QFile f(getSessionFileName(serverData));
+    QString sessionHash = getSessionHash(serverData);
+  if(sessionData.contains(sessionHash)) {
+    sessionData.remove(sessionHash);
+  }
+    QFile f(getSessionFileName(sessionHash));
     this->sessId = QString();
     this->data = QJsonObject();
 
@@ -52,17 +57,26 @@ void SessionData::setTempDir(const QString &value)
     tempDir = QDir(value);
 }
 
-QString SessionData::getSessionFileName(ServerData * serverData)
+QString SessionData::getSessionHash(ServerData *serverData)
 {
-    return tempDir.absoluteFilePath( QStringLiteral("sess_%1_%2.json").arg(
-                                                        QString::fromUtf8(QCryptographicHash::hash(serverData->getIp().toUtf8(),QCryptographicHash::Md5).toHex()),this->sessId));
+    return QString::fromLatin1(QCryptographicHash::hash((serverData->getIp()+sessId).toLatin1(),QCryptographicHash::Md5).toHex());
 }
 
-void SessionData::newSession(HttpHeader *httpHeader)
+QString SessionData::getSessionFileName(const QString & sessionHash)
 {
-    this->sessId = StringUtil::randString(64);
-    this->data.insert(KEY_SESSION_VALID_UNTIL, QDateTime::currentDateTime().addSecs(minutesSessionValid*60).toSecsSinceEpoch());
-    httpHeader->setSessionCookie(this->sessId);
+  //qDebug() << "filename sessid: "+this->sessId;
+    return tempDir.absoluteFilePath( QStringLiteral("sess_%1.json").arg(
+                                                       sessionHash));
+}
+
+void SessionData::newSession(HttpHeader *httpHeader,ServerData * serverData)
+{
+  this->sessId = StringUtil::randString(64);
+  //qDebug() << "new session "+sessId;
+  QDateTime validUntil = QDateTime::currentDateTime().addSecs(minutesSessionValid*60);
+    this->data.insert(KEY_SESSION_VALID_UNTIL, validUntil.toSecsSinceEpoch());
+    httpHeader->setSessionCookie(this->sessId,validUntil);
+    sessionData[getSessionHash(serverData)] = this->data;
 }
 
 SessionData::SessionData(int minutesSessionValid,  ServerData * serverData, HttpHeader *httpHeader,QDir tempDir)
@@ -71,24 +85,44 @@ SessionData::SessionData(int minutesSessionValid,  ServerData * serverData, Http
     this->minutesSessionValid = minutesSessionValid;
     this->serverData = serverData;
     this->httpHeader = httpHeader;
+
+
     if(httpHeader->isSessionCookieSet()) {
         this->sessId = httpHeader->getSessionCookieValue();
-        QFile f( getSessionFileName(serverData));
-        if (f.exists()  && f.open(QIODevice::ReadOnly)) {
-            auto jsonDoc=QJsonDocument::fromJson(f.readAll());
-            this->data = jsonDoc.object();
-            f.close();
 
-            if(this->data.value(KEY_SESSION_VALID_UNTIL).toVariant().value<int64_t>() < QDateTime::currentSecsSinceEpoch()) {
-                clearSession();
-                newSession(httpHeader);
+        if(!sessId.isEmpty()) {
+            QString sessionHash = getSessionHash(serverData);
+
+            if(sessionData.contains(sessionHash)) {
+              this->data = sessionData[sessionHash];
+             // qDebug() << jsonDoc;
+            } else {
+
+               QFile f( getSessionFileName(sessionHash));
+               if ( f.exists()  && f.open(QIODevice::ReadOnly)) {
+                 auto jsonDoc=QJsonDocument::fromJson(f.readAll());
+                 this->data = jsonDoc.object();
+                // qDebug() <<"x:"+ jsonDoc.toJson();
+
+                 f.close();
+               }else {
+                // qDebug() << f.exists();
+                // qDebug() << f.errorString();
+                 newSession(httpHeader,serverData);
+               }
             }
 
-        } else {
-            newSession(httpHeader);
+
+
+            if(!this->data.contains(KEY_SESSION_VALID_UNTIL) || this->data.value(KEY_SESSION_VALID_UNTIL).toVariant().value<int64_t>() < QDateTime::currentSecsSinceEpoch()) {
+                clearSession();
+                newSession(httpHeader,serverData);
+            }
+        }else {
+          newSession(httpHeader,serverData);
         }
     } else {
-       newSession(httpHeader);
+       newSession(httpHeader,serverData);
     }
 
 
@@ -102,13 +136,17 @@ SessionData::~SessionData()
 void SessionData::saveSession()
 {
     if(!sessId.isEmpty()) {
-        QFile f(getSessionFileName(serverData));
+        auto sessionHash = getSessionHash(serverData);
+        QFile f(getSessionFileName(sessionHash));
+        //qDebug() << f.fileName();
         if (f.open(QIODevice::WriteOnly|QIODevice::Truncate)) {
 
             QJsonDocument doc;
             doc.setObject(this->data);
             f.write(doc.toJson());
             f.close();
+
+            sessionData[sessionHash] = this->data;
         }
     }
 
@@ -158,3 +196,10 @@ const QString SessionData::SESS_COOKIE_NAME=QStringLiteral("PHPSESSID");
 const QString SessionData::KEY_SESSION_VALID_UNTIL=QStringLiteral("__session_valid_until__");
 
 
+
+void SessionData::debug()
+{
+  qDebug() << data;
+}
+
+QHash<QString,QJsonObject> SessionData::sessionData;

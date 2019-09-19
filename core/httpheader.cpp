@@ -62,9 +62,10 @@ void HttpHeader::clearSessionCookie()
     sessionCookie = nullptr;
 }
 
-void HttpHeader::setSessionCookie(const QString &value)
+void HttpHeader::setSessionCookie(const QString &value, const QDateTime &validUntil)
 {
     sessionCookie = make_unique<QNetworkCookie>(SessionData::getSessionCookieName().toLatin1(), value.toLatin1() );
+    sessionCookie->setExpirationDate(validUntil);
 }
 /*
 void HttpHeader::setCookie(const QString &name, const QString &value)
