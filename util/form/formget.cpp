@@ -19,6 +19,11 @@ int FormGet::intValue(const QString &name) const
     return request->getInt(name);
 }
 
+int64_t FormGet::int64Value(const QString &name) const
+{
+    return request->getInt64(name);
+}
+
 double FormGet::doubleValue(const QString &name) const
 {
     return request->getDouble(name);
@@ -75,6 +80,11 @@ bool FormGet::isSet(const QString &name) const
 QVector<int> FormGet::intArrayValue(const QString &name) const
 {
     return  request->getIntArray(name);
+}
+
+QVector<int64_t> FormGet::int64ArrayValue(const QString &name) const
+{
+    return  request->getInt64Array(name);
 }
 
 const ArrayRequestParam & FormGet::array(const QString &name) const

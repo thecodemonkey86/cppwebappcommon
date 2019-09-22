@@ -21,6 +21,7 @@ public:
     virtual ~Form();
     virtual const QString & stringValue(const QString&name) const=0;
     virtual int intValue(const QString&name) const=0;
+    virtual int64_t int64Value(const QString&name) const=0;
     virtual uint32_t uintValue(const QString&name) const=0;
     virtual bool boolValue(const QString&name) const=0;
     virtual QDate dateValue(const QString&name) const=0;
@@ -28,6 +29,7 @@ public:
     virtual double doubleValue(const QString&name) const=0;
     virtual bool isValueEmpty(const QString&name) const=0;
    virtual QVector<int> intArrayValue(const QString&name) const=0;
+    virtual QVector<int64_t> int64ArrayValue(const QString&name) const=0;
    virtual const ArrayRequestParam &  array(const QString&name) const=0;
     virtual const QString & stringValue(const QString&name, const QString & defaultValue) const;
     virtual int intValue(const QString&name,int defaultValue) const;

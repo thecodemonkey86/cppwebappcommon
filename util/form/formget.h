@@ -11,6 +11,7 @@ public:
     virtual ~FormGet() override = default;
     virtual const QString & stringValue(const QString&name) const override;
     virtual int intValue(const QString&name) const override;
+    virtual int64_t int64Value(const QString &name) const override;
     virtual double doubleValue(const QString&name) const override;
     virtual QDate dateValue(const QString&name) const override;
     virtual QDateTime dateTimeValue(const QString&name) const override;
@@ -22,6 +23,7 @@ public:
     virtual bool isSet(const QString &name)const override;
 
     virtual QVector<int> intArrayValue(const QString &name) const override;
+    virtual QVector<int64_t> int64ArrayValue(const QString &name) const override;
     virtual const ArrayRequestParam &  array(const QString&name) const override;
     // Form interface
 public:

@@ -19,6 +19,11 @@ int FormPost::intValue(const QString &name) const
     return request->postInt(name);
 }
 
+int64_t FormPost::int64Value(const QString &name) const
+{
+     return request->postInt64(name);
+}
+
 uint32_t FormPost::uintValue(const QString &name) const
 {
   return request->postUInt(name);
@@ -27,6 +32,11 @@ uint32_t FormPost::uintValue(const QString &name) const
 QVector<int> FormPost::intArrayValue(const QString &name) const
 {
     return request->postIntArray(name);
+}
+
+QVector<int64_t> FormPost::int64ArrayValue(const QString &name) const
+{
+    return request->postInt64Array(name);
 }
 
 double FormPost::doubleValue(const QString &name) const
