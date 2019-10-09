@@ -375,6 +375,98 @@ public:
            inline static void writeHtmlEncodedToBuffer(const char* c, QString & buffer) {
                buffer += QString::fromUtf8(c).toHtmlEscaped() ;
            }
+
+
+           /**
+            * @brief writes a QString as UTF-8 to a string buffer
+            * @param s
+            * @param out
+            */
+           inline static void writeHtmlDoubleEncodedToBuffer(const QString&s, QString & buffer) {
+             buffer +=s.toHtmlEscaped().toHtmlEscaped();
+           }
+
+           /**
+            * @brief writes a QByteArray to a string buffer
+            * @param b
+            * @param out
+            */
+           inline static void writeHtmlDoubleEncodedToBuffer(const QByteArray&b, QString & buffer) {
+             buffer += QString::fromUtf8(b).toHtmlEscaped().toHtmlEscaped();
+           }
+
+           /**
+            * @brief writes a string representation of an integer to a string buffer
+            * @param d
+            * @param out
+            */
+           inline static void writeHtmlDoubleEncodedToBuffer(int d, QString & buffer) {
+             buffer += QString::number(d);
+           }
+
+           /**
+            * @brief writes a string representation of an unsigned integer to a string buffer
+            * @param d
+            * @param out
+            */
+           inline static void writeHtmlDoubleEncodedToBuffer(unsigned int d, QString & buffer) {
+             buffer += QString::number(d);
+           }
+
+           /**
+            * @brief writes a string representation of an unsigned 64 bit integer to a string buffer
+            * @param d
+            * @param out
+            */
+           inline static void writeHtmlDoubleEncodedToBuffer(unsigned long long d, QString & buffer) {
+             buffer += QString::number(d);
+           }
+
+           /**
+            * @brief writes a string representation of a boolean value ("1" or "0") to a string buffer
+            * @param d
+            * @param out
+            */
+           inline static void writeHtmlDoubleEncodedToBuffer(bool b, QString & buffer) {
+             buffer +=  b ? QChar('1') : QChar('0');
+           }
+
+
+           /**
+            * @brief writes a string representation of a 64 bit integer to a string buffer
+            * @param number
+            * @param out
+            */
+           inline static void writeHtmlDoubleEncodedToBuffer(long long number, QString & buffer) {
+             buffer += QString::number(number);
+           }
+
+           /**
+            * @brief writes a string representation of a long integer to a string buffer
+            * @param number
+            * @param out
+            */
+           inline static void writeHtmlDoubleEncodedToBuffer(long number, QString & buffer) {
+             buffer += QString::number(number);
+           }
+
+           /**
+            * @brief writes a single character to a string buffer
+            * @param number
+            * @param out
+            */
+           inline static void writeHtmlDoubleEncodedToBuffer(char c, QString & buffer) {
+             buffer += QString(QChar(c)).toHtmlEscaped().toHtmlEscaped();
+           }
+
+           /**
+            * @brief writes a C-String to a string buffer
+            * @param number
+            * @param out
+            */
+           inline static void writeHtmlDoubleEncodedToBuffer(const char* c, QString & buffer) {
+             buffer += QString::fromUtf8(c).toHtmlEscaped().toHtmlEscaped() ;
+           }
 };
 
 #endif // FASTCGIOUTPUT_H
