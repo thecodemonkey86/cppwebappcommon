@@ -47,7 +47,8 @@ void AbstractAction::setSqlCon(const QSqlDatabase &value)
 
 void AbstractAction::setOutStream(FCGX_Stream *outStream)
 {
-    this->view->setOutStream(outStream);
+  if(this->view != nullptr)
+      this->view->setOutStream(outStream);
 }
 
 
