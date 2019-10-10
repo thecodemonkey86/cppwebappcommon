@@ -14,6 +14,7 @@ public:
     virtual uint32_t uintValue(const QString&name) const override;
     virtual QVector<int> intArrayValue(const QString&name) const override;
     virtual QVector<int64_t> int64ArrayValue(const QString&name) const override;
+    virtual QSet<int64_t> int64HashSetValue(const QString&name) const override;
     virtual double doubleValue(const QString&name) const override;
     virtual QDate dateValue(const QString&name) const override;
     virtual QDateTime dateTimeValue(const QString&name) const override;

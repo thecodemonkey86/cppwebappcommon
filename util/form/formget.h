@@ -24,6 +24,7 @@ public:
 
     virtual QVector<int> intArrayValue(const QString &name) const override;
     virtual QVector<int64_t> int64ArrayValue(const QString &name) const override;
+     virtual QSet<int64_t> int64HashSetValue(const QString&name) const override;
     virtual const ArrayRequestParam &  array(const QString&name) const override;
     // Form interface
 public:

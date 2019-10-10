@@ -80,8 +80,8 @@ public:
     QVector<int64_t> postInt64Array(const QString&name) const;
     QStringList getStringArray(const QString&name) const;
     QStringList postStringArray(const QString&name) const;
-
-
+    QSet<int64_t> getInt64HashSet(const QString&name) const;
+    QSet<int64_t> postInt64HashSet(const QString &name) const;
 };
 
 #endif // REQUESTDATA_H

@@ -84,7 +84,14 @@ QVector<int> FormGet::intArrayValue(const QString &name) const
 
 QVector<int64_t> FormGet::int64ArrayValue(const QString &name) const
 {
-    return  request->getInt64Array(name);
+  return  request->getInt64Array(name);
+}
+
+QSet<int64_t> FormGet::int64HashSetValue(const QString &name) const
+{
+  if(request->isGetParamSet(name))
+    return request->getInt64HashSet(name);
+  return QSet<int64_t>();
 }
 
 const ArrayRequestParam & FormGet::array(const QString &name) const

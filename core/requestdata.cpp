@@ -793,5 +793,32 @@ QStringList RequestData::postStringArray(const QString &name) const
   return static_cast<QStringList>(postArray(name));
 }
 
+QSet<int64_t> RequestData::getInt64HashSet(const QString &name) const
+{
+  auto data = RequestData::getArray(name);
+  QSet<int64_t>  result;
+  for(const auto & d : data) {
+    bool ok = false;
+    result << d.toInt(&ok);
+    if(!ok) {
+      throw QtException(QLatin1Literal("Parameter is not an integer"));
+    }
+  }
+  return result;
+}
+
+QSet<int64_t> RequestData::postInt64HashSet(const QString &name) const
+{
+  auto data = RequestData::postArray(name);
+  QSet<int64_t>  result;
+  for(const auto & d : data) {
+    bool ok = false;
+    result << d.toInt(&ok);
+    if(!ok) {
+      throw QtException(QLatin1Literal("Parameter is not an integer"));
+    }
+  }
+  return result;
+}
 
 

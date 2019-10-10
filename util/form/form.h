@@ -6,6 +6,7 @@
 #include "core/serverdata.h"
 #include "core/sessiondata.h"
 #include <QDate>
+#include <QSet>
 #include "webappcommon_global.h"
 class WEBAPPCOMMONSHARED_EXPORT Form
 {
@@ -30,6 +31,7 @@ public:
     virtual bool isValueEmpty(const QString&name) const=0;
    virtual QVector<int> intArrayValue(const QString&name) const=0;
     virtual QVector<int64_t> int64ArrayValue(const QString&name) const=0;
+    virtual QSet<int64_t> int64HashSetValue(const QString &name) const=0;
    virtual const ArrayRequestParam &  array(const QString&name) const=0;
     virtual const QString & stringValue(const QString&name, const QString & defaultValue) const;
     virtual int intValue(const QString&name,int defaultValue) const;
