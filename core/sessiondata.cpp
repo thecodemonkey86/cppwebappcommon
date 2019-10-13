@@ -71,6 +71,7 @@ QString SessionData::getSessionFileName(const QString & sessionHash)
 
 void SessionData::newSession(HttpHeader *httpHeader,ServerData * serverData)
 {
+  srand(QDateTime::currentMSecsSinceEpoch()%UINT32_MAX);
   this->sessId = StringUtil::randString(64);
   //qDebug() << "new session "+sessId;
   QDateTime validUntil = QDateTime::currentDateTime().addSecs(minutesSessionValid*60);

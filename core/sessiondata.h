@@ -12,7 +12,7 @@
 #include "webappcommon_global.h"
 
 /**
- * @brief manages values stored in the session data for the defined session ID provided by the @see HttpHeader
+ * @brief manages values stored in the session data for the defined session ID provided by the http header (class HttpHeader)
  */
 class WEBAPPCOMMONSHARED_EXPORT SessionData
 {
