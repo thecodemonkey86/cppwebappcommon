@@ -45,12 +45,12 @@ public:
         {
             auto it = args.begin();
             url += QStringLiteral("%1=%2").arg(it->getName(),it->getPercentEscapedValue());
-
-            do
+            ++it;
+            while(it != args.end())
             {
                 url += QStringLiteral("&%1=%2").arg(it->getName(),it->getPercentEscapedValue());
                 ++it;
-            } while(it != args.end());
+            }
 
 
         }

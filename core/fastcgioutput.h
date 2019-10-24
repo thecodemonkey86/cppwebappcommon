@@ -208,7 +208,7 @@ public:
           * @param out
           */
          inline static void writeHtmlEncoded(const QByteArray&b, FCGX_Stream *out) {
-             FCGX_PutStr(b.data(),b.length(),out);
+             write(QString::fromUtf8(b).toHtmlEscaped(),out);
          }
 
          /**
