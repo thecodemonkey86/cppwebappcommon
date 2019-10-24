@@ -20,7 +20,7 @@ public:
     virtual ~AbstractView() = default;
     virtual QString getHttpContentType() const=0;
 
-    virtual void update(unique_ptr<ViewData>)=0;
+    virtual void update(unique_ptr<ViewData>viewdata)=0;
     void setHttpHeader(HttpHeader *value);
     void setOutStream(FCGX_Stream *value);
     bool isAutoSendHeaders() const;
