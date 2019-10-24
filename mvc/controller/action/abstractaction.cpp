@@ -3,15 +3,25 @@
 
 void AbstractAction::runAction()
 {
+  if(view != nullptr)
+  {
     if(this->view->isAutoSendHeaders()) {
-        auto viewdata = run();
-        httpHeader->setContentType(this->view->getHttpContentType());
-        httpHeader->finish();
-        this->view->update(std::move(viewdata));
-    } else {
-      this->view->setHttpHeader(httpHeader);
-        this->view->update(run());
+      auto viewdata = run();
+      httpHeader->setContentType(this->view->getHttpContentType());
+      httpHeader->finish();
+      this->view->update(std::move(viewdata));
     }
+    else
+    {
+      this->view->setHttpHeader(httpHeader);
+      this->view->update(run());
+    }
+  }
+  else
+  {
+    run();
+  }
+
 }
 
 void AbstractAction::setServerData(ServerData *value)

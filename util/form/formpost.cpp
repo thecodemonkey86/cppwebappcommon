@@ -44,6 +44,12 @@ QSet<int64_t> FormPost::int64HashSetValue(const QString &name) const
     return request->postInt64HashSet(name);
   return QSet<int64_t>();
 }
+//QJsonArray FormPost::jsonArray(const QString &name) const
+//{
+//  if(request->isPostParamSet(name))
+//    return request->jsonArray(name);
+//  return QJsonArray();
+//}
 double FormPost::doubleValue(const QString &name) const
 {
     return request->postDouble(name);
