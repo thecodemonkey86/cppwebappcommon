@@ -2,7 +2,9 @@
 #include "exception/qtexception.h"
 #include <QNetworkCookie>
 #include "sessiondata.h"
-
+#ifdef QT_DEBUG
+#include <QDebug>
+#endif
 using namespace QtCommon2;
 using namespace std;
 
@@ -24,28 +26,14 @@ void HttpHeader::finish()
     FastCgiOutput::write("\r\n",out);
 }
 
-bool HttpHeader::isSessionCookieSet() const
-{
-    return sessionCookie != nullptr;
-}
-
 
 
 HttpHeader::HttpHeader(const FCGX_Request & request)
 {
-    this->out = request.out;
-    this->redirectFlag = false;
+  this->out = request.out;
+  this->redirectFlag = false;
     sessionCookie = nullptr;
-   QString cookieStr(FCGX_GetParam("HTTP_COOKIE", request.envp));
-    if(cookieStr != nullptr) {
-        auto cookies = QNetworkCookie::parseCookies(cookieStr.replace(QChar(';'),QChar('\n')).toLatin1());
-        for(auto c : cookies) {
-            if(c.name() == SessionData::getSessionCookieName().toLatin1()) {
-                sessionCookie = make_unique<QNetworkCookie>(c);
-                break;
-            }
-        }
-    }
+
 
 }
 
@@ -62,10 +50,13 @@ void HttpHeader::clearSessionCookie()
     sessionCookie = nullptr;
 }
 
-void HttpHeader::setSessionCookie(const QString &value, const QDateTime &validUntil)
+void HttpHeader::setSessionCookie(const QString &value,const QString&domain, const QDateTime &validUntil)
 {
     sessionCookie = make_unique<QNetworkCookie>(SessionData::getSessionCookieName().toLatin1(), value.toLatin1() );
     sessionCookie->setExpirationDate(validUntil);
+    sessionCookie->setHttpOnly(true);
+    sessionCookie->setPath("/");
+    sessionCookie->setDomain(domain);
 }
 /*
 void HttpHeader::setCookie(const QString &name, const QString &value)

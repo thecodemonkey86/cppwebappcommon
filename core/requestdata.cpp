@@ -9,6 +9,7 @@
 #include "stdint.h"
 #include "util/file/fileutil.h"
 #include <QBuffer>
+#include "sessiondata.h"
 #include "uploadedfile.h"
 #include "uploadedfilearray.h"
 #include "uploadedfilestringkeyarray.h"
@@ -20,6 +21,7 @@
 
 #ifdef QT_DEBUG
 #include <QDebug>
+#include <QNetworkCookie>
 #endif
 
 using namespace QtCommon2;
@@ -820,5 +822,4 @@ QSet<int64_t> RequestData::postInt64HashSet(const QString &name) const
   }
   return result;
 }
-
 

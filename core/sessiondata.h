@@ -25,6 +25,7 @@ protected:
     ServerData * serverData;
     HttpHeader *httpHeader;
     int minutesSessionValid;
+
     public:
     static const QString SESS_COOKIE_NAME;
 protected:
@@ -32,7 +33,7 @@ protected:
     inline QString getSessionFileName(const QString &sessionHash);
     inline void newSession(HttpHeader *httpHeader,ServerData * serverData);
 public:
-    SessionData(int minutesSessionValid, ServerData * s,HttpHeader * httpHeader,QDir tempDir = QDir(QDir::tempPath()));
+    SessionData(int minutesSessionValid,FCGX_Request & request, ServerData * s,HttpHeader * httpHeader,QDir tempDir = QDir(QDir::tempPath()));
     ~SessionData();
     void saveSession();
     void setValue(const QString&key,const QString&val);

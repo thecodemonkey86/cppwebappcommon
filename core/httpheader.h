@@ -33,10 +33,7 @@ public:
     static const QString CONTENT_TYPE_APPLICATION_JSON;
     static const QString CONTENT_TYPE_TEXT_XML;
     static const QString CONTENT_TYPE_BINARY;
-//    void setCookie(const QString&name, const QString&value);
-//    void clearCookie(const QString&name);
-//    void parseCookies(const FCGX_Request & request);
-//    QString cookieString(const QString&name) const;
+
     QString getSessionCookieValue() const;
     void clearSessionCookie();
 
@@ -44,7 +41,7 @@ public:
      * @brief sets the session ID, class QNetworkCookie is used internally
      * @param session ID
      */
-    void setSessionCookie(const QString& value, const QDateTime & validUntil);
+    void setSessionCookie(const QString& value, const QString &domain, const QDateTime & validUntil);
 
     /**
      * @brief sets the HTTP header "Content-Type: <MIME type>"
@@ -94,7 +91,9 @@ public:
      * @brief sends the header by adding CRLF
      */
     void finish();
-    bool isSessionCookieSet() const;
+//    bool isSessionCookieSet() const;
+    QByteArray getRequestedSessionId() const;
+    bool hasRequestSessionId() const;
 };
 
 #endif // HTTPHEADER_H
