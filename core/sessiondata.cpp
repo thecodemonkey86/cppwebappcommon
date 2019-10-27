@@ -180,12 +180,22 @@ void SessionData::setValue(const QString&key, const QString &val)
 }
 void SessionData::setValue(const QString&key, bool val)
 {
-  this->data.insert(key, QJsonValue(val));
+    this->data.insert(key, QJsonValue(val));
+}
+
+void SessionData::setValue(const QString &key, int val)
+{
+    this->data.insert(key, QJsonValue(val));
 }
 
 void SessionData::setValue(const QString &key, qint64 val)
 {
-  this->data.insert(key, QJsonValue(val));
+    this->data.insert(key, QJsonValue(val));
+}
+
+void SessionData::setValue(const QString &key, const QJsonArray &arr)
+{
+    this->data.insert(key, arr);
 }
 
 void SessionData::removeValue(const QString &key)
@@ -210,7 +220,12 @@ int SessionData::intValue(const QString &key) const
 
 qint64 SessionData::int64Value(const QString &key) const
 {
-  return static_cast<qint64>(this->data.value(key).toDouble());
+    return static_cast<qint64>(this->data.value(key).toDouble());
+}
+
+QJsonArray SessionData::jsonArrayValue(const QString &key) const
+{
+    return this->data.value(key).toArray();
 }
 
 

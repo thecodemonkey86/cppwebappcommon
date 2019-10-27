@@ -6,6 +6,7 @@
 #include <QByteArray>
 #include <QHash>
 #include <QJsonObject>
+#include <QJsonArray>
 #include "requestdata.h"
 #include "serverdata.h"
 #include "httpheader.h"
@@ -40,11 +41,13 @@ public:
     void setValue(const QString&key,bool val);
     void setValue(const QString&key,int val);
     void setValue(const QString&key,qint64 val);
+    void setValue(const QString&key,const QJsonArray & arr);
     void removeValue(const QString&key);
     QString stringValue(const QString&key) const;
     bool boolValue(const QString&key) const;
     int intValue(const QString&key) const;
     qint64 int64Value(const QString &key) const;
+    QJsonArray jsonArrayValue(const QString &key) const;
     static const QString  & getSessionCookieName();
     QString getSessId() const;
     bool hasValue(const QString&key) const;
