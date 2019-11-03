@@ -52,6 +52,7 @@ public:
     QString getSessId() const;
     bool hasValue(const QString&key) const;
     void clearSession();
+    void renewSession();
 //    void setSessId(const QString &value);
     void setTempDir(const QString &value);
     void debug();

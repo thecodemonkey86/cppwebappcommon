@@ -34,13 +34,18 @@ void SessionData::clearSession()
     sessionData.remove(sessionHash);
   }
   QFile f(getSessionFileName(sessionHash));
-  this->sessId = QString();
+  this->sessId.clear();
   this->data = QJsonObject();
 
   if(f.exists()) {
     f.remove();
   }
   httpHeader->clearSessionCookie();
+}
+
+void SessionData::renewSession()
+{
+    newSession(httpHeader,serverData);
 }
 
 
