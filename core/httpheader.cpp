@@ -128,29 +128,7 @@ void HttpHeader::redirect(const QUrl &url)
     FastCgiOutput::write(url.toString(QUrl::None),out);
     FastCgiOutput::write("\r\n",out);
 }
-/*
-void HttpHeader::parseCookies(const FCGX_Request & request)
-{
-    char * cookieStr = FCGX_GetParam("HTTP_COOKIE", request.envp);
-    auto cookies = QNetworkCookie::parseCookies(QByteArray::fromRawData(cookieStr, strlen(cookieStr)));
-    for(auto c : cookies) {
-        if(c.name() == SessionData::getSessionCookieName().toLatin1()) {
-            sessionCookie = c;
-            break;
-        }
-    }
-}
 
-QString HttpHeader::cookieString(const QString &name) const
-{
-    for(const QNetworkCookie & c : cookies) {
-        if(c.name() == name.toLatin1()) {
-            return QString::fromLatin1(c.value());
-        }
-    }
-    throw QtException(QStringLiteral("cookie not set"));
-}
-*/
 const QString HttpHeader::CONTENT_TYPE_TEXT_HTML("text/html; charset=UTF-8");
 const QString HttpHeader::CONTENT_TYPE_BINARY("application/octet-stream");
 const QString HttpHeader::CONTENT_TYPE_TEXT_XML("text/xml; charset=UTF-8");

@@ -18,10 +18,10 @@
 #include <QDateTime>
 #include <QStack>
 #include <QQueue>
+#include <QSet>
 
 #ifdef QT_DEBUG
 #include <QDebug>
-#include <QNetworkCookie>
 #endif
 
 using namespace QtCommon2;
