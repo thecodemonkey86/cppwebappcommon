@@ -7,6 +7,7 @@
 #include <QHash>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QMutex>
 #include "requestdata.h"
 #include "serverdata.h"
 #include "httpheader.h"
@@ -18,7 +19,8 @@
 class WEBAPPCOMMONSHARED_EXPORT SessionData
 {
 protected:
- // static QHash<QString,QJsonObject> sessionData;
+    static QMutex mutex;
+  static QHash<QString,QJsonObject> sessionData;
     QDir tempDir;
      static const QString KEY_SESSION_VALID_UNTIL;
     QJsonObject data;
@@ -34,7 +36,7 @@ protected:
     inline QString getSessionFileName(const QString &sessionHash);
     inline void newSession(HttpHeader *httpHeader,ServerData * serverData);
 public:
-    SessionData(int minutesSessionValid, const FCGX_Request &request, ServerData * s, HttpHeader * httpHeader, QDir tempDir = QDir(QDir::tempPath()));
+    SessionData(int minutesSessionValid,FCGX_Request & request, ServerData * s,HttpHeader * httpHeader,QDir tempDir = QDir(QDir::tempPath()));
     ~SessionData();
     void saveSession();
     void setValue(const QString&key,const QString&val);
