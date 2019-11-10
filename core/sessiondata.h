@@ -20,11 +20,10 @@ class WEBAPPCOMMONSHARED_EXPORT SessionData
 {
 protected:
     static QMutex mutex;
-  static QHash<QString,QJsonObject> sessionData;
-    QDir tempDir;
+   static QHash<QString,QJsonObject> sessionData;
+   static QDir tempDir;
      static const QString KEY_SESSION_VALID_UNTIL;
-    QJsonObject data;
-    QString sessId;
+    QString sessionHash;
     ServerData * serverData;
     HttpHeader *httpHeader;
     int minutesSessionValid;
@@ -32,13 +31,13 @@ protected:
     public:
     static const QString SESS_COOKIE_NAME;
 protected:
-    QString getSessionHash(ServerData * serverData);
-    inline QString getSessionFileName(const QString &sessionHash);
+    QString getSessionHash(ServerData * serverData, const QString &sessId);
+    static inline QString getSessionFileName(const QString &sessionHash);
     inline void newSession(HttpHeader *httpHeader,ServerData * serverData);
+    inline void clearSessionImpl();
 public:
     SessionData(int minutesSessionValid,FCGX_Request & request, ServerData * s,HttpHeader * httpHeader,QDir tempDir = QDir(QDir::tempPath()));
     ~SessionData();
-    void saveSession();
     void setValue(const QString&key,const QString&val);
     void setValue(const QString&key,bool val);
     void setValue(const QString&key,int val);
@@ -51,14 +50,14 @@ public:
     qint64 int64Value(const QString &key) const;
     QJsonArray jsonArrayValue(const QString &key) const;
     static const QString  & getSessionCookieName();
-    QString getSessId() const;
     bool hasValue(const QString&key) const;
     void clearSession();
     void renewSession();
 //    void setSessId(const QString &value);
-    void setTempDir(const QString &value);
-    void debug();
 
+    static void saveSessions();
+    void saveSession();
+    static void loadSessions(const QDir & dir);
 };
 
 #endif // SESSIONDATA_H

@@ -24,6 +24,7 @@ void MultiActionPageController::runController()
       a->setHttpHeader(httpHeader);
       a->runAction();
     } else if(defaultAction != nullptr) {
+      defaultAction->setSqlCon(sqlCon);
       defaultAction->setServerData(serverData);
       defaultAction->setRequestData(requestData);
       defaultAction->setSessionData(sessionData);
@@ -33,6 +34,7 @@ void MultiActionPageController::runController()
       throw QtException(QLatin1String("No such action"));
     }
   } else if(defaultAction != nullptr) {
+     defaultAction->setSqlCon(sqlCon);
     defaultAction->setServerData(serverData);
     defaultAction->setRequestData(requestData);
     defaultAction->setSessionData(sessionData);
