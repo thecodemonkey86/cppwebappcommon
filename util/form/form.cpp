@@ -11,6 +11,11 @@ void Form::setServerData(ServerData *value)
 {
     serverData = value;
 }
+QString Form::getSubmitFieldName() const
+{
+    return submitFieldName;
+}
+
 Form::Form(RequestData * request, const QString&submitFieldName)
 {
     this->submitFieldName = submitFieldName;

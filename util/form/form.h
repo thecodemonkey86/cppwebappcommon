@@ -45,6 +45,7 @@ public:
     virtual bool isNotSetOrEmpty(const QString & name) const;
     void setSessionData(SessionData *value);
     void setServerData(ServerData *value);
+    QString getSubmitFieldName() const;
 };
 
 #endif // FORM_H

@@ -34,6 +34,7 @@ public:
     virtual QDate dateValue(const QString &name, const QDate &defaultValue) const override;
     virtual QDateTime dateTimeValue(const QString &name, const QDateTime &defaultValue) const override;
     virtual double doubleValue(const QString &name, double defaultValue) const override;
+    virtual uint32_t uintValue(const QString &name) const override;
 };
 
 #endif // FORMGET_H

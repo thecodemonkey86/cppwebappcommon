@@ -55,7 +55,7 @@ QDateTime FormGet::dateTimeValue(const QString &name) const
 
 bool FormGet::isSubmitted() const
 {
-    return request->isPostParamSet(submitFieldName) && !request->getString(submitFieldName).isEmpty();
+    return request->isGetParamSet(submitFieldName) && !request->getString(submitFieldName).isEmpty();
 }
 
 
@@ -130,3 +130,9 @@ double FormGet::doubleValue(const QString &name, double defaultValue) const
      return Form::doubleValue(name,defaultValue);
 }
 
+
+
+uint32_t FormGet::uintValue(const QString &name) const
+{
+  return request->getUInt(name);
+}
