@@ -94,6 +94,8 @@ public:
         }
         return url;
     }
+
+    static QString url(QUrl currentUrl, const RequestParam & addOrUpdateParam);
 };
 
 #endif // PAGEMANAGER_H
