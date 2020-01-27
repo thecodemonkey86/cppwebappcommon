@@ -30,6 +30,7 @@ public:
       */
      HttpHeader(const FCGX_Request & request);
     static const QString CONTENT_TYPE_TEXT_HTML;
+    static const QString CONTENT_TYPE_TEXT_PLAIN;
     static const QString CONTENT_TYPE_APPLICATION_JSON;
     static const QString CONTENT_TYPE_TEXT_XML;
     static const QString CONTENT_TYPE_BINARY;

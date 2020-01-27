@@ -69,22 +69,22 @@ void AbstractPageController::registerView(unique_ptr<AbstractView> view)
 
 void AbstractPageController::runController()
 {
-   this->view->setHttpHeader(httpHeader);
-    if(this->view->isAutoSendHeaders()) {
-         auto viewdata = run();
+   auto viewdata = run();
+
+   if(viewdata != nullptr) {
+       this->view->setHttpHeader(httpHeader);
+       if(this->view->isAutoSendHeaders()) {
          httpHeader->setContentType(this->view->getHttpContentType());
          httpHeader->finish();
-         if(viewdata != nullptr) {
-               this->view->update(std::move(viewdata));
-         }
-
-     } else {
-         auto viewdata = run();
-         if(viewdata != nullptr) {
-               this->view->update(std::move(viewdata));
-         }
+       }
+        this->view->update(std::move(viewdata));
+   } else{
+     if(!httpHeader->getRedirectFlag())
+     {
+      httpHeader->setContentType(HttpHeader::CONTENT_TYPE_TEXT_PLAIN);
      }
-
+     httpHeader->finish();
+   }
 
 
 }

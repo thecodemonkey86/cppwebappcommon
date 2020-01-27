@@ -130,6 +130,7 @@ void HttpHeader::redirect(const QUrl &url)
 }
 
 const QString HttpHeader::CONTENT_TYPE_TEXT_HTML("text/html; charset=UTF-8");
+const QString HttpHeader::CONTENT_TYPE_TEXT_PLAIN("text/plain; charset=UTF-8");
 const QString HttpHeader::CONTENT_TYPE_BINARY("application/octet-stream");
 const QString HttpHeader::CONTENT_TYPE_TEXT_XML("text/xml; charset=UTF-8");
 const QString HttpHeader::CONTENT_TYPE_APPLICATION_JSON("application/json; charset=UTF-8");
