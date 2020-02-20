@@ -203,6 +203,16 @@ public:
          }
 
          /**
+          * @brief writes a QString as UTF-8 to the FastCGI output stream
+          * @param s
+          * @param out
+          */
+         inline static void writeHtmlDoubleEncoded(const QString&s, FCGX_Stream *out) {
+           auto data = s.toHtmlEscaped().toHtmlEscaped().toUtf8();
+           FCGX_PutStr(data.data(),data.length(),out);
+         }
+
+         /**
           * @brief writes a QByteArray to the FastCGI output stream
           * @param b
           * @param out
@@ -210,7 +220,14 @@ public:
          inline static void writeHtmlEncoded(const QByteArray&b, FCGX_Stream *out) {
              write(QString::fromUtf8(b).toHtmlEscaped(),out);
          }
-
+         /**
+          * @brief writes a QByteArray to the FastCGI output stream
+          * @param b
+          * @param out
+          */
+         inline static void writeHtmlDoubleEncoded(const QByteArray&b, FCGX_Stream *out) {
+           write(QString::fromUtf8(b).toHtmlEscaped().toHtmlEscaped(),out);
+         }
          /**
           * @brief writes a string representation of an integer to the FastCGI output stream
           * @param d
