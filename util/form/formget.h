@@ -7,7 +7,7 @@ class WEBAPPCOMMONSHARED_EXPORT FormGet : public Form
 {
 
 public:
-    FormGet(RequestData * request,const QString&submitFieldName=QLatin1Literal("submit"));
+    FormGet(RequestData * request,const QString&submitFieldName=QLatin1String("submit"));
     virtual ~FormGet() override = default;
     virtual const QString & stringValue(const QString&name) const override;
     virtual int intValue(const QString&name) const override;

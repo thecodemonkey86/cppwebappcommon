@@ -79,12 +79,16 @@ bool FormGet::isSet(const QString &name) const
 
 QVector<int> FormGet::intArrayValue(const QString &name) const
 {
-    return  request->getIntArray(name);
+    if(request->isGetParamSet(name))
+        return  request->getIntArray(name);
+    return QVector<int> ();
 }
 
 QVector<int64_t> FormGet::int64ArrayValue(const QString &name) const
 {
-  return  request->getInt64Array(name);
+    if(request->isGetParamSet(name))
+        return  request->getInt64Array(name);
+    return QVector<int64_t>();
 }
 
 QSet<int64_t> FormGet::int64HashSetValue(const QString &name) const

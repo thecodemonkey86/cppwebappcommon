@@ -19,6 +19,7 @@ int FormPost::intValue(const QString &name) const
     return request->postInt(name);
 }
 
+
 int64_t FormPost::int64Value(const QString &name) const
 {
      return request->postInt64(name);

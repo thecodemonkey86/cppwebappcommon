@@ -6,7 +6,7 @@
 class WEBAPPCOMMONSHARED_EXPORT FormPost : public Form
 {
 public:
-    FormPost(RequestData * request,const QString&submitFieldName=QLatin1Literal("submit"));
+    FormPost(RequestData * request,const QString&submitFieldName=QLatin1String("submit"));
     virtual ~FormPost() override;
     virtual const QString & stringValue(const QString&name) const override;
     virtual int intValue(const QString&name) const override;
