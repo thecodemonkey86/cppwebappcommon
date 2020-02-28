@@ -140,3 +140,9 @@ uint32_t FormGet::uintValue(const QString &name) const
 {
   return request->getUInt(name);
 }
+
+
+QStringList FormGet::stringArrayValue(const QString &name) const
+{
+  return request->getStringArray(name);
+}

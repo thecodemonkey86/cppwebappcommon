@@ -33,6 +33,7 @@ public:
     virtual QVector<int64_t> int64ArrayValue(const QString&name) const=0;
     virtual QSet<int64_t> int64HashSetValue(const QString &name) const=0;
    virtual const ArrayRequestParam &  array(const QString&name) const=0;
+   virtual QStringList stringArrayValue(const QString&name) const=0;
     virtual const QString & stringValue(const QString&name, const QString & defaultValue) const;
     virtual int intValue(const QString&name,int defaultValue) const;
     virtual bool boolValue(const QString&name,bool defaultValue) const;

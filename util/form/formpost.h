@@ -24,6 +24,7 @@ public:
     virtual bool isValueEmpty(const QString &name) const override;
     virtual bool isSet(const QString &name) const override;
     virtual const ArrayRequestParam &  array(const QString&name) const override;
+     virtual QStringList stringArrayValue(const QString &name) const override;
     // Form interface
 public:
     virtual const QString & stringValue(const QString &name, const QString &defaultValue) const override;
@@ -32,6 +33,29 @@ public:
     virtual QDate dateValue(const QString &name, const QDate &defaultValue) const override;
     virtual QDateTime dateTimeValue(const QString &name, const QDateTime &defaultValue) const override;
     virtual double doubleValue(const QString &name, double defaultValue) const override;
+
+    inline const QString & stringValueGET(const QString &name, const QString &defaultValue) const
+    {
+      if(!request->isGetParamSet(name))    {
+        return defaultValue;
+      }
+      return request->getString(name);
+    }
+    const QString & stringValueGET(const QString &name) const;
+    int intValueGET(const QString &name, int defaultValue) const;
+    int intValueGET(const QString &name) const;
+    int64_t int64ValueGET(const QString &name, int64_t defaultValue) const;
+    int64_t int64ValueGET(const QString &name) const;
+    inline bool isGetParamSet(const QString &name) const {
+      return request->isGetParamSet(name);
+    }
+
+    inline QVector<int64_t> int64ArrayValueGET(const QString &name) const
+    {
+      if(request->isGetParamSet(name))
+        return  request->getInt64Array(name);
+      return QVector<int64_t>();
+    }
 };
 
 

@@ -110,7 +110,12 @@ bool FormPost::isSet(const QString &name) const
 
 const ArrayRequestParam & FormPost::array(const QString &name) const
 {
-    return request->postArray(name);
+  return request->postArray(name);
+}
+
+QStringList FormPost::stringArrayValue(const QString &name) const
+{
+  return request->postStringArray(name);
 }
 
 
@@ -142,5 +147,38 @@ QDateTime FormPost::dateTimeValue(const QString &name, const QDateTime &defaultV
 
 double FormPost::doubleValue(const QString &name, double defaultValue) const
 {
-     return Form::doubleValue(name,defaultValue);
+  return Form::doubleValue(name,defaultValue);
+}
+
+
+
+int FormPost::intValueGET(const QString &name, int defaultValue) const
+{
+  if(!request->isGetParamSet(name))    {
+    return defaultValue;
+  }
+  return request->getInt(name);
+}
+
+int64_t FormPost::int64ValueGET(const QString &name, int64_t defaultValue) const
+{
+  if(!request->isGetParamSet(name))    {
+    return defaultValue;
+  }
+  return request->getInt64(name);
+}
+
+const QString &FormPost::stringValueGET(const QString &name) const
+{
+  return request->getString(name);
+}
+
+int FormPost::intValueGET(const QString &name) const
+{
+  return request->getInt(name);
+}
+
+int64_t FormPost::int64ValueGET(const QString &name) const
+{
+  return request->getInt64(name);
 }
