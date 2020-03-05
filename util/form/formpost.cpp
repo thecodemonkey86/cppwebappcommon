@@ -32,12 +32,16 @@ uint32_t FormPost::uintValue(const QString &name) const
 
 QVector<int> FormPost::intArrayValue(const QString &name) const
 {
-    return request->postIntArray(name);
+    if(request->isPostParamSet(name))
+         return request->postIntArray(name);
+   return QVector<int> ();
 }
 
 QVector<int64_t> FormPost::int64ArrayValue(const QString &name) const
 {
-    return request->postInt64Array(name);
+    if(request->isPostParamSet(name))
+        return request->postInt64Array(name);
+     return QVector<int64_t> ();
 }
 QSet<int64_t> FormPost::int64HashSetValue(const QString &name) const
 {
