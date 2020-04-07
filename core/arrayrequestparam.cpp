@@ -1,5 +1,7 @@
 #include "arrayrequestparam.h"
-
+#ifdef QT_DEBUG
+#include <QDebug>
+#endif
 ArrayRequestParam::ArrayRequestParam(const QString &name)
     : AbstractRequestParam()
 {

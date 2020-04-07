@@ -59,10 +59,10 @@ public:
     double getDouble(const QString&name) const;
     bool getBool(const QString&name) const;
     bool postBool(const QString&name) const;
-    const ArrayRequestParam & getArray(const QString&name) const;
-    const ArrayRequestParam & postArray(const QString&name) const;
-    const StringKeyArrayParam & postStringKeyArray(const QString&name) const;
-    const StringKeyArrayParam & getStringKeyArray(const QString &name) const;
+    ArrayRequestParam* getArray(const QString&name) const;
+    ArrayRequestParam* postArray(const QString&name) const;
+    StringKeyArrayParam* postStringKeyArray(const QString&name) const;
+    StringKeyArrayParam* getStringKeyArray(const QString &name) const;
     QString getArrayValueString(const QString &name, const QString &key) const;
     QString getArrayValueString(const QString &name, int index) const;
     int getArrayCount(const QString &name) const;

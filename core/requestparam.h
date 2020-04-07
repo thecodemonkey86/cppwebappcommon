@@ -16,6 +16,7 @@ protected:
 public:
     RequestParam(const QString &name,const QString& value);
     RequestParam(const QString &name,int value);
+    RequestParam(const QString &name,int64_t value);
     RequestParam(const RequestParam& other) = default;
     virtual ~RequestParam() override = default;
 

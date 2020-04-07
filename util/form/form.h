@@ -32,7 +32,7 @@ public:
    virtual QVector<int> intArrayValue(const QString&name) const=0;
     virtual QVector<int64_t> int64ArrayValue(const QString&name) const=0;
     virtual QSet<int64_t> int64HashSetValue(const QString &name) const=0;
-   virtual const ArrayRequestParam &  array(const QString&name) const=0;
+   virtual ArrayRequestParam * array(const QString&name) const=0;
    virtual QStringList stringArrayValue(const QString&name) const=0;
     virtual const QString & stringValue(const QString&name, const QString & defaultValue) const;
     virtual int intValue(const QString&name,int defaultValue) const;
@@ -44,6 +44,10 @@ public:
     virtual bool isSet(const QString & name)const =0;
     virtual bool isSetAndNotEmpty(const QString & name) const;
     virtual bool isNotSetOrEmpty(const QString & name) const;
+    virtual StringKeyArrayParam* stringKeyArray(const QString&name) const=0;
+    virtual QList<QString> arrayKeys(const QString&name) const=0;
+    virtual  const QString & arrayStringValue(const QString&fieldName,const QString&arrayKey) const =0;
+    virtual  AbstractStringKeyArrayParam*  arrayValue(const QString&fieldName,const QString&arrayKey) const =0;
     void setSessionData(SessionData *value);
     void setServerData(ServerData *value);
     QString getSubmitFieldName() const;
