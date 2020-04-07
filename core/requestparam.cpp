@@ -11,6 +11,12 @@ RequestParam::RequestParam(const QString &name, int value)
     this->value = QString::number(value);
 }
 
+RequestParam::RequestParam(const QString &name, int64_t value)
+{
+    this->name = name;
+    this->value = QString::number(value);
+}
+
 const QString & RequestParam::getValue() const {
   return value;
 }

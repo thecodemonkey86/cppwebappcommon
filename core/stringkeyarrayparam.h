@@ -14,10 +14,7 @@ public:
     StringKeyArrayParam(const QString &name);
     virtual ~StringKeyArrayParam();
     virtual QString  toString() const;
-    QString arrayValue(int dimensionsCount, ...) const;
-    QString arrayValue(const QStringList & arrayKeys) const;
     virtual AbstractStringKeyArrayParam* val(const QString&key) const;
-    StringKeyArrayParam* stringKeyArray(const QString&key) const;
     void incrementDimension() ;
 };
 

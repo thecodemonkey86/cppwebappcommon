@@ -112,16 +112,15 @@ bool FormPost::isSet(const QString &name) const
     return request->isPostParamSet(name);
 }
 
-const ArrayRequestParam & FormPost::array(const QString &name) const
+ArrayRequestParam* FormPost::array(const QString &name) const
 {
   return request->postArray(name);
 }
 
 QStringList FormPost::stringArrayValue(const QString &name) const
 {
-  return request->postStringArray(name);
+    return request->postStringArray(name);
 }
-
 
 
 const QString & FormPost::stringValue(const QString &name, const QString &defaultValue) const

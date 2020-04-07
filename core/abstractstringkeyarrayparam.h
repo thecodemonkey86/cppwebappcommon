@@ -11,9 +11,11 @@ public:
     virtual ~AbstractStringKeyArrayParam();
    virtual AbstractStringKeyArrayParam* val(const QString&key) const=0;
     StringKeyArrayParam* stringKeyArray(const QString&key) const;
-    QString stringValue(const QString&key) const;
+    const QString & stringValue(const QString&key) const;
     double doubleValue(const QString&key) const;
     int intValue(const QString&key) const;
+    const QString & stringValue(int dimensionsCount, ...) const;
+    const QString & stringValue(const QStringList & arrayKeys) const;
 };
 
 #endif // ABSTRACTSTRINGKEYARRAYPARAM_H

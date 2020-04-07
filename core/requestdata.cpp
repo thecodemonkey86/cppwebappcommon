@@ -72,14 +72,14 @@ void RequestData::parseGetParams(const QUrl& url)
 int RequestData::checkNotEof(int c)
 {
     if(c==-1)
-        throw QtException("unexpected end of stream");
+        throwExceptionWithLine("unexpected end of stream");
     return c;
 }
 
 void RequestData::expectChar(int c, int expected)
 {
     if(c!=expected)
-        throw QtException(QStringLiteral("expected character %1 but got %2").arg(static_cast<char>(expected),c));
+        throwExceptionWithLine(QStringLiteral("expected character %1 but got %2").arg(static_cast<char>(expected),c));
 }
 
 void RequestData::parseMultipart(QIODevice *writeDevice,const FCGX_Request & request, bool & foundFinalDelimiter, const QString &delimiter)
@@ -122,7 +122,7 @@ void RequestData::parseMultipart(QIODevice *writeDevice,const FCGX_Request & req
                         foundFinalDelimiter = true;
                         break;
                     } else {
-                        throw QtException("unexpected character");
+                        throwExceptionWithLine("unexpected character");
                     }
 
                 } else {
@@ -153,11 +153,11 @@ void RequestData::parsePostParams(const FCGX_Request & request)
     if( contentType[0] == QLatin1String("multipart/form-data")) {
         int indexEq = contentType[1].indexOf('=');
         if(indexEq == -1) {
-            throw QtException(QLatin1String("invalid data"));
+            throwExceptionWithLine(QLatin1String("invalid data"));
         }
         QString delimiter = QStringLiteral("--%1").arg(contentType[1].mid(indexEq+1));
         if(!delimiter.startsWith(QLatin1String("--"))) {
-            throw QtException(QLatin1String("invalid data"));
+            throwExceptionWithLine(QLatin1String("invalid data"));
         }
 
 
@@ -170,7 +170,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
         if(FCGX_GetLine(readBuf,BUF_SIZE,request.in)!=nullptr) {
             line =  QString::fromUtf8(readBuf);
             if(line != delimiter+crlf) {
-                throw QtException(QLatin1String("unexpected end of data: ") + line);
+                throwExceptionWithLine(QLatin1String("unexpected end of data: ") + line);
             }
         }
 
@@ -200,18 +200,18 @@ void RequestData::parsePostParams(const FCGX_Request & request)
                             int indexStart = trimmed.indexOf(quot,5)+1;
                             int indexEnd =trimmed.indexOf(quot,indexStart);
                             if(indexStart == -1 || indexEnd < indexStart) {
-                                throw QtException(QLatin1String("invalid data"));
+                                throwExceptionWithLine(QLatin1String("invalid data"));
                             }
                             fieldName = trimmed.mid(trimmed.indexOf(quot)+1,indexEnd - indexStart );
                         } else if(trimmed.startsWith(QLatin1String("filename=\""))) {
                             int indexStart = trimmed.indexOf(quot,9)+1;
                             int indexEnd =trimmed.indexOf(quot,indexStart);
                             if(indexStart == -1 || indexEnd < indexStart) {
-                                throw QtException(QLatin1String("invalid data"));
+                                throwExceptionWithLine(QLatin1String("invalid data"));
                             }
                             fileName = trimmed.mid(trimmed.indexOf(quot)+1,indexEnd - indexStart );
                             if(!FileUtil::isValidFileName(fieldName)) {
-                                throw QtException(QLatin1String("invalid data"));
+                                throwExceptionWithLine(QLatin1String("invalid data"));
                             }
                         }
                     }
@@ -234,7 +234,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
                         ||filePath.endsWith(QLatin1String(".so"))
                         ||filePath.endsWith(QLatin1String(".dylib"))
                         ||filePath.endsWith(QLatin1String((".php")))) {
-                    throw QtException("executable files are not allowed");
+                    throwExceptionWithLine("executable files are not allowed");
                 }
 
                 QFile uploadedFile( filePath );
@@ -248,7 +248,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
                 if(fieldName.endsWith(QLatin1String("[]"))) {
                     int j = fieldName.indexOf('[');
                     if(j == -1) {
-                        throw QtException(QLatin1String("Unexpected error"));
+                        throwExceptionWithLine(QLatin1String("Unexpected error"));
                     }
                     QString arrayBaseName = fieldName.left(j);
                     bool found = false;
@@ -261,7 +261,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
                                 found = true;
                                 break;
                             } else {
-                                throw QtException(QLatin1String("Upload error"));
+                                throwExceptionWithLine(QLatin1String("Upload error"));
                             }
                         }
                     }
@@ -271,7 +271,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
                 } else if(fieldName.endsWith(']')){
                     int j = fieldName.indexOf('[');
                     if(j == -1) {
-                        throw QtException(QLatin1String("Unexpected error"));
+                        throwExceptionWithLine(QLatin1String("Unexpected error"));
                     }
                     auto key = fieldName.mid(j+1,fieldName.length()-j-2);
                     QString arrayBaseName = fieldName.left(j);
@@ -284,7 +284,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
                                 arr->insert(key, UploadedFile(fileName,arrayBaseName,filePath,mimeType,uploadedFile.size()));
                                 found = true;
                             } else {
-                                throw QtException(QLatin1String("Upload error"));
+                                throwExceptionWithLine(QLatin1String("Upload error"));
                             }
                         }
                     }
@@ -295,7 +295,7 @@ void RequestData::parsePostParams(const FCGX_Request & request)
                 } else {
                     for(const auto u : uploadFiles) {
                         if(u->getFieldName() == fieldName) {
-                            throw QtException(QLatin1String("Upload error"));
+                            throwExceptionWithLine(QLatin1String("Upload error"));
                         }
                     }
                     uploadFiles.append(new UploadedFile(fileName, fieldName,filePath,mimeType,uploadedFile.size()));
@@ -313,12 +313,12 @@ void RequestData::parsePostParams(const FCGX_Request & request)
 
         }
         if (FCGX_GetChar(request.in) != -1) {
-            throw QtException(QLatin1String("Expected EOF"));
+            throwExceptionWithLine(QLatin1String("Expected EOF"));
         }
     } else {
 
         if (!ok) {
-            throw QtException(QLatin1String("Invalid content length"));
+            throwExceptionWithLine(QLatin1String("Invalid content length"));
         } else {
             char * buf= new char[contentLength+1];
 
@@ -361,7 +361,7 @@ void RequestData::addToHashtable(const QString &key, const QString &strValue, QH
         if (params.contains(name)) {
             arr = dynamic_cast<ArrayRequestParam*>(params.value(name));
             if (arr == nullptr) {
-                throw QtException(QLatin1String("Unexpected error"));
+                throwExceptionWithLine(QLatin1String("Unexpected error"));
             }
         } else {
             arr = new ArrayRequestParam(name);
@@ -371,13 +371,13 @@ void RequestData::addToHashtable(const QString &key, const QString &strValue, QH
     } else if (key.endsWith(QChar(']'))) {
         int j = key.indexOf('[');
         if(j == -1) {
-            throw QtException(QLatin1String("Unexpected error"));
+            throwExceptionWithLine(QLatin1String("Unexpected error"));
         }
         name = key.left(j);
         if (params.contains(name)) {
             currentArray = dynamic_cast<StringKeyArrayParam*>(params.value(name));
             if (currentArray == nullptr) {
-                throw QtException(QLatin1String("Unexpected error"));
+                throwExceptionWithLine(QLatin1String("Unexpected error"));
             }
         } else {
             currentArray = new StringKeyArrayParam(name);
@@ -396,7 +396,7 @@ void RequestData::addToHashtable(const QString &key, const QString &strValue, QH
                     if (currentArray->contains(arrayIndex)) {
                         currentArray = dynamic_cast<StringKeyArrayParam*>(currentArray->value(arrayIndex));
                         if (currentArray == nullptr) {
-                            throw QtException(QLatin1String("Unexpected error"));
+                            throwExceptionWithLine(QLatin1String("Unexpected error"));
                         }
                     } else {
                         StringKeyArrayParam*dimension=new StringKeyArrayParam(name);
@@ -438,11 +438,11 @@ const QString & RequestData::getString(const QString & name) const
     if (getParams.contains(name)) {
         RequestParam * p = dynamic_cast< RequestParam* >(getParams.value(name));
         if (p == nullptr) {
-            throw QtException(QLatin1String("Parameter is not a simple value"));
+            throwExceptionWithLine(QLatin1String("Parameter is not a simple value"));
         }
         return p->getValue();
     } else {
-        throw QtException(QStringLiteral("Parameter does not exist: %1").arg(name));
+        throwExceptionWithLine(QStringLiteral("Parameter does not exist: %1").arg(name));
     }
 }
 
@@ -450,7 +450,7 @@ const QString &RequestData::getStringNoCheckForExistance(const QString &name) co
 {
   RequestParam * p = dynamic_cast< RequestParam* >(getParams.value(name));
   if (p == nullptr) {
-    throw QtException(QLatin1String("Parameter is not a simple value"));
+    throwExceptionWithLine(QLatin1String("Parameter is not a simple value"));
   }
   return p->getValue();
 }
@@ -460,11 +460,11 @@ const QString & RequestData::postString(const QString &name) const
     if (postParams.contains(name)) {
         RequestParam * p = dynamic_cast< RequestParam* >(postParams.value(name));
         if (p == nullptr) {
-            throw QtException(QLatin1String("Parameter is not a simple value"));
+            throwExceptionWithLine(QLatin1String("Parameter is not a simple value"));
         }
         return p->getValue();
     } else {
-        throw QtException(QStringLiteral("Parameter %1 does not exist").arg(name));
+        throwExceptionWithLine(QStringLiteral("Parameter %1 does not exist").arg(name));
     }
 }
 
@@ -472,7 +472,7 @@ int RequestData::getInt(const QString & name) const
 {
     bool ok = false;
     int i = getString(name).toInt(&ok);
-    if (!ok) throw QtException(QLatin1String("Parameter is not a number"));
+    if (!ok) throwExceptionWithLine(QLatin1String("Parameter is not a number"));
     return i;
 }
 
@@ -480,7 +480,7 @@ uint32_t RequestData::getUInt(const QString & name) const
 {
   bool ok = false;
   uint32_t i = getString(name).toUInt(&ok);
-  if (!ok) throw QtException(QLatin1String("Parameter is not a number"));
+  if (!ok) throwExceptionWithLine(QLatin1String("Parameter is not a number"));
   return i;
 }
 
@@ -489,7 +489,7 @@ qint64 RequestData::getInt64(const QString &name) const
     QString value(getString(name));
     bool ok = false;
     qint64 i = value.toLongLong(&ok);
-    if (!ok) throw QtException(QLatin1String("Parameter is not a number"));
+    if (!ok) throwExceptionWithLine(QLatin1String("Parameter is not a number"));
     return i;
 }
 
@@ -497,7 +497,7 @@ int RequestData::postInt(const QString & name) const
 {
     bool ok = false;
     int i = postString(name).toInt(&ok);
-    if (!ok) throw QtException(QLatin1String("Parameter is not a number"));
+    if (!ok) throwExceptionWithLine(QLatin1String("Parameter is not a number"));
     return i;
 }
 
@@ -505,7 +505,7 @@ uint32_t RequestData::postUInt(const QString & name) const
 {
   bool ok = false;
   uint32_t i = postString(name).toUInt(&ok);
-  if (!ok) throw QtException(QLatin1String("Parameter is not a number"));
+  if (!ok) throwExceptionWithLine(QLatin1String("Parameter is not a number"));
   return i;
 }
 
@@ -513,7 +513,7 @@ qint64 RequestData::postInt64(const QString &name) const
 {
     bool ok = false;
     qint64 i = postString(name).toLongLong(&ok);
-    if (!ok) throw QtException(QLatin1String("Parameter is not a number"));
+    if (!ok) throwExceptionWithLine(QLatin1String("Parameter is not a number"));
     return i;
 }
 
@@ -522,7 +522,7 @@ double RequestData::postDouble(const QString &name) const
     QString value(postString(name));
     bool ok = false;
     double d = value.replace(QChar(','),QChar('.')).toDouble(&ok);
-    if (!ok) throw QtException(QLatin1String("Parameter is not a number"));
+    if (!ok) throwExceptionWithLine(QLatin1String("Parameter is not a number"));
     return d;
 }
 
@@ -531,7 +531,7 @@ double RequestData::getDouble(const QString &name) const
     QString value(getString(name));
     bool ok = false;
     double d = value.replace(QChar(','),QChar('.')).toDouble(&ok);
-    if (!ok) throw QtException(QLatin1String("Parameter is not a number"));
+    if (!ok) throwExceptionWithLine(QLatin1String("Parameter is not a number"));
     return d;
 }
 
@@ -547,56 +547,56 @@ bool RequestData::postBool(const QString &name) const
     return value == QLatin1String("1") || value == QLatin1String("true");
 }
 
-const ArrayRequestParam & RequestData::getArray(const QString &name) const
+ArrayRequestParam* RequestData::getArray(const QString &name) const
 {
     if (getParams.contains(name)) {
         ArrayRequestParam * p = dynamic_cast< ArrayRequestParam* >(getParams.value(name));
         if (p == nullptr) {
-            throw QtException(QLatin1String("Parameter is not an array"));
+            throwExceptionWithLine(QLatin1String("Parameter is not an array"));
         }
-        return *p;
+        return p;
     } else {
-        throw QtException(QStringLiteral("Parameter does not exist: %1").arg(name));
+        throwExceptionWithLine(QStringLiteral("Parameter does not exist: %1").arg(name));
     }
 }
 
-const StringKeyArrayParam &RequestData::getStringKeyArray(const QString &name) const
+StringKeyArrayParam* RequestData::getStringKeyArray(const QString &name) const
 {
     if (getParams.contains(name)) {
         StringKeyArrayParam * p = dynamic_cast< StringKeyArrayParam* >(getParams.value(name));
         if (p == nullptr) {
-            throw QtException(QLatin1String("Parameter is not an array"));
+            throwExceptionWithLine(QLatin1String("Parameter is not an array"));
         }
-        return *p;
+        return p;
     } else {
-        throw QtException(QStringLiteral("Parameter does not exist: %1").arg(name));
+        throwExceptionWithLine(QStringLiteral("Parameter does not exist: %1").arg(name));
     }
 }
 
 
-const ArrayRequestParam &RequestData::postArray(const QString &name) const
+ArrayRequestParam *RequestData::postArray(const QString &name) const
 {
     if (postParams.contains(name)) {
         ArrayRequestParam * p = dynamic_cast< ArrayRequestParam* >(postParams.value(name));
         if (p == nullptr) {
-            throw QtException(QLatin1String("Parameter is not an array"));
+            throwExceptionWithLine(QLatin1String("Parameter is not an array"));
         }
-        return *p;
+        return p;
     } else {
-        throw QtException(QStringLiteral("Parameter does not exist: %1").arg(name));
+        throwExceptionWithLine(QStringLiteral("Parameter does not exist: %1").arg(name));
     }
 }
 
-const StringKeyArrayParam & RequestData::postStringKeyArray(const QString &name) const
+StringKeyArrayParam * RequestData::postStringKeyArray(const QString &name) const
 {
     if (postParams.contains(name)) {
         StringKeyArrayParam * p = dynamic_cast< StringKeyArrayParam* >(postParams.value(name));
         if (p == nullptr) {
-            throw QtException(QLatin1String("Parameter is not an array"));
+            throwExceptionWithLine(QLatin1String("Parameter is not an array"));
         }
-        return *p;
+        return p;
     } else {
-        throw QtException(QStringLiteral("Parameter does not exist: %1").arg(name));
+        throwExceptionWithLine(QStringLiteral("Parameter does not exist: %1").arg(name));
     }
 }
 
@@ -606,16 +606,16 @@ QString RequestData::getArrayValueString(const QString &name, const QString &key
     if (getParams.contains(name)) {
         AbstractStringKeyArrayParam * p = dynamic_cast< AbstractStringKeyArrayParam* >(getParams.value(name));
         if (p == nullptr) {
-            throw QtException(QLatin1String("Parameter is not an array"));
+            throwExceptionWithLine(QLatin1String("Parameter is not an array"));
         }
         ArrayValue * v = dynamic_cast<ArrayValue*>(p->val(key));
         if(v == nullptr) {
-            throw QtException(QStringLiteral("Array key %1 does not exists").arg(key));
+            throwExceptionWithLine(QStringLiteral("Array key %1 does not exists").arg(key));
         }
 
         return  v->getValue();
     } else {
-        throw QtException(QStringLiteral("Parameter does not exist: %1").arg(name));
+        throwExceptionWithLine(QStringLiteral("Parameter does not exist: %1").arg(name));
     }
 }
 
@@ -624,28 +624,28 @@ QString RequestData::getArrayValueString(const QString &name, int index) const
     if (getParams.contains(name)) {
         ArrayRequestParam * p = dynamic_cast< ArrayRequestParam* >(getParams.value(name));
         if (p == nullptr) {
-            throw QtException(QLatin1String("Parameter is not an array"));
+            throwExceptionWithLine(QLatin1String("Parameter is not an array"));
         }
         if(index >= 0 && index < p->size()) {
             return p->at(index);
         } else {
-            throw QtException(QStringLiteral("Array index %1 does not exists").arg(index));
+            throwExceptionWithLine(QStringLiteral("Array index %1 does not exists").arg(index));
         }
 
 
     } else {
-        throw QtException(QStringLiteral("Parameter does not exist: %1").arg(name));
+        throwExceptionWithLine(QStringLiteral("Parameter does not exist: %1").arg(name));
     }
 }
 
 int RequestData::getArrayCount(const QString &name) const
 {
-  return getArray(name).size();
+  return getArray(name)->size();
 }
 
 int RequestData::postArrayCount(const QString &name) const
 {
-  return postArray(name).size();
+  return postArray(name)->size();
 }
 
 int RequestData::getArrayValueInt(const QString &name, const QString &key) const
@@ -653,7 +653,7 @@ int RequestData::getArrayValueInt(const QString &name, const QString &key) const
     QString value(getArrayValueString(name,key));
     bool ok = false;
     int i = value.toInt(&ok);
-    if (!ok) throw QtException(QLatin1String("Parameter is not a number"));
+    if (!ok) throwExceptionWithLine(QLatin1String("Parameter is not a number"));
     return i;
 }
 
@@ -662,7 +662,7 @@ int RequestData::getArrayValueInt(const QString &name, int index) const
     QString value(getArrayValueString(name,index));
     bool ok = false;
     int i = value.toInt(&ok);
-    if (!ok) throw QtException(QLatin1String("Parameter is not a number"));
+    if (!ok) throwExceptionWithLine(QLatin1String("Parameter is not a number"));
     return i;
 }
 
@@ -690,11 +690,11 @@ const UploadedFile & RequestData::uploadedFile(const QString &fieldname) const
             if(f != nullptr) {
                 return *f;
             } else {
-                throw QtException(QLatin1String("Parameter is not a simple file field"));
+                throwExceptionWithLine(QLatin1String("Parameter is not a simple file field"));
             }
         }
     }
-    throw QtException(QLatin1String("no such file"));
+    throwExceptionWithLine(QLatin1String("no such file"));
 
 }
 
@@ -706,11 +706,11 @@ const UploadedFileArray & RequestData::uploadedFileArray(const QString &fieldnam
             if(f != nullptr) {
                 return *f;
             } else {
-                throw QtException(QLatin1String("Parameter is not an array file field"));
+                throwExceptionWithLine(QLatin1String("Parameter is not an array file field"));
             }
         }
     }
-    throw QtException(QLatin1String("no such file"));
+    throwExceptionWithLine(QLatin1String("no such file"));
 
 }
 
@@ -722,22 +722,22 @@ const UploadedFileStringKeyArray & RequestData::uploadedFileArrayStringKey(const
             if(f != nullptr) {
                 return *f;
             } else {
-                throw QtException(QLatin1String("Parameter is not an array file field"));
+                throwExceptionWithLine(QLatin1String("Parameter is not an array file field"));
             }
         }
     }
-    throw QtException(QLatin1String("no such file"));
+    throwExceptionWithLine(QLatin1String("no such file"));
 }
 
 QVector<int> RequestData::getIntArray(const QString &name) const
 {
     auto data = RequestData::getArray(name);
     QVector<int> result;
-    for(const auto & d : data) {
+    for(const auto & d : *data) {
         bool ok = false;
         result << d.toInt(&ok);
         if(!ok) {
-            throw QtException(QLatin1String("Parameter is not an integer"));
+            throwExceptionWithLine(QLatin1String("Parameter is not an integer"));
         }
     }
     return result;
@@ -747,11 +747,11 @@ QVector<int64_t> RequestData::getInt64Array(const QString &name) const
 {
   auto data = RequestData::getArray(name);
   QVector<int64_t> result;
-  for(const auto & d : data) {
+  for(const auto & d : *data) {
     bool ok = false;
     result << d.toLongLong(&ok);
     if(!ok) {
-      throw QtException(QLatin1String("Parameter is not an integer"));
+      throwExceptionWithLine(QLatin1String("Parameter is not an integer"));
     }
   }
   return result;
@@ -761,11 +761,11 @@ QVector<int> RequestData::postIntArray(const QString &name) const
 {
     auto data = RequestData::postArray(name);
     QVector<int> result;
-    for(const auto & d : data) {
+    for(const auto & d : *data) {
         bool ok = false;
         result << d.toInt(&ok);
         if(!ok) {
-            throw QtException(QLatin1String("Parameter is not an integer"));
+            throwExceptionWithLine(QLatin1String("Parameter is not an integer"));
         }
     }
     return result;
@@ -775,11 +775,11 @@ QVector<int64_t> RequestData::postInt64Array(const QString &name) const
 {
   auto data = RequestData::postArray(name);
   QVector<int64_t> result;
-  for(const auto & d : data) {
+  for(const auto & d : *data) {
     bool ok = false;
     result << d.toInt(&ok);
     if(!ok) {
-      throw QtException(QLatin1String("Parameter is not an integer"));
+      throwExceptionWithLine(QLatin1String("Parameter is not an integer"));
     }
   }
   return result;
@@ -787,23 +787,23 @@ QVector<int64_t> RequestData::postInt64Array(const QString &name) const
 
 QStringList RequestData::getStringArray(const QString &name) const
 {
-  return static_cast<QStringList>(getArray(name));
+  return static_cast<QStringList>(*getArray(name));
 }
 
 QStringList RequestData::postStringArray(const QString &name) const
 {
-  return static_cast<QStringList>(postArray(name));
+  return static_cast<QStringList>(*postArray(name));
 }
 
 QSet<int64_t> RequestData::getInt64HashSet(const QString &name) const
 {
   auto data = RequestData::getArray(name);
   QSet<int64_t>  result;
-  for(const auto & d : data) {
+  for(const auto & d : *data) {
     bool ok = false;
     result << d.toInt(&ok);
     if(!ok) {
-      throw QtException(QLatin1String("Parameter is not an integer"));
+      throwExceptionWithLine(QLatin1String("Parameter is not an integer"));
     }
   }
   return result;
@@ -813,11 +813,11 @@ QSet<int64_t> RequestData::postInt64HashSet(const QString &name) const
 {
   auto data = RequestData::postArray(name);
   QSet<int64_t>  result;
-  for(const auto & d : data) {
+  for(const auto & d : *data) {
     bool ok = false;
     result << d.toInt(&ok);
     if(!ok) {
-      throw QtException(QLatin1String("Parameter is not an integer"));
+      throwExceptionWithLine(QLatin1String("Parameter is not an integer"));
     }
   }
   return result;
