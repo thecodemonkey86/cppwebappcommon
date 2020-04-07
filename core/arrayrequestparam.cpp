@@ -10,7 +10,7 @@ ArrayRequestParam::ArrayRequestParam(const QString &name)
 
 ArrayRequestParam::~ArrayRequestParam()
 {
-    qDebug() << "destruct "+name;
+
 }
 
 QString ArrayRequestParam::toString() const
