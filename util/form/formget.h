@@ -25,8 +25,24 @@ public:
     virtual QVector<int> intArrayValue(const QString &name) const override;
     virtual QVector<int64_t> int64ArrayValue(const QString &name) const override;
      virtual QSet<int64_t> int64HashSetValue(const QString&name) const override;
-    virtual const ArrayRequestParam &  array(const QString&name) const override;
+    virtual ArrayRequestParam*  array(const QString&name) const override;
      virtual QStringList stringArrayValue(const QString &name) const override;
+    inline virtual StringKeyArrayParam * stringKeyArray(const QString&name) const override
+    {
+        return request->getStringKeyArray(name);
+    }
+    inline virtual  QList<QString> arrayKeys(const QString&name) const override
+    {
+        return request->getStringKeyArray(name)->keys();
+    }
+     inline virtual  const QString & arrayStringValue(const QString&fieldName,const QString&arrayKey) const override
+     {
+        return request->getStringKeyArray(fieldName)->stringValue(arrayKey);
+     }
+     inline virtual AbstractStringKeyArrayParam*  arrayValue(const QString&fieldName,const QString&arrayKey) const override
+     {
+        return request->getStringKeyArray(fieldName)->val(arrayKey);
+     }
     // Form interface
 public:
     virtual const QString & stringValue(const QString &name, const QString &defaultValue) const override;

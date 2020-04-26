@@ -1,4 +1,5 @@
 #include "abstractpagecontroller.h"
+#include "exception/qtexception.h"
 #include <QDebug>
 
 RequestData *AbstractPageController::getRequestData() const
@@ -77,7 +78,14 @@ void AbstractPageController::runController()
          httpHeader->setContentType(this->view->getHttpContentType());
          httpHeader->finish();
        }
+       try
+       {
         this->view->update(std::move(viewdata));
+       }
+       catch(const QtCommon2::QtException & e)
+       {
+            qDebug() << e.getLogString();
+       }
    } else{
      if(!httpHeader->getRedirectFlag())
      {

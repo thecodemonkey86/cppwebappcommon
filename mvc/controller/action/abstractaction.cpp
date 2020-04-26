@@ -7,9 +7,17 @@ void AbstractAction::runAction()
   {
     if(this->view->isAutoSendHeaders()) {
       auto viewdata = run();
-      httpHeader->setContentType(this->view->getHttpContentType());
-      httpHeader->finish();
-      this->view->update(std::move(viewdata));
+       if(viewdata != nullptr) {
+          httpHeader->setContentType(this->view->getHttpContentType());
+          httpHeader->finish();
+          this->view->update(std::move(viewdata));
+       } else {
+           if(!httpHeader->getRedirectFlag())
+           {
+            httpHeader->setContentType(HttpHeader::CONTENT_TYPE_TEXT_PLAIN);
+           }
+           httpHeader->finish();
+       }
     }
     else
     {

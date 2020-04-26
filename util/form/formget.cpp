@@ -98,7 +98,7 @@ QSet<int64_t> FormGet::int64HashSetValue(const QString &name) const
   return QSet<int64_t>();
 }
 
-const ArrayRequestParam & FormGet::array(const QString &name) const
+ArrayRequestParam* FormGet::array(const QString &name) const
 {
     return  request->getArray(name);
 }
@@ -144,5 +144,9 @@ uint32_t FormGet::uintValue(const QString &name) const
 
 QStringList FormGet::stringArrayValue(const QString &name) const
 {
+    if(!isSet(name))
+    {
+        return QStringList();
+    }
   return request->getStringArray(name);
 }
