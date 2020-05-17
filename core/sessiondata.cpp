@@ -76,7 +76,7 @@ void SessionData::saveSession()
 void SessionData::loadSessions(const QDir &dir)
 {
      QMutexLocker locker(&mutex);
-    tempDir = dir;
+    SessionData::dir = dir;
     auto filelist = dir.entryList(QStringList() <<  QStringLiteral("sess_*.json"));
     for(const auto & file : filelist )
     {
@@ -106,6 +106,21 @@ void SessionData::loadSessions(const QDir &dir)
    // qDebug() << SessionData::sessionData;
 }
 
+QDir SessionData::getDir()
+{
+    return dir;
+}
+
+int SessionData::getMinutesSessionValid()
+{
+    return minutesSessionValid;
+}
+
+void SessionData::setMinutesSessionValid(int value)
+{
+    minutesSessionValid = value;
+}
+
 QString SessionData::getSessionHash(ServerData *serverData, const QString & sessId)
 {
     return QString::fromLatin1(QCryptographicHash::hash((serverData->getIp()+sessId).toLatin1(),QCryptographicHash::Md5).toHex());
@@ -114,7 +129,7 @@ QString SessionData::getSessionHash(ServerData *serverData, const QString & sess
 QString SessionData::getSessionFileName(const QString & sessionHash)
 {
     //qDebug() << "filename sessid: "+this->sessId;
-    return tempDir.absoluteFilePath( QStringLiteral("sess_%1.json").arg(
+    return dir.absoluteFilePath( QStringLiteral("sess_%1.json").arg(
                                          sessionHash));
 }
 
@@ -142,11 +157,10 @@ void SessionData::clearSessionImpl()
     httpHeader->clearSessionCookie();
 }
 
-SessionData::SessionData(int minutesSessionValid,FCGX_Request & request,  ServerData * serverData, HttpHeader *httpHeader,QDir tempDir)
+SessionData::SessionData(FCGX_Request & request,  ServerData * serverData, HttpHeader *httpHeader, QDir tempDir)
 {
     QMutexLocker lock(&mutex);
-    this->tempDir = tempDir;
-    this->minutesSessionValid = minutesSessionValid;
+    this->dir = tempDir;
     this->serverData = serverData;
     this->httpHeader = httpHeader;
 
@@ -271,4 +285,5 @@ QHash<QString,QJsonObject> SessionData::sessionData;
 const QString SessionData::SESS_COOKIE_NAME=QStringLiteral("PHPSESSID");
 const QString SessionData::KEY_SESSION_VALID_UNTIL=QStringLiteral("__session_valid_until__");
 QMutex SessionData::mutex;
-QDir SessionData::tempDir;
+QDir SessionData::dir;
+int SessionData::minutesSessionValid = 24*60;

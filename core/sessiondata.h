@@ -21,12 +21,12 @@ class WEBAPPCOMMONSHARED_EXPORT SessionData
 protected:
     static QMutex mutex;
    static QHash<QString,QJsonObject> sessionData;
-   static QDir tempDir;
+   static QDir dir;
      static const QString KEY_SESSION_VALID_UNTIL;
     QString sessionHash;
     ServerData * serverData;
     HttpHeader *httpHeader;
-    int minutesSessionValid;
+    static int minutesSessionValid;
 
     public:
     static const QString SESS_COOKIE_NAME;
@@ -36,7 +36,7 @@ protected:
     inline void newSession(HttpHeader *httpHeader,ServerData * serverData);
     inline void clearSessionImpl();
 public:
-    SessionData(int minutesSessionValid,FCGX_Request & request, ServerData * s,HttpHeader * httpHeader,QDir tempDir = QDir(QDir::tempPath()));
+    SessionData(FCGX_Request & request, ServerData * s,HttpHeader * httpHeader,QDir dir = QDir(QDir::tempPath()));
     ~SessionData();
     void setValue(const QString&key,const QString&val);
     void setValue(const QString&key,bool val);
@@ -58,6 +58,9 @@ public:
     static void saveSessions();
     void saveSession();
     static void loadSessions(const QDir & dir);
+    static QDir getDir();
+    static int getMinutesSessionValid() ;
+    static void setMinutesSessionValid(int value);
 };
 
 #endif // SESSIONDATA_H
