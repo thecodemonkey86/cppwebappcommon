@@ -22,6 +22,26 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+
+COMPILER = ""
+ARCH = ""
+
+msvc {
+
+ COMPILER = "MSVC2017"
+ MSVC_VER = $$(VisualStudioVersion)
+ equals(MSVC_VER, 16.0){
+     COMPILER = "MSVC2019"
+ }
+
+    equals(QMAKE_TARGET.arch, "x86_64"){
+        ARCH = "64bit"
+    } else {
+         ARCH = "32bit"
+    }
+
+}
+
 SOURCES += \
     core/requestparam.cpp \
     mvc/controller/abstractpagecontroller.cpp \
@@ -86,11 +106,11 @@ HEADERS += webappcommon_global.h \
     util/form/formpost.h
 
 msvc {
-CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/libfcgi-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_MSVC2017_64bit/release/ -llibfcgi
-else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/libfcgi-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_MSVC2017_64bit/debug/ -llibfcgi
+CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/libfcgi-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_$${COMPILER}_$${ARCH}/release/ -llibfcgi
+else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/libfcgi-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_$${COMPILER}_$${ARCH}/debug/ -llibfcgi
 
-CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/QtCommon2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_MSVC2017_64bit/release/ -lQtCommon2
-else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/QtCommon2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_MSVC2017_64bit/debug/ -lQtCommon2
+CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/QtCommon2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_$${COMPILER}_$${ARCH}/release/ -lQtCommon2
+else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/QtCommon2-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_$${COMPILER}_$${ARCH}/debug/ -lQtCommon2
 }
 
 INCLUDEPATH += $$PWD/../libfcgi/include
