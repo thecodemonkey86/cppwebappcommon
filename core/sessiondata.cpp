@@ -157,10 +157,9 @@ void SessionData::clearSessionImpl()
     httpHeader->clearSessionCookie();
 }
 
-SessionData::SessionData(FCGX_Request & request,  ServerData * serverData, HttpHeader *httpHeader, QDir tempDir)
+SessionData::SessionData(FCGX_Request & request,  ServerData * serverData, HttpHeader *httpHeader)
 {
     QMutexLocker lock(&mutex);
-    this->dir = tempDir;
     this->serverData = serverData;
     this->httpHeader = httpHeader;
 

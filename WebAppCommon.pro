@@ -34,7 +34,7 @@ msvc {
      COMPILER = "MSVC2019"
  }
 
-    equals(QMAKE_TARGET.arch, "x86_64"){
+    equals(QT_ARCH, "x86_64"){
         ARCH = "64bit"
     } else {
          ARCH = "32bit"

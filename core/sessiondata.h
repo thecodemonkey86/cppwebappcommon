@@ -36,7 +36,7 @@ protected:
     inline void newSession(HttpHeader *httpHeader,ServerData * serverData);
     inline void clearSessionImpl();
 public:
-    SessionData(FCGX_Request & request, ServerData * s,HttpHeader * httpHeader,QDir dir = QDir(QDir::tempPath()));
+    SessionData(FCGX_Request & request, ServerData * s,HttpHeader * httpHeader);
     ~SessionData();
     void setValue(const QString&key,const QString&val);
     void setValue(const QString&key,bool val);
