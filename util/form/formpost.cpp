@@ -87,6 +87,7 @@ QDateTime FormPost::dateTimeValue(const QString &name) const
 
 bool FormPost::boolValue(const QString &name) const
 {
+  if(!isSet(name)) return false;
     return request->postInt(name) == 1;
 }
 
