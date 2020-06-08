@@ -65,12 +65,15 @@ void SessionData::saveSessions() {
 void SessionData::saveSession()
 {
       QMutexLocker locker(&mutex);
-    QFile f(getSessionFileName(sessionHash));
-    if(f.open(QIODevice::WriteOnly))
-    {
-        f.write(QJsonDocument(SessionData::sessionData[sessionHash]).toJson());
-        // QFile destructor closes the file
-    }
+      if(!sessionHash.isEmpty()) {
+
+        QFile f(getSessionFileName(sessionHash));
+        if(f.open(QIODevice::WriteOnly))
+        {
+            f.write(QJsonDocument(SessionData::sessionData[sessionHash]).toJson());
+            // QFile destructor closes the file
+        }
+      }
 }
 
 void SessionData::loadSessions(const QDir &dir)
