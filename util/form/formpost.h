@@ -5,7 +5,16 @@
 #include "webappcommon_global.h"
 class WEBAPPCOMMONSHARED_EXPORT FormPost : public Form
 {
-public:
+  public:
+  using Form::int64Value;
+  using Form::stringValue;
+  using Form::intValue;
+  using Form:: boolValue;
+  using Form:: dateValue;
+  using Form:: dateTimeValue;
+  using Form:: doubleValue;
+
+
     FormPost(RequestData * request,const QString&submitFieldName=QLatin1String("submit"));
     virtual ~FormPost() override;
     virtual const QString & stringValue(const QString&name) const override;
@@ -43,12 +52,7 @@ public:
      }
     // Form interface
 public:
-    virtual const QString & stringValue(const QString &name, const QString &defaultValue) const override;
-    virtual int intValue(const QString &name, int defaultValue) const override;
-    virtual bool boolValue(const QString &name, bool defaultValue) const override;
-    virtual QDate dateValue(const QString &name, const QDate &defaultValue) const override;
-    virtual QDateTime dateTimeValue(const QString &name, const QDateTime &defaultValue) const override;
-    virtual double doubleValue(const QString &name, double defaultValue) const override;
+
 
     inline const QString & stringValueGET(const QString &name, const QString &defaultValue) const
     {

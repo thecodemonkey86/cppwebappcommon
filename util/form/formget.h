@@ -5,12 +5,20 @@
 #include "webappcommon_global.h"
 class WEBAPPCOMMONSHARED_EXPORT FormGet : public Form
 {
-
 public:
+  using Form::int64Value;
+  using Form::stringValue;
+  using Form::intValue;
+     using Form:: boolValue;
+     using Form:: dateValue;
+     using Form:: dateTimeValue;
+     using Form:: doubleValue;
+
     FormGet(RequestData * request,const QString&submitFieldName=QLatin1String("submit"));
     virtual ~FormGet() override = default;
     virtual const QString & stringValue(const QString&name) const override;
     virtual int intValue(const QString&name) const override;
+
     virtual int64_t int64Value(const QString &name) const override;
     virtual double doubleValue(const QString&name) const override;
     virtual QDate dateValue(const QString&name) const override;
@@ -27,6 +35,8 @@ public:
      virtual QSet<int64_t> int64HashSetValue(const QString&name) const override;
     virtual ArrayRequestParam*  array(const QString&name) const override;
      virtual QStringList stringArrayValue(const QString &name) const override;
+     virtual uint32_t uintValue(const QString &name) const override;
+
     inline virtual StringKeyArrayParam * stringKeyArray(const QString&name) const override
     {
         return request->getStringKeyArray(name);
@@ -43,15 +53,8 @@ public:
      {
         return request->getStringKeyArray(fieldName)->val(arrayKey);
      }
-    // Form interface
-public:
-    virtual const QString & stringValue(const QString &name, const QString &defaultValue) const override;
-    virtual int intValue(const QString &name, int defaultValue) const override;
-    virtual bool boolValue(const QString &name, bool defaultValue) const override;
-    virtual QDate dateValue(const QString &name, const QDate &defaultValue) const override;
-    virtual QDateTime dateTimeValue(const QString &name, const QDateTime &defaultValue) const override;
-    virtual double doubleValue(const QString &name, double defaultValue) const override;
-    virtual uint32_t uintValue(const QString &name) const override;
+
+
 
 
 };

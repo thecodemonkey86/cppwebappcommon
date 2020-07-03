@@ -264,6 +264,19 @@ int SessionData::intValue(const QString &key) const
     return sessionData[sessionHash].value(key).toInt();
 }
 
+int SessionData::intValue(const QString &key, int defaultValue) const
+{
+  QMutexLocker lock(&mutex);
+  return sessionData[sessionHash].contains(key)? sessionData[sessionHash].value(key).toInt() : defaultValue;
+}
+
+
+QString SessionData::stringValue(const QString &key, QString defaultValue) const
+{
+  QMutexLocker lock(&mutex);
+  return sessionData[sessionHash].contains(key)? sessionData[sessionHash].value(key).toString() : defaultValue;
+}
+
 qint64 SessionData::int64Value(const QString &key) const
 {
     QMutexLocker lock(&mutex);

@@ -45,6 +45,15 @@ int Form::intValue(const QString &name, int defaultValue) const
     return intValue(name);
 }
 
+
+int64_t Form::int64Value(const QString &name, int64_t defaultValue) const
+{
+  if(!isSet(name)) {
+    return defaultValue;
+  }
+  return int64Value(name);
+}
+
 bool Form::boolValue(const QString &name, bool defaultValue) const
 {
     if(!isSet(name)) {
@@ -87,8 +96,6 @@ bool Form::isNotSetOrEmpty(const QString &name) const
 {
   return !isSet(name) || isValueEmpty(name);
 }
-
-
 
 
 //bool Form::submit()

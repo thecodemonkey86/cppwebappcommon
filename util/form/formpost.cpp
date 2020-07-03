@@ -128,38 +128,6 @@ QStringList FormPost::stringArrayValue(const QString &name) const
 }
 
 
-const QString & FormPost::stringValue(const QString &name, const QString &defaultValue) const
-{
-    return Form::stringValue(name,defaultValue);
-}
-
-int FormPost::intValue(const QString &name, int defaultValue) const
-{
-    return Form::intValue(name,defaultValue);
-}
-
-bool FormPost::boolValue(const QString &name, bool defaultValue) const
-{
-     return Form::boolValue(name,defaultValue);
-}
-
-QDate FormPost::dateValue(const QString &name, const QDate &defaultValue) const
-{
-    return Form::dateValue(name,defaultValue);
-}
-
-QDateTime FormPost::dateTimeValue(const QString &name, const QDateTime &defaultValue) const
-{
-     return Form::dateTimeValue(name,defaultValue);
-}
-
-double FormPost::doubleValue(const QString &name, double defaultValue) const
-{
-  return Form::doubleValue(name,defaultValue);
-}
-
-
-
 int FormPost::intValueGET(const QString &name, int defaultValue) const
 {
   if(!request->isGetParamSet(name))    {

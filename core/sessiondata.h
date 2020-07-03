@@ -61,6 +61,15 @@ public:
     static QDir getDir();
     static int getMinutesSessionValid() ;
     static void setMinutesSessionValid(int value);
+    int intValue(const QString &key, int defaultValue) const;
+    QString stringValue(const QString &key, QString defaultValue) const;
+
+    template<class T> T enumValue(const QString &key, T defaultValue) const
+    {
+      QMutexLocker lock(&mutex);
+      return sessionData[sessionHash].contains(key)? static_cast<T>(sessionData[sessionHash].value(key).toInt()) : defaultValue;
+    }
+
 };
 
 #endif // SESSIONDATA_H
