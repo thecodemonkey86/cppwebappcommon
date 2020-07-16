@@ -228,10 +228,20 @@ void SessionData::setValue(const QString &key, int val)
     sessionData[sessionHash].insert(key, QJsonValue(val));
 }
 
-void SessionData::setValue(const QString &key, qint64 val)
+void SessionData::setValue(const QString &key, int64_t val)
 {
     QMutexLocker lock(&mutex);
     sessionData[sessionHash].insert(key, QJsonValue(val));
+}
+
+void SessionData::setValue(const QString &key, const QVector<int64_t> &val)
+{
+  QMutexLocker lock(&mutex);
+  QJsonArray arr;
+  for(auto v:val) {
+    arr += QJsonValue(v);
+  }
+  sessionData[sessionHash].insert(key,arr);
 }
 
 void SessionData::setValue(const QString &key, const QJsonArray &arr)
@@ -277,10 +287,40 @@ QString SessionData::stringValue(const QString &key, QString defaultValue) const
   return sessionData[sessionHash].contains(key)? sessionData[sessionHash].value(key).toString() : defaultValue;
 }
 
-qint64 SessionData::int64Value(const QString &key) const
+QVector<int64_t> SessionData::int64ArrayValue(const QString &key)
+{
+   QMutexLocker lock(&mutex);
+   if(! sessionData[sessionHash].contains(key))
+     return QVector<int64_t>();
+   auto arr = sessionData[sessionHash].value(key).toArray();
+
+   QVector<int64_t> result(arr.size());
+   for(const auto & a : arr)
+   {
+     result += static_cast<int64_t>(a.toDouble());
+   }
+   return result;
+}
+
+QSet<int64_t> SessionData::int64HashSetValue(const QString &key)
+{
+  QMutexLocker lock(&mutex);
+  if(! sessionData[sessionHash].contains(key))
+    return QSet<int64_t>();
+  auto arr = sessionData[sessionHash].value(key).toArray();
+
+  QSet<int64_t> result;
+  for(const auto & a : arr)
+  {
+    result += static_cast<int64_t>(a.toDouble());
+  }
+  return result;
+}
+
+int64_t SessionData::int64Value(const QString &key) const
 {
     QMutexLocker lock(&mutex);
-    return static_cast<qint64>(sessionData[sessionHash].value(key).toDouble());
+    return static_cast<int64_t>(sessionData[sessionHash].value(key).toDouble());
 }
 
 QJsonArray SessionData::jsonArrayValue(const QString &key) const

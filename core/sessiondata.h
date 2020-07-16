@@ -42,6 +42,7 @@ public:
     void setValue(const QString&key,bool val);
     void setValue(const QString&key,int val);
     void setValue(const QString&key,qint64 val);
+    void setValue(const QString&key,const QVector<int64_t>& val);
     void setValue(const QString&key,const QJsonArray & arr);
     void removeValue(const QString&key);
     QString stringValue(const QString&key) const;
@@ -63,6 +64,8 @@ public:
     static void setMinutesSessionValid(int value);
     int intValue(const QString &key, int defaultValue) const;
     QString stringValue(const QString &key, QString defaultValue) const;
+    QVector<int64_t> int64ArrayValue(const QString &key);
+    QSet<int64_t> int64HashSetValue(const QString &key);
 
     template<class T> T enumValue(const QString &key, T defaultValue) const
     {
