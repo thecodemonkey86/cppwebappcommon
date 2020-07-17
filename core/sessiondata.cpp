@@ -244,6 +244,16 @@ void SessionData::setValue(const QString &key, const QVector<int64_t> &val)
   sessionData[sessionHash].insert(key,arr);
 }
 
+void SessionData::setValue(const QString &key, const QSet<int64_t> &val)
+{
+  QMutexLocker lock(&mutex);
+  QJsonArray arr;
+  for(auto v:val) {
+    arr += QJsonValue(v);
+  }
+  sessionData[sessionHash].insert(key,arr);
+}
+
 void SessionData::setValue(const QString &key, const QJsonArray &arr)
 {
     QMutexLocker lock(&mutex);
@@ -262,10 +272,10 @@ QString SessionData::stringValue(const QString &key) const
     return sessionData[sessionHash].value(key).toString();
 }
 
-bool SessionData::boolValue(const QString &key) const
+bool SessionData::boolValue(const QString &key,bool defaultValue) const
 {
     QMutexLocker lock(&mutex);
-    return sessionData[sessionHash].value(key).toBool();
+    return sessionData[sessionHash].contains(key)?  sessionData[sessionHash].value(key).toBool() : defaultValue;
 }
 
 int SessionData::intValue(const QString &key) const

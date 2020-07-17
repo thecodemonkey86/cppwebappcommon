@@ -43,10 +43,11 @@ public:
     void setValue(const QString&key,int val);
     void setValue(const QString&key,qint64 val);
     void setValue(const QString&key,const QVector<int64_t>& val);
+    void setValue(const QString&key,const QSet<int64_t>& val);
     void setValue(const QString&key,const QJsonArray & arr);
     void removeValue(const QString&key);
     QString stringValue(const QString&key) const;
-    bool boolValue(const QString&key) const;
+    bool boolValue(const QString&key, bool defaultValue = false) const;
     int intValue(const QString&key) const;
     qint64 int64Value(const QString &key) const;
     QJsonArray jsonArrayValue(const QString &key) const;
