@@ -284,6 +284,12 @@ int SessionData::intValue(const QString &key) const
     return sessionData[sessionHash].value(key).toInt();
 }
 
+uint SessionData::uintValue(const QString &key,uint defaultValue) const
+{
+    QMutexLocker lock(&mutex);
+    return sessionData[sessionHash].contains(key)? static_cast<uint>(sessionData[sessionHash].value(key).toInt()) : defaultValue;
+}
+
 int SessionData::intValue(const QString &key, int defaultValue) const
 {
   QMutexLocker lock(&mutex);

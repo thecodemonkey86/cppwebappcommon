@@ -49,6 +49,7 @@ public:
     QString stringValue(const QString&key) const;
     bool boolValue(const QString&key, bool defaultValue = false) const;
     int intValue(const QString&key) const;
+    uint uintValue(const QString&key,uint defaultValue) const;
     qint64 int64Value(const QString &key) const;
     QJsonArray jsonArrayValue(const QString &key) const;
     static const QString  & getSessionCookieName();
