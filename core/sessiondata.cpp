@@ -305,9 +305,10 @@ QVector<int64_t> SessionData::int64ArrayValue(const QString &key)
    auto arr = sessionData[sessionHash].value(key).toArray();
 
    QVector<int64_t> result(arr.size());
+   int i=0;
    for(const auto & a : arr)
    {
-     result += static_cast<int64_t>(a.toDouble());
+     result[i++] = static_cast<int64_t>(a.toDouble());
    }
    return result;
 }
