@@ -55,7 +55,9 @@ void HtmlTemplate::renderHeader() const
    {
      output(m.toHtmlString());
    }
-
+   outBeginTag("title");
+   output(title.toHtmlEscaped());
+   outEndTag("title");
 
    for(const auto & l : linkTags)
    {
@@ -122,6 +124,16 @@ void HtmlTemplate::renderInlineJs() const
 void HtmlTemplate::renderInlineCss() const
 {
 
+}
+
+QString HtmlTemplate::getTitle() const
+{
+  return title;
+}
+
+void HtmlTemplate::setTitle(const QString &value)
+{
+  title = value;
 }
 
 //QString HtmlTemplate::getBaseUrl() const

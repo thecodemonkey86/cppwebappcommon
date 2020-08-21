@@ -33,6 +33,7 @@ protected:
      OrderedSet<QString> includeFonts;
      QList<MetaTag> metaTags;
      QList<LinkTag> linkTags;
+     QString title;
      // AbstractTemplate interface
 public:
      virtual QString getHttpContentType() const;
@@ -45,6 +46,8 @@ public:
      void addLinkTag(const LinkTag&link);
 //     virtual QString getBaseUrl() const;
 //     void setBaseUrl(const QString &value);
+     QString getTitle() const;
+     void setTitle(const QString &value);
 };
 
 #endif // HTMLTEMPLATE_H

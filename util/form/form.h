@@ -8,6 +8,7 @@
 #include <QDate>
 #include <QSet>
 #include "webappcommon_global.h"
+
 class WEBAPPCOMMONSHARED_EXPORT Form
 {
 protected:
@@ -60,6 +61,10 @@ public:
     template<class E> E enumValue(const QString &name, E defaultValue)
     {
       return isSet(name) ? static_cast<E>(intValue(name)) : defaultValue;
+    }
+    template<class E> E enumValue(const QString &name)
+    {
+      return static_cast<E>(intValue(name)) ;
     }
     template<class E> QVector<E> enumArrayValue(const QString&name) const
     {

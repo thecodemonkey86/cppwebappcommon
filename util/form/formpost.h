@@ -76,6 +76,15 @@ public:
         return  request->getInt64Array(name);
       return QVector<int64_t>();
     }
+
+    template<class E> E enumValueGET(const QString &name, E defaultValue)
+    {
+      return isSet(name) ? static_cast<E>(intValueGET(name)) : defaultValue;
+    }
+    template<class E> E enumValueGET(const QString &name)
+    {
+      return static_cast<E>(intValueGET(name)) ;
+    }
 };
 
 
