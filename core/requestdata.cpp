@@ -53,11 +53,10 @@ RequestData::~RequestData()
 
 void RequestData::parseGetParams(const QUrl& url)
 {
-  QString requestString(url.query());
-    if ( requestString.isEmpty()) {
+    if ( !url.hasQuery()) {
         return;
     } else {
-        QStringList parts = requestString.split(QChar('&'));
+        QStringList parts = url.query().split(QChar('&'));
 
         for(const QString & part : parts) {
             int j;
