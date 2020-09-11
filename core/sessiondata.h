@@ -7,7 +7,7 @@
 #include <QHash>
 #include <QJsonObject>
 #include <QJsonArray>
-#include <QMutex>
+#include <QReadWriteLock>
 #include "requestdata.h"
 #include "serverdata.h"
 #include "httpheader.h"
@@ -19,7 +19,7 @@
 class WEBAPPCOMMONSHARED_EXPORT SessionData
 {
 protected:
-    static QMutex mutex;
+    static QReadWriteLock mutex;
    static QHash<QString,QJsonObject> sessionData;
    static QDir dir;
      static const QString KEY_SESSION_VALID_UNTIL;
@@ -71,7 +71,7 @@ public:
 
     template<class T> T enumValue(const QString &key, T defaultValue) const
     {
-      QMutexLocker lock(&mutex);
+      QReadLocker lock(&mutex);
       return sessionData[sessionHash].contains(key)? static_cast<T>(sessionData[sessionHash].value(key).toInt()) : defaultValue;
     }
 

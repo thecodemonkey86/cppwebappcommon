@@ -20,19 +20,19 @@ const QString & SessionData::getSessionCookieName()
 
 bool SessionData::hasValue(const QString &key) const
 {
-    QMutexLocker lock(&mutex);
+    QReadLocker lock(&mutex);
     return sessionData[sessionHash].contains(key);
 }
 
 void SessionData::clearSession()
 {
-    QMutexLocker locker(&mutex);
+    QWriteLocker locker(&mutex);
     clearSessionImpl();
 }
 
 void SessionData::renewSession()
 {
-    QMutexLocker locker(&mutex);
+    QWriteLocker locker(&mutex);
     newSession(httpHeader,serverData);
 }
 
@@ -46,7 +46,7 @@ void SessionData::renewSession()
 
 
 void SessionData::saveSessions() {
-    QMutexLocker locker(&mutex);
+    QWriteLocker locker(&mutex);
 
   auto it = SessionData::sessionData.keyValueBegin();
 
@@ -64,7 +64,7 @@ void SessionData::saveSessions() {
 
 void SessionData::saveSession()
 {
-      QMutexLocker locker(&mutex);
+      QWriteLocker locker(&mutex);
       if(!sessionHash.isEmpty()) {
 
         QFile f(getSessionFileName(sessionHash));
@@ -78,7 +78,7 @@ void SessionData::saveSession()
 
 void SessionData::loadSessions(const QDir &dir)
 {
-     QMutexLocker locker(&mutex);
+     QWriteLocker locker(&mutex);
     SessionData::dir = dir;
     auto filelist = dir.entryList(QStringList() <<  QStringLiteral("sess_*.json"));
     for(const auto & file : filelist )
@@ -162,7 +162,7 @@ void SessionData::clearSessionImpl()
 
 SessionData::SessionData(FCGX_Request & request,  ServerData * serverData, HttpHeader *httpHeader)
 {
-    QMutexLocker lock(&mutex);
+    QWriteLocker lock(&mutex);
     this->serverData = serverData;
     this->httpHeader = httpHeader;
 
@@ -213,30 +213,30 @@ SessionData::~SessionData()
 
 void SessionData::setValue(const QString&key, const QString &val)
 {
-    QMutexLocker lock(&mutex);
+    QWriteLocker lock(&mutex);
     sessionData[sessionHash].insert(key, QJsonValue(val));
 }
 void SessionData::setValue(const QString&key, bool val)
 {
-    QMutexLocker lock(&mutex);
+    QWriteLocker lock(&mutex);
     sessionData[sessionHash].insert(key, QJsonValue(val));
 }
 
 void SessionData::setValue(const QString &key, int val)
 {
-    QMutexLocker lock(&mutex);
+    QWriteLocker lock(&mutex);
     sessionData[sessionHash].insert(key, QJsonValue(val));
 }
 
 void SessionData::setValue(const QString &key, int64_t val)
 {
-    QMutexLocker lock(&mutex);
+    QWriteLocker lock(&mutex);
     sessionData[sessionHash].insert(key, QJsonValue(val));
 }
 
 void SessionData::setValue(const QString &key, const QVector<int64_t> &val)
 {
-  QMutexLocker lock(&mutex);
+  QWriteLocker lock(&mutex);
   QJsonArray arr;
   for(auto v:val) {
     arr += QJsonValue(v);
@@ -246,7 +246,7 @@ void SessionData::setValue(const QString &key, const QVector<int64_t> &val)
 
 void SessionData::setValue(const QString &key, const QSet<int64_t> &val)
 {
-  QMutexLocker lock(&mutex);
+  QWriteLocker lock(&mutex);
   QJsonArray arr;
   for(auto v:val) {
     arr += QJsonValue(v);
@@ -256,56 +256,56 @@ void SessionData::setValue(const QString &key, const QSet<int64_t> &val)
 
 void SessionData::setValue(const QString &key, const QJsonArray &arr)
 {
-    QMutexLocker lock(&mutex);
+    QWriteLocker lock(&mutex);
     sessionData[sessionHash].insert(key, arr);
 }
 
 void SessionData::removeValue(const QString &key)
 {
-    QMutexLocker lock(&mutex);
+    QWriteLocker lock(&mutex);
     sessionData[sessionHash].remove(key);
 }
 
 QString SessionData::stringValue(const QString &key) const
 {
-    QMutexLocker lock(&mutex);
+    QReadLocker lock(&mutex);
     return sessionData[sessionHash].value(key).toString();
 }
 
 bool SessionData::boolValue(const QString &key,bool defaultValue) const
 {
-    QMutexLocker lock(&mutex);
+    QReadLocker lock(&mutex);
     return sessionData[sessionHash].contains(key)?  sessionData[sessionHash].value(key).toBool() : defaultValue;
 }
 
 int SessionData::intValue(const QString &key) const
 {
-    QMutexLocker lock(&mutex);
+    QReadLocker lock(&mutex);
     return sessionData[sessionHash].value(key).toInt();
 }
 
 uint SessionData::uintValue(const QString &key,uint defaultValue) const
 {
-    QMutexLocker lock(&mutex);
+    QReadLocker lock(&mutex);
     return sessionData[sessionHash].contains(key)? static_cast<uint>(sessionData[sessionHash].value(key).toInt()) : defaultValue;
 }
 
 int SessionData::intValue(const QString &key, int defaultValue) const
 {
-  QMutexLocker lock(&mutex);
+  QReadLocker lock(&mutex);
   return sessionData[sessionHash].contains(key)? sessionData[sessionHash].value(key).toInt() : defaultValue;
 }
 
 
 QString SessionData::stringValue(const QString &key, QString defaultValue) const
 {
-  QMutexLocker lock(&mutex);
+  QReadLocker lock(&mutex);
   return sessionData[sessionHash].contains(key)? sessionData[sessionHash].value(key).toString() : defaultValue;
 }
 
 QVector<int64_t> SessionData::int64ArrayValue(const QString &key)
 {
-   QMutexLocker lock(&mutex);
+   QReadLocker lock(&mutex);
    if(! sessionData[sessionHash].contains(key))
      return QVector<int64_t>();
    auto arr = sessionData[sessionHash].value(key).toArray();
@@ -321,7 +321,7 @@ QVector<int64_t> SessionData::int64ArrayValue(const QString &key)
 
 QSet<int64_t> SessionData::int64HashSetValue(const QString &key)
 {
-  QMutexLocker lock(&mutex);
+  QReadLocker lock(&mutex);
   if(! sessionData[sessionHash].contains(key))
     return QSet<int64_t>();
   auto arr = sessionData[sessionHash].value(key).toArray();
@@ -336,13 +336,13 @@ QSet<int64_t> SessionData::int64HashSetValue(const QString &key)
 
 int64_t SessionData::int64Value(const QString &key) const
 {
-    QMutexLocker lock(&mutex);
+    QReadLocker lock(&mutex);
     return static_cast<int64_t>(sessionData[sessionHash].value(key).toDouble());
 }
 
 QJsonArray SessionData::jsonArrayValue(const QString &key) const
 {
-    QMutexLocker lock(&mutex);
+    QReadLocker lock(&mutex);
     return sessionData[sessionHash].value(key).toArray();
 }
 
@@ -356,6 +356,6 @@ QJsonArray SessionData::jsonArrayValue(const QString &key) const
 QHash<QString,QJsonObject> SessionData::sessionData;
 const QString SessionData::SESS_COOKIE_NAME=QStringLiteral("PHPSESSID");
 const QString SessionData::KEY_SESSION_VALID_UNTIL=QStringLiteral("__session_valid_until__");
-QMutex SessionData::mutex;
+QReadWriteLock SessionData::mutex;
 QDir SessionData::dir;
 int SessionData::minutesSessionValid = 24*60;

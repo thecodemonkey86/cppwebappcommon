@@ -53,7 +53,7 @@ RequestData::~RequestData()
 
 void RequestData::parseGetParams(const QUrl& url)
 {
-    QString requestString(url.query());
+  QString requestString(url.query());
     if ( requestString.isEmpty()) {
         return;
     } else {
@@ -62,7 +62,7 @@ void RequestData::parseGetParams(const QUrl& url)
         for(const QString & part : parts) {
             int j;
             if ( (j=part.indexOf(QChar('=')))>-1) {
-                addToHashtable(part.left(j),part.mid(j+1),getParams);
+              addToHashtable(QUrl::fromPercentEncoding(part.left(j).toUtf8()),QUrl::fromPercentEncoding(part.mid(j+1).toUtf8()),getParams);
             }
 
         }
