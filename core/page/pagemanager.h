@@ -95,6 +95,19 @@ public:
         return url;
     }
 
+    template<class C,class A> static QString url(const QVector<GetParam>& args) {
+        QString url = QStringLiteral("%1/?action=%2").arg(C::path(),A::name());
+        if(args.size() > 0)
+        {
+            for(const auto & a : args)
+            {
+                 url += QStringLiteral("&%1=%2").arg(a.getName(),a.getPercentEscapedValue());
+            }
+
+        }
+        return url;
+    }
+
     static QString url(QUrl currentUrl, const RequestParam & addOrUpdateParam);
 };
 
