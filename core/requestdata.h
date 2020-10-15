@@ -75,6 +75,7 @@ public:
     const UploadedFile & uploadedFile(const QString&fieldname) const;
     const UploadedFileArray & uploadedFileArray(const QString&fieldname) const;
     const UploadedFileStringKeyArray & uploadedFileArrayStringKey(const QString&fieldname) const;
+    bool isUploadedFileSet(const QString&fieldname) const;
     QVector<int> getIntArray(const QString&name) const;
     QVector<int64_t> getInt64Array(const QString&name) const;
     QVector<int> postIntArray(const QString&name) const;

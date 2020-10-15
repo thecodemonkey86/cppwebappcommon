@@ -728,6 +728,16 @@ const UploadedFileStringKeyArray & RequestData::uploadedFileArrayStringKey(const
     throwExceptionWithLine(QLatin1String("no such file"));
 }
 
+bool RequestData::isUploadedFileSet(const QString &fieldname) const
+{
+  for(const auto u : this->uploadFiles) {
+    if(u->getFieldName() == fieldname) {
+      return true;
+    }
+  }
+  return false;
+}
+
 QVector<int> RequestData::getIntArray(const QString &name) const
 {
     auto data = RequestData::getArray(name);
