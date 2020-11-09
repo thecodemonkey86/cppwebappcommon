@@ -62,20 +62,20 @@ bool Form::boolValue(const QString &name, bool defaultValue) const
     return boolValue(name);
 }
 
-QDate Form::dateValue(const QString &name, const QDate &defaultValue) const
+QDate Form::dateValue(const QString &name, const QDate &defaultValue,const QString&format) const
 {
-    if(!isSet(name)) {
+    if(isNotSetOrEmpty(name)) {
         return defaultValue;
     }
-    return dateValue(name);
+    return dateValue(name,format);
 }
 
-QDateTime Form::dateTimeValue(const QString &name, const QDateTime &defaultValue) const
+QDateTime Form::dateTimeValue(const QString &name, const QDateTime &defaultValue,const QString&format) const
 {
-    if(!isSet(name)) {
+    if(isNotSetOrEmpty(name)) {
         return defaultValue;
     }
-    return dateTimeValue(name);
+    return dateTimeValue(name,format);
 }
 
 double Form::doubleValue(const QString &name, double defaultValue) const
@@ -110,3 +110,11 @@ bool Form::isNotSetOrEmpty(const QString &name) const
 //    return false;
 //}
 
+
+uint Form::uintValue(const QString &name, uint defaultValue) const
+{
+  if(!isSet(name)) {
+    return defaultValue;
+  }
+  return uintValue(name);
+}

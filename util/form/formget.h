@@ -21,8 +21,8 @@ public:
 
     virtual int64_t int64Value(const QString &name) const override;
     virtual double doubleValue(const QString&name) const override;
-    virtual QDate dateValue(const QString&name) const override;
-    virtual QDateTime dateTimeValue(const QString&name) const override;
+    virtual QDate dateValue(const QString&name,const QString & format="yyyy-MM-dd") const override;
+    virtual QDateTime dateTimeValue(const QString&name,const QString & format="yyyy-MM-ddThh:mm") const override;
     virtual bool boolValue(const QString &name) const override;
 
     virtual bool isSubmitted() const override;

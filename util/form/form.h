@@ -26,8 +26,8 @@ public:
     virtual int64_t int64Value(const QString&name) const=0;
     virtual uint32_t uintValue(const QString&name) const=0;
     virtual bool boolValue(const QString&name) const=0;
-    virtual QDate dateValue(const QString&name) const=0;
-    virtual QDateTime dateTimeValue(const QString&name) const=0;
+    virtual QDate dateValue(const QString&name, const QString &format="yyyy-MM-dd") const=0;
+    virtual QDateTime dateTimeValue(const QString&name,const QString & format="yyyy-MM-ddThh:mm") const=0;
     virtual double doubleValue(const QString&name) const=0;
     virtual bool isValueEmpty(const QString&name) const=0;
    virtual QVector<int> intArrayValue(const QString&name) const=0;
@@ -40,9 +40,10 @@ public:
     const QString & stringValue(const QString&name, const QString & defaultValue) const;
 
     int64_t int64Value(const QString&name,int64_t defaultValue) const;
+    uint uintValue(const QString&name,uint defaultValue) const;
     bool boolValue(const QString&name,bool defaultValue) const;
-    QDate dateValue(const QString&name, const QDate & defaultValue) const;
-    QDateTime dateTimeValue(const QString&name, const QDateTime & defaultValue) const;
+    QDate dateValue(const QString&name, const QDate & defaultValue, const QString &format="yyyy-MM-dd") const;
+    QDateTime dateTimeValue(const QString&name, const QDateTime & defaultValue,const QString & format="yyyy-MM-ddThh:mm") const;
     double doubleValue(const QString&name,double defaultValue) const;
 
 

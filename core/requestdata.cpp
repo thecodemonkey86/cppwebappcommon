@@ -471,7 +471,10 @@ int RequestData::getInt(const QString & name) const
 {
     bool ok = false;
     int i = getString(name).toInt(&ok);
-    if (!ok) throwExceptionWithLine(QLatin1String("Parameter is not a number"));
+    if (!ok) {
+      qDebug()<< getString(name);
+      throwExceptionWithLine(QLatin1String("Parameter is not a number"));
+    }
     return i;
 }
 

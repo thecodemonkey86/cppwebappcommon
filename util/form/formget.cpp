@@ -29,28 +29,30 @@ double FormGet::doubleValue(const QString &name) const
     return request->getDouble(name);
 }
 
-QDate FormGet::dateValue(const QString &name) const
+QDate FormGet::dateValue(const QString &name, const QString &format) const
 {
     QString d(request->getString(name));
-    if (d.count(QChar('-')) == 2) {
+    return QDate::fromString(d,format);
+  /*  if (d.count(QChar('-')) == 2) {
         return QDate::fromString(d,QStringLiteral("yyyy-MM-dd"));
     } else if (d.count(QChar('.')) == 2) {
         return QDate::fromString(d,QStringLiteral("dd.MM.yyyy"));
     } else {
         throw QtException(QStringLiteral("Invalid date format"));
-    }
+    }*/
 }
 
-QDateTime FormGet::dateTimeValue(const QString &name) const
+QDateTime FormGet::dateTimeValue(const QString &name, const QString &format) const
 {
     QString d(request->getString(name));
-    if (d.count(QChar('-')) == 2) {
+    return QDateTime::fromString(d,format);
+   /* if (d.count(QChar('-')) == 2) {
         return QDateTime::fromString(d,QStringLiteral("yyyy-MM-dd HH:mm:ss"));
     } else if (d.count(QChar('.')) == 2) {
         return QDateTime::fromString(d,QStringLiteral("dd.MM.yyyy HH:mm:ss"));
     } else {
         throw QtException(QStringLiteral("Invalid date format"));
-    }
+    }*/
 }
 
 bool FormGet::isSubmitted() const

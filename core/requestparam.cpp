@@ -2,7 +2,13 @@
 
 RequestParam::RequestParam(const QString &name, const QString &value) : AbstractRequestParam() {
     this->name = name;
-    this->value = value;
+  this->value = value;
+}
+
+RequestParam::RequestParam(const QString &name, uint value)
+{
+  this->name = name;
+  this->value = QString::number(value);
 }
 
 RequestParam::RequestParam(const QString &name, int value)
