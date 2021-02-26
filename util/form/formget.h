@@ -13,6 +13,7 @@ public:
      using Form:: dateValue;
      using Form:: dateTimeValue;
      using Form:: doubleValue;
+     using Form:: uintValue;
 
     FormGet(RequestData * request,const QString&submitFieldName=QLatin1String("submit"));
     virtual ~FormGet() override = default;

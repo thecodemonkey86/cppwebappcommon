@@ -23,7 +23,7 @@ QString PageManager::url(QUrl  currentUrl, const RequestParam &addOrUpdateParam)
   QStringList newParams;
   newParams.reserve(params.size()+1);
   bool found = false;
-  for(auto p : params)
+  for(const auto & p : params)
   {
     auto parts = p.split(QChar('='));
     if(parts.length() == 2)
