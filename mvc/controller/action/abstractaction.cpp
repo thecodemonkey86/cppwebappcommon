@@ -11,7 +11,7 @@ void AbstractAction::runAction()
           httpHeader->setContentType(this->view->getHttpContentType());
           httpHeader->finish();
           try {
-            this->view->update(std::move(viewdata));
+            this->view->update(*viewdata);
           } catch (...) {
           }
        } else {
@@ -28,7 +28,7 @@ void AbstractAction::runAction()
        if(viewdata != nullptr) {
           this->view->setHttpHeader(httpHeader);
            try {
-            this->view->update(std::move(viewdata));
+            this->view->update(*viewdata);
            } catch (...) {
            }
        } else {

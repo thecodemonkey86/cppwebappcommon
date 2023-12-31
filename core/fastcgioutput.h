@@ -9,8 +9,13 @@ struct FCGX_Stream;
 #include <webappcommon_global.h>
 #ifdef QT_DEBUG
 class QIODevice;
+class QJsonObject;
+class QJsonArray;
 #else
 #include <QIODevice>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 #endif
 class
 #ifdef QT_DEBUG
@@ -33,6 +38,20 @@ public:
      * @param out
      */
     static void write(QLatin1StringView s, FCGX_Stream *out);
+
+
+    /**
+     * @brief writes a QJsonObject as UTF-8 to the FastCGI output stream
+     * @param s
+     * @param out
+     */
+    static void write(const QJsonObject & o, FCGX_Stream *out);
+    /**
+     * @brief writes a QJsonArray as UTF-8 to the FastCGI output stream
+     * @param s
+     * @param out
+     */
+    static void write(const QJsonArray & o, FCGX_Stream *out);
     /**
      * @brief writes a QByteArray to the FastCGI output stream
      * @param b
@@ -471,6 +490,8 @@ public:
             * @param out
             */
            static void writeHtmlDoubleEncodedToBuffer(const char* c, QString & buffer);
+
+
 #else
     /**
      * @brief writes a QString as UTF-8 to the FastCGI output stream
@@ -496,6 +517,15 @@ public:
      */
     inline static void write(const QByteArray&b, FCGX_Stream *out) {
       FCGX_PutStr(b.constData(),b.length(),out);
+    }
+
+    inline static void write(const QJsonObject &o, FCGX_Stream *out)
+    {
+        write(QJsonDocument(o).toJson(QJsonDocument::Compact),out);
+    }
+    inline static void write(const QJsonArray &o, FCGX_Stream *out)
+    {
+        write(QJsonDocument(o).toJson(QJsonDocument::Compact),out);
     }
 
     inline static void write(QIODevice & ioDevice, FCGX_Stream *out)

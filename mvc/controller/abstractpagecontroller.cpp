@@ -80,11 +80,10 @@ void AbstractPageController::runController()
        }
        try
        {
-        this->view->update(std::move(viewdata));
+        this->view->update(*viewdata);
        }
-       catch(const QtCommon2::QtException & e)
+       catch(const QtCommon2::QtException & )
        {
-            qCritical().noquote() << e.getLogString();
        }
    } else{
      if(!httpHeader->getRedirectFlag())

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "webappcommon_global.h"
-#include <memory>
 #include <core/fastcgioutput.h>
 class ViewData;
 class HttpHeader;
@@ -20,7 +19,7 @@ public:
     virtual ~AbstractView() = default;
     virtual QString getHttpContentType() const=0;
 
-    virtual void update(std::unique_ptr<ViewData>viewdata)=0;
+    virtual void update(const ViewData &viewdata)=0;
     void setHttpHeader(HttpHeader *value);
     void setOutStream(FCGX_Stream *value);
     bool isAutoSendHeaders() const;

@@ -15,7 +15,7 @@ bool HttpHeader::getRedirectFlag() const
 
 void HttpHeader::finish()
 {
-
+    FastCgiOutput::write("Access-Control-Allow-Origin: *\r\n",out);
     if(sessionCookie != nullptr) {
         FastCgiOutput::write("Set-Cookie: ",out);
         FastCgiOutput::write(sessionCookie->toRawForm(),out);

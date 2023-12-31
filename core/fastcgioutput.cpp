@@ -2,16 +2,25 @@
 #include "fcgiapp.h"
 
 #include <QIODevice>
-
+#include <QJsonDocument>
 void FastCgiOutput::write(QStringView s, FCGX_Stream *out) {
   auto data = s.toUtf8();
   FCGX_PutStr(data.constData(),data.size(),out);
 }
 
 void FastCgiOutput::write(QLatin1StringView s, FCGX_Stream *out) {
-  FCGX_PutStr(s.constData(),s.size(),out);
+    FCGX_PutStr(s.constData(),s.size(),out);
 }
 
+void FastCgiOutput::write(const QJsonObject &o, FCGX_Stream *out)
+{
+    write(QJsonDocument(o).toJson(QJsonDocument::Compact),out);
+}
+
+void FastCgiOutput::write(const QJsonArray &arr, FCGX_Stream *out)
+{
+    write(QJsonDocument(arr).toJson(QJsonDocument::Compact),out);
+}
 
 void FastCgiOutput::write(const QByteArray &b, FCGX_Stream *out) {
   FCGX_PutStr(b.constData(),b.size(),out);

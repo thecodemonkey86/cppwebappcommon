@@ -5,7 +5,7 @@
 #-------------------------------------------------
 QT += core sql network
 QT       -= gui
-
+CONFIG += c++2b
 TARGET = WebAppCommon
 TEMPLATE = lib
 
