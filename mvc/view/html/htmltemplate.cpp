@@ -1,5 +1,4 @@
 #include "htmltemplate.h"
-#include "core/page/pagemanager.h"
 #include "core/httpheader.h"
 #include <QStringList>
 
@@ -48,9 +47,9 @@ void HtmlTemplate::renderHeader() const
    outBeginTagWithAttrs("meta");
    outAttr("charset", "utf-8");
    output('>');
-   outBeginTagWithAttrs("meta");
-   outAttr("viewport", "width=device-width, initial-scale=1, shrink-to-fit=no");
-   output('>');
+//   outBeginTagWithAttrs("meta");
+//   outAttr("viewport", "width=device-width, initial-scale=1, shrink-to-fit=no");
+//   output('>');
    for(const auto & m : metaTags)
    {
      output(m.toHtmlString());

@@ -1,10 +1,9 @@
-#ifndef UPLOADEDFILEARRAY_H
-#define UPLOADEDFILEARRAY_H
+#pragma once
+
 
 #include "abstractuploadedfile.h"
 #include "uploadedfile.h"
 #include <QVector>
-#include <QVariant>
 #include "webappcommon_global.h"
 class WEBAPPCOMMONSHARED_EXPORT UploadedFileArray : public AbstractUploadedFile, public QVector<UploadedFile>
 {
@@ -20,6 +19,5 @@ public:
     virtual void cleanup() const override;
 };
 
-uint qHash(const UploadedFileArray &);
+size_t qHash(const UploadedFileArray &);
 
-#endif // UPLOADEDFILEARRAY_H

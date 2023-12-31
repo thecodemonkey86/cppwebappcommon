@@ -1,5 +1,5 @@
-#ifndef UPLOADEDFILESTRINGKEYARRAY_H
-#define UPLOADEDFILESTRINGKEYARRAY_H
+#pragma once
+
 #include "abstractuploadedfile.h"
 #include "uploadedfile.h"
 #include <QHash>
@@ -16,4 +16,3 @@ public:
     virtual void cleanup() const override;
 };
 
-#endif // UPLOADEDFILESTRINGKEYARRAY_H

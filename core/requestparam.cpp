@@ -1,26 +1,25 @@
 #include "requestparam.h"
+#include "exception/qtexception.h"
+#include <QUrl>
+RequestParam::RequestParam(const QString &name, const QString &value) : AbstractRequestParam(),    name(name),value(value) {
+    if(value.size()>MAX_LENGTH)
+    {
+        throwExceptionCriticalWithLine("request exceeds maximum size");
+    }
 
-RequestParam::RequestParam(const QString &name, const QString &value) : AbstractRequestParam() {
-    this->name = name;
-  this->value = value;
 }
 
-RequestParam::RequestParam(const QString &name, uint value)
+RequestParam::RequestParam(const QString &name, uint value):  name(name),value(QString::number(value))
 {
-  this->name = name;
-  this->value = QString::number(value);
+
 }
 
-RequestParam::RequestParam(const QString &name, int value)
+RequestParam::RequestParam(const QString &name, int value):  name(name),value(QString::number(value))
 {
-    this->name = name;
-    this->value = QString::number(value);
 }
 
-RequestParam::RequestParam(const QString &name, int64_t value)
+RequestParam::RequestParam(const QString &name, int64_t value):  name(name),value(QString::number(value))
 {
-    this->name = name;
-    this->value = QString::number(value);
 }
 
 const QString & RequestParam::getValue() const {

@@ -1,9 +1,12 @@
 #include "arrayvalue.h"
-#include <QDebug>
+#include "exception/qtexception.h"
 
-ArrayValue::ArrayValue(const QString &value)
+ArrayValue::ArrayValue(const QString &value) :value(value)
 {
-    this->value = value;
+    if(value.size()>MAX_LENGTH)
+    {
+        throwExceptionCriticalWithLine("request exceeds maximum size");
+    }
 }
 
 ArrayValue::~ArrayValue()
@@ -16,7 +19,7 @@ QString ArrayValue::toString() const
     return value;
 }
 
-AbstractStringKeyArrayParam *ArrayValue::val(const QString&key) const
+const AbstractStringKeyArrayParam *ArrayValue::val(const QString &key) const
 {
     return nullptr;
 }

@@ -1,5 +1,5 @@
 #include "ajaxhtmlview.h"
-
+#include <core/httpheader.h>
 
 QString AjaxHtmlView::getHttpContentType() const
 {

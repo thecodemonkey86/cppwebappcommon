@@ -1,23 +1,20 @@
-#ifndef REQUESTDATA_H
-#define REQUESTDATA_H
+#pragma once
 
-#include <QString>
-#include <QFile>
-#include <QHash>
-#include <QVector>
-#include "core/requestparam.h"
-#include "abstractuploadedfile.h"
-#include "uploadedfile.h"
-#include "uploadedfilearray.h"
-#include "uploadedfilestringkeyarray.h"
-#include "arrayrequestparam.h"
-#include "abstractstringkeyarrayparam.h"
-#include "fcgio.h"
-#include "stringkeyarrayparam.h"
-#include <QUrl>
-#include <memory>
 #include "webappcommon_global.h"
-using namespace std;
+#include <QHash>
+#include <QIODevice>
+#include <exception/qtexception.h>
+class AbstractRequestParam;
+class AbstractUploadedFile;
+class ArrayRequestParam;
+class QUrl;
+class QString;
+class StringKeyArrayParam;
+class UploadedFile;
+class UploadedFileArray;
+class UploadedFileStringKeyArray;
+struct FCGX_Request;
+
 
 class WEBAPPCOMMONSHARED_EXPORT RequestData
 {
@@ -26,7 +23,7 @@ private:
     static constexpr char NL = '\n';
     static constexpr char HYPHEN = '-';
     static constexpr int BUF_SIZE = 8192;
-
+    static int maxPostSize;
     QHash<QString, AbstractRequestParam*> getParams;
     QHash<QString, AbstractRequestParam*> postParams;
     QVector<AbstractUploadedFile*> uploadFiles;
@@ -35,11 +32,34 @@ private:
     void parseGetParams(const QUrl& url);
     void parsePostParams(const FCGX_Request & request);
 
-    inline void addToHashtable(const QString & fieldName, const QString &value, QHash<QString, AbstractRequestParam*>& params);
-    inline static void writeFileBuf(QIODevice *writeDevice, int & pos, char*  buf, char c );
-    inline static void writeFileBuf(QIODevice *file, int &pos, char *buf, int c);
-    inline static int checkNotEof(int c);
-    inline static void expectChar(int c, int expected);
+    static void addToHashtable(const QString & fieldName, const QString &value, QHash<QString, AbstractRequestParam*>& params);
+    inline static void writeFileBuf(QIODevice *writeDevice, int & pos, char*  buf, char c )
+    {
+      buf[pos++] = c;
+      if(pos == BUF_SIZE) {
+        writeDevice->write(buf, BUF_SIZE);
+        pos = 0;
+      }
+    }
+    inline static void writeFileBuf(QIODevice *writeDevice, int &pos, char *buf, int c)
+    {
+      buf[pos++] = static_cast<char>(c);
+      if(pos == BUF_SIZE) {
+        writeDevice->write(buf, BUF_SIZE);
+        pos = 0;
+      }
+    }
+    inline static int checkNotEof(int c)
+    {
+      if(c==-1)
+        throwExceptionWithLine("unexpected end of stream");
+      return c;
+    }
+    inline static void expectChar(int c, int expected)
+    {
+      if(c!=expected)
+        throwExceptionWithLine(QStringLiteral("expected character %1 but got %2").arg(static_cast<char>(expected),c));
+    }
 
     static void parseMultipart(QIODevice * writeDevice,const FCGX_Request & request, bool & foundFinalDelimiter, const QString &delimiter);
 
@@ -84,6 +104,5 @@ public:
     QStringList postStringArray(const QString&name) const;
     QSet<int64_t> getInt64HashSet(const QString&name) const;
     QSet<int64_t> postInt64HashSet(const QString &name) const;
+    static void setMaxPostSize(int newMaxPostSize);
 };
-
-#endif // REQUESTDATA_H

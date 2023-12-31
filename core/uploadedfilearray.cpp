@@ -27,7 +27,7 @@ bool UploadedFileArray::operator ==(const UploadedFileArray &other) const
 }
 
 
-uint qHash(const UploadedFileArray & u)
+size_t qHash(const UploadedFileArray & u)
 {
  return qHash(u.getFieldName());
 }

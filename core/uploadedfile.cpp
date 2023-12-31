@@ -37,18 +37,19 @@ void UploadedFile::cleanup() const
 }
 
 
-UploadedFile::UploadedFile()  : AbstractUploadedFile(QString())
+UploadedFile::UploadedFile()  : AbstractUploadedFile(QString()),size(0LL)
 {
 
 }
 
 UploadedFile::UploadedFile(const QString & sourceFileName, const QString & fieldName,const QString &temporaryPath, const QString &mimeType,int64_t size)
-    : AbstractUploadedFile (fieldName)
+    : AbstractUploadedFile (fieldName) ,
+    temporaryPath(temporaryPath),
+    mimeType(mimeType),
+    size(size),
+    sourceFileName(sourceFileName)
 {
-    this->temporaryPath = temporaryPath;
-    this->mimeType = mimeType;
-    this->size = size;
-    this->sourceFileName = sourceFileName;
+
 }
 
 
@@ -76,7 +77,7 @@ bool UploadedFile::move(const QString &path)
 
 
 
-uint qHash(const UploadedFile &u)
+size_t qHash(const UploadedFile &u)
 {
     return qHash(u.getFieldName());
 }

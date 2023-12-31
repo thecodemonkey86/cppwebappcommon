@@ -1,5 +1,5 @@
 #include "jsonview.h"
-
+#include <core/httpheader.h>
 JsonView::JsonView()
 {
 

@@ -1,5 +1,5 @@
 #include "abstractaction.h"
-
+#include <core/httpheader.h>
 
 void AbstractAction::runAction()
 {
@@ -10,7 +10,10 @@ void AbstractAction::runAction()
        if(viewdata != nullptr) {
           httpHeader->setContentType(this->view->getHttpContentType());
           httpHeader->finish();
-          this->view->update(std::move(viewdata));
+          try {
+            this->view->update(std::move(viewdata));
+          } catch (...) {
+          }
        } else {
            if(!httpHeader->getRedirectFlag())
            {
@@ -21,13 +24,26 @@ void AbstractAction::runAction()
     }
     else
     {
-      this->view->setHttpHeader(httpHeader);
-      this->view->update(run());
+       auto viewdata = run();
+       if(viewdata != nullptr) {
+          this->view->setHttpHeader(httpHeader);
+           try {
+            this->view->update(std::move(viewdata));
+           } catch (...) {
+           }
+       } else {
+          if(!httpHeader->getRedirectFlag())
+          {
+            httpHeader->setContentType(HttpHeader::CONTENT_TYPE_TEXT_PLAIN);
+          }
+          httpHeader->finish();
+       }
     }
   }
   else
   {
     run();
+    httpHeader->finish();
   }
 
 }
@@ -70,7 +86,7 @@ void AbstractAction::setOutStream(FCGX_Stream *outStream)
 }
 
 
-void AbstractAction::registerView(unique_ptr<AbstractView> view)
+void AbstractAction::registerView(std::unique_ptr<AbstractView> view)
 {
     this->view = std::move(view);
 }

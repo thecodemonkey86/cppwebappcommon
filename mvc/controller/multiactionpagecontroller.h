@@ -7,8 +7,8 @@ class AbstractAction;
 #include "webappcommon_global.h"
 #include "mvc/controller/abstractpagecontroller.h"
 #include <memory>
+#include <mvc/model/viewdata.h>
 
-using namespace std;
 
 /**
  * @brief abstract base class for multi action page controllers
@@ -16,16 +16,16 @@ using namespace std;
 class WEBAPPCOMMONSHARED_EXPORT MultiActionPageController : public AbstractPageController
 {
 protected:
-    QHash<QString, shared_ptr<AbstractAction>> actions;
-    shared_ptr<AbstractAction> defaultAction;
-  virtual unique_ptr<ViewData> run() override;
+    QHash<QString, std::shared_ptr<AbstractAction>> actions;
+    std::shared_ptr<AbstractAction> defaultAction;
+  virtual std::unique_ptr<ViewData> run() override;
 
 public:
     virtual void runController() override;
     MultiActionPageController() = default;
     virtual ~MultiActionPageController() override = default;
-    template <class A> shared_ptr<A> addAction(bool setDefaultAction = false) {
-        auto action = make_shared<A>();
+    template <class A> std::shared_ptr<A> addAction(bool setDefaultAction = false) {
+        auto action = std::make_shared<A>();
         actions.insert(A::name(), action);
         if(setDefaultAction)
         {

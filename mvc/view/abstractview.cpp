@@ -1,5 +1,5 @@
 #include "abstractview.h"
-
+#include <core/httpheader.h>
 void AbstractView::setHttpHeader(HttpHeader *value)
 {
     httpHeader = value;
@@ -10,9 +10,8 @@ void AbstractView::setOutStream(FCGX_Stream *value)
     out = value;
 }
 
-AbstractView::AbstractView()
+AbstractView::AbstractView() : autoSendHeaders(true),httpHeader(nullptr),out(nullptr)
 {
-    autoSendHeaders = true;
 }
 
 bool AbstractView::isAutoSendHeaders() const

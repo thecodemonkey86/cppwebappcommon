@@ -1,4 +1,5 @@
 #include "serverdata.h"
+#include "fcgiapp.h"
 #include <QDebug>
 
 ServerData::~ServerData()
@@ -7,12 +8,10 @@ ServerData::~ServerData()
 }
 
 ServerData::ServerData(const FCGX_Request &request)
+    : requestUrl(QUrl::fromUserInput(QStringLiteral("%1://%2%3").arg(FCGX_GetParam("HTTPS", request.envp)!=nullptr&& strcmp(FCGX_GetParam("HTTPS", request.envp),"on")==0 ?QStringLiteral("https"):QStringLiteral("http"), QString(FCGX_GetParam("HTTP_HOST", request.envp)),  QString(FCGX_GetParam("REQUEST_URI", request.envp)).replace(QChar('+'),QStringLiteral("%20"))))),
+      ip(FCGX_GetParam("REMOTE_ADDR", request.envp)),
+      documentRoot(FCGX_GetParam("DOCUMENT_ROOT", request.envp))
 {
-    QString https(FCGX_GetParam("HTTPS", request.envp));
-    //qDebug()<<QStringLiteral("%1://%2%3").arg(https.isEmpty()?"http":"https", QString(FCGX_GetParam("HTTP_HOST", request.envp)),  QString(FCGX_GetParam("REQUEST_URI", request.envp)).replace(QChar('+'),QLatin1String("%20")));
-    requestUrl = QUrl::fromUserInput(QStringLiteral("%1://%2%3").arg(https.isEmpty()?"http":"https", QString(FCGX_GetParam("HTTP_HOST", request.envp)),  QString(FCGX_GetParam("REQUEST_URI", request.envp)).replace(QChar('+'),QLatin1String("%20"))).toUtf8());
-    ip = QString(FCGX_GetParam("REMOTE_ADDR", request.envp));
-    documentRoot = QString(FCGX_GetParam("DOCUMENT_ROOT", request.envp));
 }
 const QString& ServerData::getIp() const
 {

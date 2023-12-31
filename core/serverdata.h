@@ -1,11 +1,9 @@
-#ifndef SERVERDATA_H
-#define SERVERDATA_H
-#include "fcgio.h"
-#include <QDir>
-#include <QString>
-#include <QUrl>
-#include "webappcommon_global.h"
+#pragma once
 
+#include "webappcommon_global.h"
+#include <QUrl>
+#include <QDir>
+struct FCGX_Request;
 class WEBAPPCOMMONSHARED_EXPORT ServerData
 {
 public:
@@ -24,4 +22,3 @@ private:
     QString documentRoot;
 };
 
-#endif // SERVERDATA_H

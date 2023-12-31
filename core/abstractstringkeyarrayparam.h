@@ -1,7 +1,7 @@
-#ifndef ABSTRACTSTRINGKEYARRAYPARAM_H
-#define ABSTRACTSTRINGKEYARRAYPARAM_H
+#pragma once
+
 class StringKeyArrayParam;
-#include <QString>
+class QString;
 #include "abstractrequestparam.h"
 #include "webappcommon_global.h"
 class WEBAPPCOMMONSHARED_EXPORT AbstractStringKeyArrayParam : public AbstractRequestParam
@@ -9,8 +9,8 @@ class WEBAPPCOMMONSHARED_EXPORT AbstractStringKeyArrayParam : public AbstractReq
 public:
     AbstractStringKeyArrayParam();
     virtual ~AbstractStringKeyArrayParam();
-   virtual AbstractStringKeyArrayParam* val(const QString&key) const=0;
-    StringKeyArrayParam* stringKeyArray(const QString&key) const;
+    virtual const AbstractStringKeyArrayParam* val(const QString&key) const=0;
+    const StringKeyArrayParam* stringKeyArray(const QString&key) const;
     const QString & stringValue(const QString&key) const;
     double doubleValue(const QString&key) const;
     int intValue(const QString&key) const;
@@ -18,4 +18,3 @@ public:
     const QString & stringValue(const QStringList & arrayKeys) const;
 };
 
-#endif // ABSTRACTSTRINGKEYARRAYPARAM_H

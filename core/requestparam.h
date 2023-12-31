@@ -1,9 +1,8 @@
-#ifndef REQUESTPARAM_H
-#define REQUESTPARAM_H
+#pragma once
+
 
 #include "abstractrequestparam.h"
 #include "webappcommon_global.h"
-#include <QUrl>
 class RequestParam;
 
 typedef RequestParam GetParam  ;
@@ -31,4 +30,3 @@ public:
 
 
 
-#endif // REQUESTPARAM_H

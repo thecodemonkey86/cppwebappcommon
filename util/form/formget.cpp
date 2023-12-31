@@ -1,6 +1,5 @@
 #include "formget.h"
 #include <QDate>
-#include "exception/qtexception.h"
 using namespace QtCommon2;
 
 FormGet::FormGet(RequestData * request,const QString&submitFieldName) : Form(request,submitFieldName)
@@ -31,28 +30,17 @@ double FormGet::doubleValue(const QString &name) const
 
 QDate FormGet::dateValue(const QString &name, const QString &format) const
 {
-    QString d(request->getString(name));
-    return QDate::fromString(d,format);
-  /*  if (d.count(QChar('-')) == 2) {
-        return QDate::fromString(d,QStringLiteral("yyyy-MM-dd"));
-    } else if (d.count(QChar('.')) == 2) {
-        return QDate::fromString(d,QStringLiteral("dd.MM.yyyy"));
-    } else {
-        throw QtException(QStringLiteral("Invalid date format"));
-    }*/
+    return QDate::fromString(request->getString(name),format);
 }
 
 QDateTime FormGet::dateTimeValue(const QString &name, const QString &format) const
 {
-    QString d(request->getString(name));
-    return QDateTime::fromString(d,format);
-   /* if (d.count(QChar('-')) == 2) {
-        return QDateTime::fromString(d,QStringLiteral("yyyy-MM-dd HH:mm:ss"));
-    } else if (d.count(QChar('.')) == 2) {
-        return QDateTime::fromString(d,QStringLiteral("dd.MM.yyyy HH:mm:ss"));
-    } else {
-        throw QtException(QStringLiteral("Invalid date format"));
-    }*/
+    return QDateTime::fromString(request->getString(name),format);
+}
+
+QDateTime FormGet::dateTimeValue(const QString &name, Qt::DateFormat format, bool toLocalTime) const
+{
+  return toLocalTime? QDateTime::fromString(request->getString(name),format).toLocalTime() :QDateTime::fromString(request->getString(name),format);
 }
 
 bool FormGet::isSubmitted() const
@@ -63,7 +51,8 @@ bool FormGet::isSubmitted() const
 
 bool FormGet::boolValue(const QString &name) const
 {
-    return request->getInt(name) == 1;
+    if(!isSet(name)) return false;
+    return request->getBool(name);
 }
 
 

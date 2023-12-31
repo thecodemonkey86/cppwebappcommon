@@ -1,5 +1,5 @@
-#ifndef UPLOADEDFILE_H
-#define UPLOADEDFILE_H
+#pragma once
+
 #include <QPair>
 #include <QString>
 #include "webappcommon_global.h"
@@ -65,5 +65,4 @@ public:
      */
     virtual void cleanup() const override;
 };
-uint qHash(const UploadedFile & u);
-#endif // UPLOADEDFILE_H
+size_t qHash(const UploadedFile & u);

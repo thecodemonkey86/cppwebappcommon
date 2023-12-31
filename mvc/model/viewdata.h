@@ -1,5 +1,5 @@
-#ifndef VIEWDATA_H
-#define VIEWDATA_H
+#pragma once
+
 
 
 class ViewData
@@ -9,4 +9,3 @@ public:
     virtual ~ViewData()= default;
 };
 
-#endif // VIEWDATA_H

@@ -1,5 +1,5 @@
-#ifndef WEBAPPCOMMON_GLOBAL_H
-#define WEBAPPCOMMON_GLOBAL_H
+#pragma once
+
 
 #include <QtCore/qglobal.h>
 
@@ -12,4 +12,3 @@
 #  define WEBAPPCOMMONSHARED_EXPORT Q_DECL_IMPORT
 #endif
 
-#endif // WEBAPPCOMMON_GLOBAL_H

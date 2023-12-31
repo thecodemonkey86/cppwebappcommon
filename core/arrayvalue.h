@@ -1,5 +1,5 @@
-#ifndef ARRAYVALUE_H
-#define ARRAYVALUE_H
+#pragma once
+
 #include "webappcommon_global.h"
 #include "abstractstringkeyarrayparam.h"
 
@@ -11,10 +11,9 @@ protected:
 public:
     ArrayValue(const QString &value);
     virtual ~ArrayValue();
-    virtual QString  toString() const;
-    virtual AbstractStringKeyArrayParam* val(const QString&key) const;
+    virtual QString  toString() const override;
+    virtual const AbstractStringKeyArrayParam* val(const QString&key) const override;
     const QString &  getValue() const;
 
 };
 
-#endif // ARRAYVALUE_H

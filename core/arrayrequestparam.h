@@ -1,5 +1,5 @@
-#ifndef ARRAYREQUESTPARAM_H
-#define ARRAYREQUESTPARAM_H
+#pragma once
+
 #include "requestparam.h"
 #include "abstractrequestparam.h"
 #include <QStringList>
@@ -15,4 +15,3 @@ public:
     virtual QString toString() const;
 };
 
-#endif // ARRAYREQUESTPARAM_H

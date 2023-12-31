@@ -1,8 +1,11 @@
-#ifndef FORMPOST_H
-#define FORMPOST_H
+#pragma once
+
 #include "form.h"
 #include <QDate>
 #include "webappcommon_global.h"
+#include <core/requestdata.h>
+#include <core/stringkeyarrayparam.h>
+
 class WEBAPPCOMMONSHARED_EXPORT FormPost : public Form
 {
   public:
@@ -15,7 +18,7 @@ class WEBAPPCOMMONSHARED_EXPORT FormPost : public Form
   using Form:: doubleValue;
 
 
-    FormPost(RequestData * request,const QString&submitFieldName=QLatin1String("submit"));
+    FormPost(RequestData * request,const QString&submitFieldName=QStringLiteral("submit"));
     virtual ~FormPost() override;
     virtual const QString & stringValue(const QString&name) const override;
     virtual int intValue(const QString&name) const override;
@@ -27,6 +30,7 @@ class WEBAPPCOMMONSHARED_EXPORT FormPost : public Form
     virtual double doubleValue(const QString&name) const override;
     virtual QDate dateValue(const QString&name,const QString & format="yyyy-MM-dd") const override;
     virtual QDateTime dateTimeValue(const QString&name,const QString & format="yyyy-MM-ddThh:mm") const override;
+    virtual QDateTime dateTimeValue(const QString&name,Qt::DateFormat format, bool toLocalTime) const override;
     virtual bool boolValue(const QString &name) const override;
     virtual bool isSubmitted() const override;
 
@@ -46,7 +50,7 @@ class WEBAPPCOMMONSHARED_EXPORT FormPost : public Form
      {
         return request->postStringKeyArray(fieldName)->stringValue(arrayKey);
      }
-     inline virtual AbstractStringKeyArrayParam*  arrayValue(const QString&fieldName,const QString&arrayKey) const override
+     inline virtual const AbstractStringKeyArrayParam*  arrayValue(const QString&fieldName,const QString&arrayKey) const override
      {
         return request->postStringKeyArray(fieldName)->val(arrayKey);
      }
@@ -66,6 +70,7 @@ public:
     int intValueGET(const QString &name) const;
     int64_t int64ValueGET(const QString &name, int64_t defaultValue) const;
     int64_t int64ValueGET(const QString &name) const;
+    bool boolValueGET(const QString &name) const;
     inline bool isGetParamSet(const QString &name) const {
       return request->isGetParamSet(name);
     }
@@ -79,7 +84,7 @@ public:
 
     template<class E> E enumValueGET(const QString &name, E defaultValue)
     {
-      return isSet(name) ? static_cast<E>(intValueGET(name)) : defaultValue;
+      return isGetParamSet(name) ? static_cast<E>(intValueGET(name)) : defaultValue;
     }
     template<class E> E enumValueGET(const QString &name)
     {
@@ -88,4 +93,3 @@ public:
 };
 
 
-#endif // FORMPOST_H

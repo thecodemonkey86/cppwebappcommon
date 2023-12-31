@@ -1,9 +1,14 @@
 #include "metatag.h"
 
-MetaTag::MetaTag(const QString &name, const QString &content)
+const QString &MetaTag::getHttpEquiv() const
 {
-  this->name = name;
-  this->content = content;
+  return httpEquiv;
+}
+
+MetaTag& MetaTag::setHttpEquiv(const QString &newHttpEquiv)
+{
+  httpEquiv = newHttpEquiv;
+  return *this;
 }
 
 const QString &  MetaTag::getName() const
@@ -11,9 +16,10 @@ const QString &  MetaTag::getName() const
   return name;
 }
 
-void MetaTag::setName(const QString &value)
+MetaTag&  MetaTag::setName(const QString &value)
 {
   name = value;
+  return *this;
 }
 
 const QString &  MetaTag::getContent() const
@@ -21,13 +27,24 @@ const QString &  MetaTag::getContent() const
   return content;
 }
 
-void MetaTag::setContent(const QString &value)
+MetaTag&  MetaTag::setContent(const QString &value)
 {
   content = value;
+  return *this;
 }
 
 QString MetaTag::toHtmlString() const
 {
-  return QStringLiteral("<meta name=\"%1\" content=\"%2\"/>").arg(name.toHtmlEscaped(),content.toHtmlEscaped());
+  QString html=QStringLiteral("<meta");
+  if(!name.isNull())
+  {
+    html+=QStringLiteral(" name=\"%1\"").arg(name);
+  }
+  if(!httpEquiv.isNull())
+  {
+    html+=QStringLiteral(" http-equiv=\"%1\"").arg(httpEquiv);
+  }
+   html+=QStringLiteral(" content=\"%1\"").arg(content);
+  return html+"/>";
 }
 

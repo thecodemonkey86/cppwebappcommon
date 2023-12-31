@@ -1,14 +1,16 @@
-#ifndef HTTPHEADER_H
-#define HTTPHEADER_H
+#pragma once
+
 
 #include <QString>
-#include <QUrl>
-#include "core/fastcgioutput.h"
-#include "webappcommon_global.h"
 #include <QNetworkCookie>
 #include <memory>
-#include "fcgio.h"
-using namespace std;
+#include "webappcommon_global.h"
+struct FCGX_Request;
+struct FCGX_Stream;
+class QNetworkCookie;
+class QUrl;
+
+using std::unique_ptr;
 
 /**
  * @brief class provides methods to set HTTP headers in FastCGI connection
@@ -42,7 +44,7 @@ public:
      * @brief sets the session ID, class QNetworkCookie is used internally
      * @param session ID
      */
-    void setSessionCookie(const QString& value, const QString &domain, const QDateTime & validUntil);
+    void setSessionCookie(const QString& value, const QString& domain, bool secure);
 
     /**
      * @brief sets the HTTP header "Content-Type: <MIME type>"
@@ -86,6 +88,7 @@ public:
      * @param url
      */
     void redirect(const QUrl & url);
+    void redirect(const QString & url);
     bool getRedirectFlag() const;
 
     /**
@@ -97,4 +100,3 @@ public:
     bool hasRequestSessionId() const;
 };
 
-#endif // HTTPHEADER_H

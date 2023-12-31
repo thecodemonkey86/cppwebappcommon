@@ -1,12 +1,12 @@
 #include "httpheader.h"
 #include "exception/qtexception.h"
-#include <QNetworkCookie>
+#include "qnetworkcookie.h"
 #include "sessiondata.h"
-#ifdef QT_DEBUG
-#include <QDebug>
-#endif
+#include "core/fastcgioutput.h"
+#include "fcgiapp.h"
+
 using namespace QtCommon2;
-using namespace std;
+
 
 bool HttpHeader::getRedirectFlag() const
 {
@@ -22,18 +22,13 @@ void HttpHeader::finish()
         FastCgiOutput::write("\r\n",out);
     }
 
-
     FastCgiOutput::write("\r\n",out);
 }
 
 
 
-HttpHeader::HttpHeader(const FCGX_Request & request)
+HttpHeader::HttpHeader(const FCGX_Request & request) : out(request.out),sessionCookie(nullptr),redirectFlag(false)
 {
-  this->out = request.out;
-  this->redirectFlag = false;
-    sessionCookie = nullptr;
-
 
 }
 
@@ -50,11 +45,12 @@ void HttpHeader::clearSessionCookie()
     sessionCookie = nullptr;
 }
 
-void HttpHeader::setSessionCookie(const QString &value,const QString&domain, const QDateTime &validUntil)
+void HttpHeader::setSessionCookie(const QString& value, const QString& domain, bool secure)
 {
-    sessionCookie = make_unique<QNetworkCookie>(SessionData::getSessionCookieName().toLatin1(), value.toLatin1() );
-    sessionCookie->setExpirationDate(validUntil);
+    sessionCookie = std::make_unique<QNetworkCookie>(SessionData::getSessionCookieName().toLatin1(), value.toLatin1() );
     sessionCookie->setHttpOnly(true);
+    sessionCookie->setSecure(secure);
+    sessionCookie->setSameSitePolicy(QNetworkCookie::SameSite::Lax);
     sessionCookie->setPath("/");
     sessionCookie->setDomain(domain);
 }
@@ -123,11 +119,17 @@ void HttpHeader::setReturnCode(int code, const QString &msg)
 
 void HttpHeader::redirect(const QUrl &url)
 {
+    redirect(url.toString(QUrl::None));
+}
+
+void HttpHeader::redirect(const QString &url)
+{
     this->redirectFlag = true;
     FastCgiOutput::write( "Location: ",out);
-    FastCgiOutput::write(url.toString(QUrl::None),out);
+    FastCgiOutput::write(url,out);
     FastCgiOutput::write("\r\n",out);
 }
+
 
 const QString HttpHeader::CONTENT_TYPE_TEXT_HTML("text/html; charset=UTF-8");
 const QString HttpHeader::CONTENT_TYPE_TEXT_PLAIN("text/plain; charset=UTF-8");

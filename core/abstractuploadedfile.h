@@ -1,5 +1,5 @@
-#ifndef ABSTRACTUPLOADEDFILE_H
-#define ABSTRACTUPLOADEDFILE_H
+#pragma once
+
 #include <QString>
 #include "webappcommon_global.h"
 class WEBAPPCOMMONSHARED_EXPORT AbstractUploadedFile
@@ -20,4 +20,3 @@ public:
        virtual void cleanup() const =0;
 };
 
-#endif // ABSTRACTUPLOADEDFILE_H

@@ -1,17 +1,18 @@
-#ifndef ABSTRACTPAGECONTROLLER_H
-#define ABSTRACTPAGECONTROLLER_H
+#pragma once
 
-#include "mvc/model/viewdata.h"
+
 #include "mvc/view/abstractview.h"
+#include <mvc/model/viewdata.h>
 #include <memory>
-#include "core/requestdata.h"
-#include "core/serverdata.h"
-#include "core/sessiondata.h"
-#include "core/httpheader.h"
+class ServerData;
+class RequestData;
+class SessionData;
+class HttpHeader;
+struct FCGX_Stream;
 #include <QtSql/QSqlDatabase>
 #include "webappcommon_global.h"
 
-using namespace std;
+
 
 /**
  * @brief abstract base class for single action page controllers
@@ -25,15 +26,15 @@ protected:
     HttpHeader * httpHeader;
     QSqlDatabase sqlCon;
 
-    unique_ptr<AbstractView> view;
-    virtual unique_ptr<ViewData> run()=0;
+    std::unique_ptr<AbstractView> view;
+    virtual std::unique_ptr<ViewData> run()=0;
 public:
     AbstractPageController();
     virtual ~AbstractPageController()=default;
 
-    void registerView(unique_ptr<AbstractView> view);
+    void registerView(std::unique_ptr<AbstractView> view);
     template<class T> inline void registerView() {
-         this->view = make_unique<T>();
+         this->view = std::make_unique<T>();
     }
     virtual void runController();
 
@@ -51,4 +52,3 @@ public:
     virtual void setOutStream(FCGX_Stream *outStream);
 };
 
-#endif // ABSTRACTPAGECONTROLLER_H

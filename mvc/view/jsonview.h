@@ -1,5 +1,5 @@
-#ifndef JSONVIEW_H
-#define JSONVIEW_H
+#pragma once
+
 
 #include "abstractview.h"
 #include "webappcommon_global.h"
@@ -14,4 +14,3 @@ public:
     virtual QString getHttpContentType() const override;
 };
 
-#endif // JSONVIEW_H

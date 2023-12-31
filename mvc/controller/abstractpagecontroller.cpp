@@ -1,5 +1,6 @@
 #include "abstractpagecontroller.h"
 #include "exception/qtexception.h"
+#include <core/httpheader.h>
 #include <QDebug>
 
 RequestData *AbstractPageController::getRequestData() const
@@ -58,12 +59,11 @@ void AbstractPageController::setOutStream(FCGX_Stream *outStream)
         this->view->setOutStream(outStream);
 }
 
-AbstractPageController::AbstractPageController()
+AbstractPageController::AbstractPageController() : view(nullptr), requestData(nullptr),serverData(nullptr),sessionData(nullptr),httpHeader(nullptr)
 {
-    this->view = nullptr;
 }
 
-void AbstractPageController::registerView(unique_ptr<AbstractView> view)
+void AbstractPageController::registerView(std::unique_ptr<AbstractView> view)
 {
     this->view = std::move(view);
 }
@@ -84,7 +84,7 @@ void AbstractPageController::runController()
        }
        catch(const QtCommon2::QtException & e)
        {
-            qDebug() << e.getLogString();
+            qCritical().noquote() << e.getLogString();
        }
    } else{
      if(!httpHeader->getRedirectFlag())

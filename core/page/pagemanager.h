@@ -1,20 +1,24 @@
-#ifndef PAGEMANAGER_H
-#define PAGEMANAGER_H
-#include <QString>
-#include <memory>
-#include <vector>
-#include "exception/qtexception.h"
-#include <QHash>
-#include "pageconfig.h"
-#include "webappcommon_global.h"
-#include "core/requestparam.h"
+#pragma once
 
-using namespace std;
+#include <QString>
+#include <QHash>
+#include <QUrl>
+#include <memory>
+#include "core/requestparam.h"
+#include "webappcommon_global.h"
+class RequestData;
+class ServerData;
+class SessionData;
+class HttpHeader;
+class QSqlDatabase;
+struct FCGX_Stream;
+class RequestParam;
+class PageConfig;
 
 class WEBAPPCOMMONSHARED_EXPORT PageManager
 {
 private:
-    QHash<QString,shared_ptr<PageConfig>> pages;
+    QHash<QString,std::shared_ptr<PageConfig>> pages;
 
 
 public:
@@ -28,11 +32,11 @@ public:
      */
     bool hasPageForPath(const QString & path) const;
 
-    template<class C> void addPage(const shared_ptr<C> &config) {
+    template<class C> void addPage(const std::shared_ptr<C> &config) {
         pages.insert(C::path(),config);
     }
     template<class C> void addPage() {
-        pages.insert(C::path(),make_shared<C>());
+        pages.insert(C::path(),std::make_shared<C>());
     }
     template<class C> static QString url() {
         // return QStringLiteral("/?page=%1").arg(C::path());
@@ -111,4 +115,3 @@ public:
     static QString url(QUrl currentUrl, const RequestParam & addOrUpdateParam);
 };
 
-#endif // PAGEMANAGER_H

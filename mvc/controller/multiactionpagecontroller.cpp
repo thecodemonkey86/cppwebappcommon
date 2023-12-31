@@ -4,7 +4,7 @@
 
 using namespace QtCommon2;
 
-unique_ptr<ViewData> MultiActionPageController::run()
+std::unique_ptr<ViewData> MultiActionPageController::run()
 {
    return nullptr;
 
@@ -17,27 +17,27 @@ void MultiActionPageController::runController()
     QString action = requestData->getStringNoCheckForExistance(pAction);
     if (actions.contains(action)) {
       auto a = actions.value(action);
+      a->setSessionData(sessionData);
       a->setSqlCon(sqlCon);
       a->setServerData(serverData);
-      a->setRequestData(requestData);
-      a->setSessionData(sessionData);
+      a->setRequestData(requestData);     
       a->setHttpHeader(httpHeader);
       a->runAction();
     } else if(defaultAction != nullptr) {
+      defaultAction->setSessionData(sessionData);
       defaultAction->setSqlCon(sqlCon);
       defaultAction->setServerData(serverData);
-      defaultAction->setRequestData(requestData);
-      defaultAction->setSessionData(sessionData);
+      defaultAction->setRequestData(requestData);      
       defaultAction->setHttpHeader(httpHeader);
       defaultAction->runAction();
     } else {
       throw QtException(QLatin1String("No such action"));
     }
   } else if(defaultAction != nullptr) {
+    defaultAction->setSessionData(sessionData);
      defaultAction->setSqlCon(sqlCon);
     defaultAction->setServerData(serverData);
-    defaultAction->setRequestData(requestData);
-    defaultAction->setSessionData(sessionData);
+    defaultAction->setRequestData(requestData);    
     defaultAction->setHttpHeader(httpHeader);
     defaultAction->runAction();
   } else {

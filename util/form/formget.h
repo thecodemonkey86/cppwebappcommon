@@ -1,8 +1,10 @@
-#ifndef FORMGET_H
-#define FORMGET_H
+#pragma once
+
 #include "form.h"
 #include <QDate>
 #include "webappcommon_global.h"
+#include <core/requestdata.h>
+#include <core/stringkeyarrayparam.h>
 class WEBAPPCOMMONSHARED_EXPORT FormGet : public Form
 {
 public:
@@ -15,7 +17,7 @@ public:
      using Form:: doubleValue;
      using Form:: uintValue;
 
-    FormGet(RequestData * request,const QString&submitFieldName=QLatin1String("submit"));
+    FormGet(RequestData * request,const QString&submitFieldName=QStringLiteral("submit"));
     virtual ~FormGet() override = default;
     virtual const QString & stringValue(const QString&name) const override;
     virtual int intValue(const QString&name) const override;
@@ -24,6 +26,7 @@ public:
     virtual double doubleValue(const QString&name) const override;
     virtual QDate dateValue(const QString&name,const QString & format="yyyy-MM-dd") const override;
     virtual QDateTime dateTimeValue(const QString&name,const QString & format="yyyy-MM-ddThh:mm") const override;
+    virtual QDateTime dateTimeValue(const QString&name, Qt::DateFormat format, bool toLocalTime) const override;
     virtual bool boolValue(const QString &name) const override;
 
     virtual bool isSubmitted() const override;
@@ -50,7 +53,7 @@ public:
      {
         return request->getStringKeyArray(fieldName)->stringValue(arrayKey);
      }
-     inline virtual AbstractStringKeyArrayParam*  arrayValue(const QString&fieldName,const QString&arrayKey) const override
+     inline virtual const AbstractStringKeyArrayParam*  arrayValue(const QString&fieldName,const QString&arrayKey) const override
      {
         return request->getStringKeyArray(fieldName)->val(arrayKey);
      }
@@ -60,4 +63,3 @@ public:
 
 };
 
-#endif // FORMGET_H

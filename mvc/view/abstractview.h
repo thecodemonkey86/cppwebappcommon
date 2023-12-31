@@ -1,11 +1,11 @@
-#ifndef ABSTRACTVIEW_H
-#define ABSTRACTVIEW_H
+#pragma once
+
 #include "webappcommon_global.h"
-#include "mvc/model/viewdata.h"
 #include <memory>
-#include <core/httpheader.h>
-#include "core/fastcgioutput.h"
-using namespace std;
+#include <core/fastcgioutput.h>
+class ViewData;
+class HttpHeader;
+struct FCGX_Stream;
 
 class WEBAPPCOMMONSHARED_EXPORT AbstractView
 {
@@ -20,7 +20,7 @@ public:
     virtual ~AbstractView() = default;
     virtual QString getHttpContentType() const=0;
 
-    virtual void update(unique_ptr<ViewData>viewdata)=0;
+    virtual void update(std::unique_ptr<ViewData>viewdata)=0;
     void setHttpHeader(HttpHeader *value);
     void setOutStream(FCGX_Stream *value);
     bool isAutoSendHeaders() const;
@@ -32,4 +32,3 @@ protected:
     }
 };
 
-#endif // ABSTRACTVIEW_H

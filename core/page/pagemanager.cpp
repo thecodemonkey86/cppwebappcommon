@@ -1,13 +1,23 @@
 #include "pagemanager.h"
 
 #include <exception/qtexception.h>
-
+#include "pageconfig.h"
+#ifdef QT_DEBUG
+#include <QDebug>
+#include <QDateTime>
+#endif
 using namespace QtCommon2;
 
 
 void PageManager::runController(const QString&page, FCGX_Stream * outStream, RequestData * requestData, SessionData * sessionData, ServerData * serverData, HttpHeader *httpHeader, const QSqlDatabase & sqlCon)
 {
+#ifdef QT_DEBUG
+    auto l=QDateTime::currentMSecsSinceEpoch();
+#endif
      this->pages[page]->run(requestData,sessionData,serverData,httpHeader,sqlCon,outStream);
+#ifdef QT_DEBUG
+     qDebug().noquote()<<"Duration of "<<page<<": " << (QDateTime::currentMSecsSinceEpoch()-l)<<" ms";
+#endif
 }
 
 bool PageManager::hasPageForPath(const QString &path) const

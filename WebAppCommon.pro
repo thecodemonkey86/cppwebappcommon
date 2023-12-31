@@ -21,14 +21,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
-
-
+CONFIG(debug, debug|release) {
+    DEFINES += SAVE_SESSIONS_TO_FILESYSTEM_ENABLED
+}
 COMPILER = ""
 ARCH = ""
 
 msvc {
 
- COMPILER = "MSVC2017"
+ COMPILER = "MSVC2019"
  MSVC_VER = $$(VisualStudioVersion)
  equals(MSVC_VER, 16.0){
      COMPILER = "MSVC2019"
@@ -104,6 +105,11 @@ HEADERS += webappcommon_global.h \
     util/form/form.h \
     util/form/formget.h \
     util/form/formpost.h
+
+CONFIG(debug, debug|release) {
+    SOURCES += core/fastcgioutput.cpp
+}
+
 
 msvc {
 CONFIG(release, debug|release): LIBS += -L$$PWD/../../build/libfcgi-Desktop_Qt_$${QT_MAJOR_VERSION}_$${QT_MINOR_VERSION}_$${QT_PATCH_VERSION}_$${COMPILER}_$${ARCH}/release/ -llibfcgi

@@ -1,9 +1,8 @@
 #include "arrayrequestparam.h"
 
 ArrayRequestParam::ArrayRequestParam(const QString &name)
-    : AbstractRequestParam()
+    : AbstractRequestParam(), name(name)
 {
-    this->name = name;
 }
 
 ArrayRequestParam::~ArrayRequestParam()

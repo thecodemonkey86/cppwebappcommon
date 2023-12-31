@@ -2,7 +2,7 @@
 #include "exception/qtexception.h"
 #include "stringkeyarrayparam.h"
 #include "arrayvalue.h"
-
+#include <QString>
 using namespace QtCommon2;
 
 AbstractStringKeyArrayParam::AbstractStringKeyArrayParam()
@@ -15,9 +15,9 @@ AbstractStringKeyArrayParam::~AbstractStringKeyArrayParam()
 
 }
 
-StringKeyArrayParam *AbstractStringKeyArrayParam::stringKeyArray(const QString &key) const
+const StringKeyArrayParam *AbstractStringKeyArrayParam::stringKeyArray(const QString &key) const
 {
-    auto arr = dynamic_cast<StringKeyArrayParam * >(val(key));
+    auto arr = dynamic_cast<const StringKeyArrayParam * >(val(key));
     if(arr == nullptr) {
         throwExceptionWithLine("invalid URL parameters");
     }
@@ -26,7 +26,7 @@ StringKeyArrayParam *AbstractStringKeyArrayParam::stringKeyArray(const QString &
 
 const QString & AbstractStringKeyArrayParam::stringValue(const QString &key) const
 {
-    auto value = dynamic_cast<ArrayValue*>(val(key));
+    auto value = dynamic_cast<const ArrayValue*>(val(key));
     if(value == nullptr) {
         throwExceptionWithLine("invalid URL parameters");
     }
@@ -35,7 +35,7 @@ const QString & AbstractStringKeyArrayParam::stringValue(const QString &key) con
 
 double AbstractStringKeyArrayParam::doubleValue(const QString &key) const
 {
-    auto value = dynamic_cast<ArrayValue*>(val(key));
+    auto value = dynamic_cast<const ArrayValue*>(val(key));
     if(value == nullptr) {
         throwExceptionWithLine("invalid URL parameters");
     }
@@ -50,7 +50,7 @@ double AbstractStringKeyArrayParam::doubleValue(const QString &key) const
 
 int AbstractStringKeyArrayParam::intValue(const QString &key) const
 {
-    auto value = dynamic_cast<ArrayValue*>(val(key));
+    auto value = dynamic_cast<const ArrayValue*>(val(key));
     if(value == nullptr) {
         throwExceptionWithLine("invalid URL parameters");
     }
@@ -70,6 +70,7 @@ const QString & AbstractStringKeyArrayParam::stringValue(int dimensionsCount,...
     for(int i=0;i<dimensionsCount;i++) {
         arr = arr->val(QString(va_arg(ap, const char*)));
         if (arr == nullptr) {
+            va_end(ap);
             throw QtException(QStringLiteral("Illegal url"));
         }
     }

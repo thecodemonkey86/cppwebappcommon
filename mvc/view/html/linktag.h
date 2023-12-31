@@ -1,5 +1,5 @@
-#ifndef LINKTAG_H
-#define LINKTAG_H
+#pragma once
+
 
 #include <QString>
 #include "webappcommon_global.h"
@@ -19,4 +19,3 @@ public:
   QString toHtmlString() const;
 };
 
-#endif // LINKTAG_H

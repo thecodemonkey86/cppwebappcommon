@@ -1,5 +1,5 @@
-#ifndef HTMLTEMPLATE_H
-#define HTMLTEMPLATE_H
+#pragma once
+
 
 #include "../abstractview.h"
 #include <QSet>
@@ -11,15 +11,15 @@
 #include "metatag.h"
 
 using namespace QtCommon2;
-using namespace std;
+
 
 class WEBAPPCOMMONSHARED_EXPORT HtmlTemplate : public AbstractView
 {
 public:
-    inline void outAttr(const QString &attr, const QString &value) const;
-    inline void outBeginTag(const QString &tag) const;
-    inline void outBeginTagWithAttrs(const QString &tag) const;
-    inline void outEndTag(const QString &tag) const;
+    void outAttr(const QString &attr, const QString &value) const;
+    void outBeginTag(const QString &tag) const;
+    void outBeginTagWithAttrs(const QString &tag) const;
+    void outEndTag(const QString &tag) const;
    // virtual void beforeRender();
 protected:
 
@@ -50,4 +50,3 @@ public:
      void setTitle(const QString &value);
 };
 
-#endif // HTMLTEMPLATE_H

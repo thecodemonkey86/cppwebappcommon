@@ -1,29 +1,24 @@
-#ifndef ABSTRACTACTION_H
-#define ABSTRACTACTION_H
+#pragma once
+
 class MultiActionPageController;
-#include "../multiactionpagecontroller.h"
-#include "mvc/view/abstractview.h"
-#include <QUrl>
-#include "core/requestdata.h"
-#include "core/serverdata.h"
-#include "core/sessiondata.h"
+class ServerData;
+class RequestData;
+class SessionData;
+class HttpHeader;
+#include <QSqlDatabase>
 #include "webappcommon_global.h"
-#include <memory>
-#include <QtSql/QSqlDatabase>
-using namespace std;
-
-class MultiActionPageController;
-
+#include "mvc/view/abstractview.h"
+#include <mvc/model/viewdata.h>
 class WEBAPPCOMMONSHARED_EXPORT AbstractAction
 {
 protected:
-    unique_ptr<AbstractView> view;
+    std::unique_ptr<AbstractView> view;
     ServerData * serverData;
      RequestData * requestData;
      SessionData * sessionData;
      HttpHeader * httpHeader;
     QSqlDatabase sqlCon;
-    virtual unique_ptr<ViewData> run()=0;
+    virtual std::unique_ptr<ViewData> run()=0;
 public:
     AbstractAction() = default;
     virtual ~AbstractAction() = default;
@@ -36,11 +31,10 @@ public:
     void setSqlCon(const QSqlDatabase &value);
     QString getName() const;
     void setOutStream(FCGX_Stream *outStream);
-    inline void registerView(unique_ptr<AbstractView> view);
+    void registerView(std::unique_ptr<AbstractView> view);
     template<class T> void registerView()
     {
-        this->registerView(make_unique<T>());
+        this->registerView(std::make_unique<T>());
     }
 };
 
-#endif // ABSTRACTACTION_H

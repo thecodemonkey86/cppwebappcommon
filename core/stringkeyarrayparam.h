@@ -1,5 +1,5 @@
-#ifndef STRINGKEYARRAYPARAM_H
-#define STRINGKEYARRAYPARAM_H
+#pragma once
+
 class StringKeyArrayParam;
 #include <QHash>
 #include "abstractstringkeyarrayparam.h"
@@ -13,9 +13,8 @@ protected:
 public:
     StringKeyArrayParam(const QString &name);
     virtual ~StringKeyArrayParam();
-    virtual QString  toString() const;
-    virtual AbstractStringKeyArrayParam* val(const QString&key) const;
+    virtual QString  toString() const override;
+    virtual const AbstractStringKeyArrayParam* val(const QString&key) const override;
     void incrementDimension() ;
 };
 
-#endif // STRINGKEYARRAYPARAM_H

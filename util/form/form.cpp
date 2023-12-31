@@ -1,5 +1,7 @@
 #include "form.h"
-
+#include "core/requestdata.h"
+#include "core/serverdata.h"
+#include "core/sessiondata.h"
 
 
 void Form::setSessionData(SessionData *value)
@@ -16,10 +18,9 @@ QString Form::getSubmitFieldName() const
     return submitFieldName;
 }
 
-Form::Form(RequestData * request, const QString&submitFieldName)
+Form::Form(RequestData * request, const QString&submitFieldName):    submitFieldName(submitFieldName),request(request),serverData(nullptr),sessionData(nullptr)
 {
-    this->submitFieldName = submitFieldName;
-    this->request = request;
+
 }
 
 
@@ -77,7 +78,13 @@ QDateTime Form::dateTimeValue(const QString &name, const QDateTime &defaultValue
     }
     return dateTimeValue(name,format);
 }
-
+QDateTime Form::dateTimeValue(const QString &name, const QDateTime &defaultValue, Qt::DateFormat format, bool toLocalTime) const
+{
+  if(isNotSetOrEmpty(name)) {
+    return defaultValue;
+  }
+  return dateTimeValue(name,format,toLocalTime);
+}
 double Form::doubleValue(const QString &name, double defaultValue) const
 {
     if(!isSet(name)) {

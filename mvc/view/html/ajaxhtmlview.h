@@ -1,5 +1,5 @@
-#ifndef AJAXHTMLVIEW_H
-#define AJAXHTMLVIEW_H
+#pragma once
+
 
 #include <mvc/view/abstractview.h>
 
@@ -15,4 +15,3 @@ public:
     virtual QString getHttpContentType() const override;
 };
 
-#endif // AJAXHTMLVIEW_H

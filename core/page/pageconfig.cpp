@@ -1,5 +1,5 @@
 #include "pageconfig.h"
-
+#include <mvc/controller/abstractpagecontroller.h>
 void PageConfig::run(RequestData * requestData,
                      SessionData * sessionData,
                      ServerData * serverData,

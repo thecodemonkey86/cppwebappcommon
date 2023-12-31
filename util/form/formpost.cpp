@@ -1,6 +1,5 @@
 #include "formpost.h"
 #include <QDate>
-#include "exception/qtexception.h"
 using namespace QtCommon2;
 
 FormPost::FormPost(RequestData * request, const QString&submitFieldName) : Form(request,submitFieldName)
@@ -62,40 +61,23 @@ double FormPost::doubleValue(const QString &name) const
 
 QDate FormPost::dateValue(const QString &name, const QString &format) const
 {
-  QString d = request->postString(name);
-  return QDate::fromString(d,format);
- /*   if (d.count(QChar('-')) == 2) {
-        return QDate::fromString(d,QStringLiteral("yyyy-MM-dd"));
-    } else if (d.count(QChar('.')) == 2) {
-        return QDate::fromString(d,QStringLiteral("dd.MM.yyyy"));
-    } else {
-        throw QtException("Invalid date format");
-    }*/
+  return QDate::fromString(request->postString(name),format);
 }
 
 QDateTime FormPost::dateTimeValue(const QString &name, const QString &format) const
 {
-  QString d = request->postString(name);
-    return QDateTime::fromString(d,format);
-  /*if(!format.isNull())
-  {
-  } else {
-
-    if (d.count(QChar('-')) == 2) {
-        return QDateTime::fromString(d,QStringLiteral("yyyy-MM-ddThh:mm"));
-    } else if (name.count(QChar('.')) == 2) {
-        return QDateTime::fromString(d,QStringLiteral("dd.MM.yyyyTHH:mm:ss"));
-    } else {
-        throw QtException("Invalid date format");
-    }
-  }*/
+    return QDateTime::fromString(request->postString(name),format);
 }
 
+QDateTime FormPost::dateTimeValue(const QString &name, Qt::DateFormat format, bool toLocalTime) const
+{
+  return  toLocalTime ? QDateTime::fromString(request->postString(name),format).toLocalTime() : QDateTime::fromString(request->postString(name),format);
+}
 
 bool FormPost::boolValue(const QString &name) const
 {
   if(!isSet(name)) return false;
-    return request->postInt(name) == 1;
+    return request->postBool(name);
 }
 
 bool FormPost::isSubmitted() const
@@ -164,4 +146,10 @@ int FormPost::intValueGET(const QString &name) const
 int64_t FormPost::int64ValueGET(const QString &name) const
 {
   return request->getInt64(name);
+}
+
+bool FormPost::boolValueGET(const QString &name) const
+{
+  if (!isGetParamSet(name)) return false;
+    return request->getBool(name);
 }

@@ -1,13 +1,17 @@
-#ifndef FORM_H
-#define FORM_H
+#pragma once
+
 
 #include <QString>
-#include "core/requestdata.h"
-#include "core/serverdata.h"
-#include "core/sessiondata.h"
 #include <QDate>
 #include <QSet>
 #include "webappcommon_global.h"
+
+class RequestData;
+class ArrayRequestParam;
+class ServerData;
+class SessionData;
+class StringKeyArrayParam;
+class AbstractStringKeyArrayParam;
 
 class WEBAPPCOMMONSHARED_EXPORT Form
 {
@@ -28,12 +32,13 @@ public:
     virtual bool boolValue(const QString&name) const=0;
     virtual QDate dateValue(const QString&name, const QString &format="yyyy-MM-dd") const=0;
     virtual QDateTime dateTimeValue(const QString&name,const QString & format="yyyy-MM-ddThh:mm") const=0;
+    virtual QDateTime dateTimeValue(const QString&name,Qt::DateFormat format, bool toLocalTime) const=0;
     virtual double doubleValue(const QString&name) const=0;
     virtual bool isValueEmpty(const QString&name) const=0;
    virtual QVector<int> intArrayValue(const QString&name) const=0;
     virtual QVector<int64_t> int64ArrayValue(const QString&name) const=0;
     virtual QSet<int64_t> int64HashSetValue(const QString &name) const=0;
-   virtual ArrayRequestParam * array(const QString&name) const=0;
+   virtual const ArrayRequestParam * array(const QString&name) const=0;
    virtual QStringList stringArrayValue(const QString&name) const=0;
 
     int intValue(const QString&name,int defaultValue) const;
@@ -44,6 +49,7 @@ public:
     bool boolValue(const QString&name,bool defaultValue) const;
     QDate dateValue(const QString&name, const QDate & defaultValue, const QString &format="yyyy-MM-dd") const;
     QDateTime dateTimeValue(const QString&name, const QDateTime & defaultValue,const QString & format="yyyy-MM-ddThh:mm") const;
+    QDateTime dateTimeValue(const QString&name, const QDateTime & defaultValue,Qt::DateFormat format, bool toLocalTime) const;
     double doubleValue(const QString&name,double defaultValue) const;
 
 
@@ -54,16 +60,16 @@ public:
     virtual StringKeyArrayParam* stringKeyArray(const QString&name) const=0;
     virtual QList<QString> arrayKeys(const QString&name) const=0;
     virtual  const QString & arrayStringValue(const QString&fieldName,const QString&arrayKey) const =0;
-    virtual  AbstractStringKeyArrayParam*  arrayValue(const QString&fieldName,const QString&arrayKey) const =0;
+    virtual const AbstractStringKeyArrayParam*  arrayValue(const QString&fieldName,const QString&arrayKey) const =0;
     void setSessionData(SessionData *value);
     void setServerData(ServerData *value);
     QString getSubmitFieldName() const;
 
-    template<class E> E enumValue(const QString &name, E defaultValue)
+    template<class E> E enumValue(const QString &name, E defaultValue)const
     {
       return isSet(name) ? static_cast<E>(intValue(name)) : defaultValue;
     }
-    template<class E> E enumValue(const QString &name)
+    template<class E> E enumValue(const QString &name)const
     {
       return static_cast<E>(intValue(name)) ;
     }
@@ -80,4 +86,3 @@ public:
 
 };
 
-#endif // FORM_H

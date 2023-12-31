@@ -1,12 +1,10 @@
 #include "stringkeyarrayparam.h"
-#include "arrayvalue.h"
 #include <QDebug>
 #include "exception/qtexception.h"
 using namespace QtCommon2;
 
-StringKeyArrayParam::StringKeyArrayParam(const QString &name) : AbstractStringKeyArrayParam()
+StringKeyArrayParam::StringKeyArrayParam(const QString &name) : AbstractStringKeyArrayParam(),name(name)
 {
-    this->name = name;
 }
 
 StringKeyArrayParam::~StringKeyArrayParam()
@@ -21,7 +19,7 @@ QString StringKeyArrayParam::toString() const
 
 
 
-AbstractStringKeyArrayParam *StringKeyArrayParam::val(const QString &key) const
+const AbstractStringKeyArrayParam *StringKeyArrayParam::val(const QString &key) const
 {
     if(!contains(key)) {
          throw QtException(QStringLiteral("no such array key: ")+key);
